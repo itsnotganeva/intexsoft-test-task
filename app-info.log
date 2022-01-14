@@ -1,0 +1,66 @@
+[ERROR] 2022-01-14 10:34:45.850 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
+[ERROR] 2022-01-14 10:36:42.554 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
+[ERROR] 2022-01-14 10:37:24.545 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
+[ERROR] 2022-01-14 10:39:05.292 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
+[ERROR] 2022-01-14 10:41:24.361 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
+[ERROR] 2022-01-14 10:44:18.906 [main] AbstractCRUDRepository - Something went wrong during entities retrieval
+org.postgresql.util.PSQLException: Индекс колонки вне диапазона: 3. Допустимые значения: 1..2
+	at org.postgresql.core.v3.SimpleParameterList.bind(SimpleParameterList.java:70) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.core.v3.SimpleParameterList.setBinaryParameter(SimpleParameterList.java:137) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.bindBytes(PgPreparedStatement.java:1041) ~[postgresql-42.3.1.jar:42.3.1]
+	at org.postgresql.jdbc.PgPreparedStatement.setLong(PgPreparedStatement.java:306) ~[postgresql-42.3.1.jar:42.3.1]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.setLong(HikariProxyPreparedStatement.java) ~[HikariCP-3.4.5.jar:?]
+	at by.ganevich.repo.BankAccountRepo.setValues(BankAccountRepo.java:104) ~[classes/:?]
+	at by.ganevich.repo.BankAccountRepo.save(BankAccountRepo.java:70) [classes/:?]
+	at by.ganevich.service.ClientService.sendMoney(ClientService.java:49) [classes/:?]
+	at by.ganevich.Application.main(Application.java:43) [classes/:?]
