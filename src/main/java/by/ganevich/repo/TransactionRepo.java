@@ -1,12 +1,8 @@
 package by.ganevich.repo;
 
-import by.ganevich.entity.BankAccount;
-import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.exception.EntityNotFoundException;
 import by.ganevich.exception.EntitySaveException;
-import by.ganevich.mapping.BankAccountMapper;
-import by.ganevich.mapping.BankMapper;
 import by.ganevich.mapping.RowMapper;
 import by.ganevich.mapping.TransactionMapper;
 import by.ganevich.repo.jdbc.ConnectionPoolProvider;

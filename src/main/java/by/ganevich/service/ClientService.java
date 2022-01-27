@@ -12,6 +12,15 @@ import java.util.List;
 
 public class ClientService {
 
+    public static ClientService instance;
+
+    public static ClientService getInstance() {
+        if (instance == null) {
+            ClientService.instance = new ClientService();
+        }
+        return instance;
+    }
+
     List<Client> clients = new ArrayList<>();
 
     private final ClientRepo clientRepo = ClientRepo.getInstance();
@@ -78,7 +87,10 @@ public class ClientService {
 
     public Client findByName(String name) {
         clients = read();
-        return clients.stream().filter(c -> c.getName().equals(name)).findFirst().get();
+        return clients.stream()
+                .filter(c -> c.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No client with the given name"));
     }
 
     public void remove(Long id) {

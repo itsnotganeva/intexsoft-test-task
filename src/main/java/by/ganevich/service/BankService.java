@@ -1,13 +1,21 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
 import by.ganevich.repo.BankRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BankService {
+
+    public static BankService instance;
+
+    public static BankService getInstance() {
+        if (instance == null) {
+            BankService.instance = new BankService();
+        }
+        return instance;
+    }
 
     private List<Bank> banks = new ArrayList<>();
 
@@ -35,6 +43,9 @@ public class BankService {
 
     public Bank findByName(String name) {
         banks = read();
-        return banks.stream().filter(b -> b.getName().equals(name)).findFirst().get();
+        return banks.stream()
+                .filter(b -> b.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No bank with given name"));
     }
 }

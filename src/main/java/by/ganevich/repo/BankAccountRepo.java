@@ -1,15 +1,11 @@
 package by.ganevich.repo;
 
-import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.exception.EntityNotFoundException;
 import by.ganevich.exception.EntitySaveException;
 import by.ganevich.mapping.BankAccountMapper;
-import by.ganevich.mapping.BankMapper;
 import by.ganevich.mapping.RowMapper;
 import by.ganevich.repo.jdbc.ConnectionPoolProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;

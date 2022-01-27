@@ -7,6 +7,15 @@ import java.util.List;
 
 public class BankAccountService {
 
+    public static BankAccountService instance;
+
+    public static BankAccountService getInstance() {
+        if (instance == null) {
+            BankAccountService.instance = new BankAccountService();
+        }
+        return instance;
+    }
+
     private final BankAccountRepo bankAccountRepo = BankAccountRepo.getInstance();
 
     public void create (BankAccount bankAccount) {

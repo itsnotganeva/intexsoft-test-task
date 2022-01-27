@@ -1,7 +1,6 @@
 package by.ganevich.repo;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.Client;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;

@@ -1,10 +1,9 @@
 package by.ganevich;
 
-import by.ganevich.entity.Client;
+import by.ganevich.io.Interactive;
 
 public class Application {
     public static void main(String[] args) {
-
-        Interactive interactive = new Interactive();
+        Interactive.InvokeInteractiveMenu();
     }
 }

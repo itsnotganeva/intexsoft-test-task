@@ -1,7 +1,5 @@
 package by.ganevich.entity;
 
-import java.util.Objects;
-
 public class BankAccount {
     private Long id;
     private String currency;

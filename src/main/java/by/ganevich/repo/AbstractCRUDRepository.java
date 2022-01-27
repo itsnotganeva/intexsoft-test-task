@@ -3,17 +3,16 @@ package by.ganevich.repo;
 import by.ganevich.exception.EntityDeleteException;
 import by.ganevich.exception.EntityNotFoundException;
 import by.ganevich.exception.EntityRetrieveException;
-import by.ganevich.exception.EntitySaveException;
 import by.ganevich.mapping.RowMapper;
 import by.ganevich.repo.jdbc.ConnectionPoolProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class AbstractCRUDRepository<T> {
 
