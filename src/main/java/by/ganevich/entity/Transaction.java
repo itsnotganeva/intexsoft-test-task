@@ -1,17 +1,39 @@
 package by.ganevich.entity;
 
-import java.util.Date;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Data
+@Getter
+@Setter
+@Table(name = "transactions")
 public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long senderId;
-    private Long recipientId;
+
+    @ManyToOne(cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "senderId")
+    private Client sender;
+
+    @ManyToOne(cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipientId")
+    private Client receiver;
+
+    @Column(name = "ammountOfMoney")
     private Double amountOfMoney;
+
+    @Column(name = "date")
     private Date date;
 
-    public Long getSenderId() {
-        return senderId;
-    }
 
     public Long getId() {
         return id;
@@ -21,16 +43,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
+    public Client getSender() {
+        return sender;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
+    public void setSender(Client sender) {
+        this.sender = sender;
     }
 
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
+    public Client getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Client receiver) {
+        this.receiver = receiver;
     }
 
     public Double getAmountOfMoney() {
@@ -47,16 +73,5 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", senderId=" + senderId +
-                ", recipientId=" + recipientId +
-                ", amountOfMoney=" + amountOfMoney +
-                ", date=" + date +
-                '}';
     }
 }

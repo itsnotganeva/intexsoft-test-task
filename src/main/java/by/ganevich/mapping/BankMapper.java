@@ -9,9 +9,9 @@ public class BankMapper implements RowMapper<Bank> {
     @Override
     public Bank toObject(ResultSet rs) throws SQLException {
         Bank bank = new Bank();
-        bank.setId(rs.getLong("id"));
-        bank.setName(rs.getString("name"));
-        bank.setCommission(rs.getDouble("commission"));
+//        bank.setId(rs.getLong("id"));
+//        bank.setName(rs.getString("name"));
+//        bank.setCommission(rs.getDouble("commission"));
         return bank;
     }
 }

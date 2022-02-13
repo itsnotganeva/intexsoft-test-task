@@ -1,17 +1,39 @@
 package by.ganevich.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@Table(name = "bankAccounts")
 public class BankAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "currency")
     private String currency;
-    private double amountOfMoney;
-    private Long clientId;
-    private Long bankId;
+
+    @Column(name = "ammountOfMoney")
+    private Double amountOfMoney;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "clientId")
+    private Client accountOwner;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "bankId")
+    private Bank bankProducer;
+
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -23,38 +45,27 @@ public class BankAccount {
         this.currency = currency;
     }
 
-    public double getAmountOfMoney() {
+    public Double getAmountOfMoney() {
         return amountOfMoney;
     }
 
-    public void setAmountOfMoney(double amountOfMoney) {
+    public void setAmountOfMoney(Double amountOfMoney) {
         this.amountOfMoney = amountOfMoney;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public Client getAccountOwner() {
+        return accountOwner;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setAccountOwner(Client accountOwner) {
+        this.accountOwner = accountOwner;
     }
 
-    public Long getBankId() {
-        return bankId;
+    public Bank getBankProducer() {
+        return bankProducer;
     }
 
-    public void setBankId(Long bankId) {
-        this.bankId = bankId;
-    }
-
-    @Override
-    public String toString() {
-        return "BankAccount{" +
-                "id=" + id +
-                ", currency='" + currency + '\'' +
-                ", amountOfMoney=" + amountOfMoney +
-                ", clientId=" + clientId +
-                ", bankId=" + bankId +
-                '}';
+    public void setBankProducer(Bank bankProducer) {
+        this.bankProducer = bankProducer;
     }
 }

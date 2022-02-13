@@ -79,29 +79,28 @@ public class ClientMenuInteractive {
         Client client = ClientService.getInstance().findByName(InputManager.inputString());
 
         System.out.println("Enter the name of bank in which you want to add client: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+       // Bank bank = BankService.getInstance().findByName(InputManager.inputString());
 
-        BankAccount bankAccount = BankAccountService.getInstance().getByClientAndBank(client.getId(), bank.getId());
+       // BankAccount bankAccount = BankAccountService.getInstance().getByClientAndBank(client.getId(), bank.getId());
 
-        if (Objects.isNull(bankAccount.getBankId())) {
-            BankAccount newBankAccount = new BankAccount();
-
-            System.out.println("Enter the currency of bank account:");
-            newBankAccount.setCurrency(InputManager.inputString());
-
-            System.out.println("Enter the amount of money in account:");
-            newBankAccount.setAmountOfMoney(InputManager.inputDouble());
-
-            newBankAccount.setBankId(bank.getId());
-            newBankAccount.setClientId(client.getId());
-
-            BankAccountService.getInstance().create(newBankAccount);
-
-            ClientService.getInstance().addToBank(client, newBankAccount);
-
-            System.out.println("Bank account was created!");
-        }
-        else throw new RuntimeException("Client already has an account of this bank!");
-    }
-
+//        if (Objects.isNull(bankAccount.getBankId())) {
+//            BankAccount newBankAccount = new BankAccount();
+//
+//            System.out.println("Enter the currency of bank account:");
+//            newBankAccount.setCurrency(InputManager.inputString());
+//
+//            System.out.println("Enter the amount of money in account:");
+//            newBankAccount.setAmountOfMoney(InputManager.inputDouble());
+//
+//            newBankAccount.setBankId(bank.getId());
+//            newBankAccount.setClientId(client.getId());
+//
+//            BankAccountService.getInstance().create(newBankAccount);
+//
+//            ClientService.getInstance().addToBank(client, newBankAccount);
+//
+//            System.out.println("Bank account was created!");
+//        }
+//        else throw new RuntimeException("Client already has an account of this bank!");
+   }
 }

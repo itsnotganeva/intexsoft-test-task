@@ -3,12 +3,19 @@ package by.ganevich.io.subinteractive;
 import by.ganevich.entity.Bank;
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Component
+@AllArgsConstructor
 public class BankMenuInteractive {
 
-    public static void bankMenuPrint() {
+    private final BankService bankService;
+
+    public void bankMenuPrint() {
         System.out.println("1 - Create bank");
         System.out.println("2 - Read banks");
         System.out.println("3 - Update bank");
@@ -16,7 +23,7 @@ public class BankMenuInteractive {
         System.out.println("5 - Back");
     }
 
-    public static void createBank() {
+    public void createBank() {
         Bank bank = new Bank();
 
         System.out.println("Enter the name of bank: ");
@@ -25,33 +32,34 @@ public class BankMenuInteractive {
         System.out.println("Enter the commission of bank (%): ");
         bank.setCommission(InputManager.inputDouble());
 
-        BankService.getInstance().create(bank);
+        bankService.createBank(bank);
+
     }
 
-    public static void readBank() {
-        List<Bank> banks = BankService.getInstance().read();
+    public void readBank() {
+        List<Bank> banks = bankService.readBanks();
         System.out.println(banks.toString());
     }
 
-    public static void updateBank() {
-        System.out.println("Enter the name of bank you want to update: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
-
-        System.out.println("Enter the new name of bank: ");
-        bank.setName(InputManager.inputString());
-
-        System.out.println("Enter the new commission of bank (%): ");
-        bank.setCommission(InputManager.inputDouble());
-
-        BankService.getInstance().update(bank);
+    public void updateBank() {
+//        System.out.println("Enter the name of bank you want to update: ");
+//        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+//
+//        System.out.println("Enter the new name of bank: ");
+//        bank.setName(InputManager.inputString());
+//
+//        System.out.println("Enter the new commission of bank (%): ");
+//        bank.setCommission(InputManager.inputDouble());
+//
+//        BankService.getInstance().update(bank);
     }
 
-    public static void deleteBank() {
-        System.out.println("Enter the name of bank you want to delete: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
-
-        BankService.getInstance().remove(bank.getId());
-
-        System.out.println("Removed!");
+    public void deleteBank() {
+//        System.out.println("Enter the name of bank you want to delete: ");
+//        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+//
+//        BankService.getInstance().remove(bank.getId());
+//
+//        System.out.println("Removed!");
     }
 }

@@ -1,7 +1,6 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.BankAccount;
-import by.ganevich.repo.BankAccountRepo;
 
 import java.util.List;
 
@@ -16,18 +15,20 @@ public class BankAccountService {
         return instance;
     }
 
-    private final BankAccountRepo bankAccountRepo = BankAccountRepo.getInstance();
+   // private final BankAccountRepo bankAccountRepo = BankAccountRepo.getInstance();
 
     public void create (BankAccount bankAccount) {
-        bankAccountRepo.save(bankAccount);
+    //    bankAccountRepo.save(bankAccount);
     }
 
     public BankAccount getByClientAndBank(Long clientId, Long bankId) {
-        return bankAccountRepo.getByClientAndBank(clientId, bankId);
+      //  return bankAccountRepo.getByClientAndBank(clientId, bankId);
+        return null;
     }
 
     public List<BankAccount> getAllOfClient(Long clientId) {
-        return bankAccountRepo.getByClientId(clientId);
+       // return bankAccountRepo.getByClientId(clientId);
+        return null;
     }
 
 }

@@ -1,9 +1,41 @@
 package by.ganevich.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Data
+@Getter
+@Setter
+@Table(name = "clients")
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "type")
     private ClientType type;
+
+    @OneToMany(cascade = CascadeType.REMOVE,
+            mappedBy = "accountOwner",
+            fetch = FetchType.LAZY)
+    private Set<BankAccount> bankAccounts;
+
+    @OneToMany(cascade = CascadeType.REMOVE,
+                fetch = FetchType.LAZY,
+    mappedBy = "sender")
+    private Set<Transaction> sentTransactions;
+
+    @OneToMany(cascade = CascadeType.REMOVE,
+    fetch = FetchType.LAZY)
+    private Set<Transaction> receivedTransactions;
 
     public Long getId() {
         return id;
@@ -29,12 +61,27 @@ public class Client {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                '}';
+    public Set<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(Set<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public Set<Transaction> getSentTransactions() {
+        return sentTransactions;
+    }
+
+    public void setSentTransactions(Set<Transaction> sentTransactions) {
+        this.sentTransactions = sentTransactions;
+    }
+
+    public Set<Transaction> getReceivedTransactions() {
+        return receivedTransactions;
+    }
+
+    public void setReceivedTransactions(Set<Transaction> receivedTransactions) {
+        this.receivedTransactions = receivedTransactions;
     }
 }
