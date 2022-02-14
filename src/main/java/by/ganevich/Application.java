@@ -14,7 +14,6 @@ public class Application {
     private static Interactive interactive;
 
     public static void main(String[] args) {
-        //Interactive.InvokeInteractiveMenu();
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
         interactive = applicationContext.getBean(Interactive.class);
 

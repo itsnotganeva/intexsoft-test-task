@@ -1,6 +1,9 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
+import by.ganevich.entity.BankAccount;
+import by.ganevich.entity.Client;
+import by.ganevich.repository.BankAccountRepository;
 import by.ganevich.repository.BankRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,40 +28,32 @@ public class BankService {
 
     private BankRepository bankRepository;
 
-    public void createBank(Bank bank) {
+    public void saveBank(Bank bank) {
         bankRepository.save(bank);
 
         log.info("Bank " + bank.getId() + " successfully created.");
     }
 
     public List<Bank> readBanks() {
-//        List<Bank> banks = bankRepository.
-//        return banks;
-        return null;
+        List<Bank> banks = bankRepository.findAll();
+        return banks;
     }
 
-  //  private final BankRepo bankRepo = BankRepo.getInstance();
-
-    public void create(Bank bank) {
-     //   bankRepo.save(bank);
+    public Bank findBankByName(String name) {
+        Bank bank = bankRepository.findByName(name);
+        return bank;
     }
 
-    public Bank readById(Long id) {
-    //   return bankRepo.getById(id);
-        return null;
+    public void removeBank(Bank bank) {
+        bankRepository.delete(bank);
     }
 
-    public void remove(Long id) {
-       // bankRepo.deleteById(id);
+    public void addClientToBank(Client client, Bank bank) {
+
+        bank.getClients().add(client);
+        client.getBanks().add(bank);
+
     }
 
-    public void update(Bank bank) {
-       // bankRepo.save(bank);
-    }
-
-    public List<Bank> read() {
-      //  return bankRepo.findAll();
-        return null;
-    }
 
 }

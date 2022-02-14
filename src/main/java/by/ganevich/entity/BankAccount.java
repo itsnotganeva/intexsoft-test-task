@@ -7,7 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "bankAccounts")
 public class BankAccount {
     @Id
@@ -20,52 +21,22 @@ public class BankAccount {
     @Column(name = "ammountOfMoney")
     private Double amountOfMoney;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "clientId")
     private Client accountOwner;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "bankId")
     private Bank bankProducer;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public Double getAmountOfMoney() {
-        return amountOfMoney;
-    }
-
-    public void setAmountOfMoney(Double amountOfMoney) {
-        this.amountOfMoney = amountOfMoney;
-    }
-
-    public Client getAccountOwner() {
-        return accountOwner;
-    }
-
-    public void setAccountOwner(Client accountOwner) {
-        this.accountOwner = accountOwner;
-    }
-
-    public Bank getBankProducer() {
-        return bankProducer;
-    }
-
-    public void setBankProducer(Bank bankProducer) {
-        this.bankProducer = bankProducer;
-    }
+//    @Override
+//    public String toString() {
+//        return "BankAccount{" +
+//                "id=" + id +
+//                ", currency='" + currency + '\'' +
+//                ", amountOfMoney=" + amountOfMoney +
+//                ", accountOwner=" + accountOwner +
+//                ", bankProducer=" + bankProducer +
+//                '}';
+//    }
 }

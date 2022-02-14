@@ -793,7 +793,7 @@ false YEKT
 false Z
 false Zulu
 </TimeZones>
-      <StartupTime>1642160114</StartupTime>
+      <StartupTime>1644760717</StartupTime>
     </root>
     <database id="2" parent="1" name="bank-system">
       <ObjectId>16683</ObjectId>
@@ -808,12 +808,12 @@ false Zulu
 13388||-9223372036854775808|U|G
 13388||10|U|G</Grants>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1090</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1429</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|16851|16852|1
-sequence|table|16793|16794|1
-sequence|table|16800|16801|1
-sequence|table|16808|16809|1
+      <Relations>sequence|table|33268|33269|1
+sequence|table|33285|33286|1
+sequence|table|33301|33302|1
+sequence|table|33294|33295|1
 </Relations>
     </database>
     <database id="3" parent="1" name="hotel-reservation">
@@ -896,7 +896,7 @@ sequence|table|16808|16809|1
       <Comment>standard public schema</Comment>
       <StateNumber>527</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1091</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1430</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="22" parent="2" name="plpgsql">
@@ -996,311 +996,271 @@ sequence|table|16808|16809|1
       <HandlerId>335</HandlerId>
       <Type>index</Type>
     </access-method>
-    <sequence id="34" parent="21" name="bank_id_seq">
-      <ObjectId>16800</ObjectId>
+    <sequence id="34" parent="21" name="bankaccounts_id_seq">
+      <ObjectId>33301</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1039</StateNumber>
-      <DataType>integer|0s</DataType>
+      <StateNumber>1426</StateNumber>
+      <DataType>bigint|0s</DataType>
     </sequence>
-    <sequence id="35" parent="21" name="bankaccount_id_seq">
-      <ObjectId>16808</ObjectId>
+    <sequence id="35" parent="21" name="banks_id_seq">
+      <ObjectId>33294</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1041</StateNumber>
-      <DataType>integer|0s</DataType>
+      <StateNumber>1425</StateNumber>
+      <DataType>bigint|0s</DataType>
     </sequence>
-    <sequence id="36" parent="21" name="client_id_seq">
-      <ObjectId>16793</ObjectId>
+    <sequence id="36" parent="21" name="clients_id_seq">
+      <ObjectId>33285</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1038</StateNumber>
-      <DataType>integer|0s</DataType>
+      <StateNumber>1422</StateNumber>
+      <DataType>bigint|0s</DataType>
     </sequence>
-    <sequence id="37" parent="21" name="transaction_operation_id_seq">
-      <ObjectId>16851</ObjectId>
+    <sequence id="37" parent="21" name="transactions_id_seq">
+      <ObjectId>33268</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1089</StateNumber>
-      <DataType>integer|0s</DataType>
+      <StateNumber>1414</StateNumber>
+      <DataType>bigint|0s</DataType>
     </sequence>
-    <table id="38" parent="21" name="bank">
-      <ObjectId>16801</ObjectId>
+    <table id="38" parent="21" name="bankaccounts">
+      <ObjectId>33302</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1041</StateNumber>
+      <StateNumber>1426</StateNumber>
     </table>
-    <table id="39" parent="21" name="bankaccount">
-      <ObjectId>16809</ObjectId>
+    <table id="39" parent="21" name="banks">
+      <ObjectId>33295</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1041</StateNumber>
+      <StateNumber>1426</StateNumber>
     </table>
-    <table id="40" parent="21" name="client">
-      <ObjectId>16794</ObjectId>
+    <table id="40" parent="21" name="clients">
+      <ObjectId>33286</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1041</StateNumber>
+      <StateNumber>1426</StateNumber>
     </table>
-    <table id="41" parent="21" name="client_bank">
-      <ObjectId>16825</ObjectId>
+    <table id="41" parent="21" name="clients_banks">
+      <ObjectId>33255</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1042</StateNumber>
+      <StateNumber>1413</StateNumber>
     </table>
-    <table id="42" parent="21" name="transaction_operation">
-      <ObjectId>16852</ObjectId>
+    <table id="42" parent="21" name="transactions">
+      <ObjectId>33269</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1089</StateNumber>
+      <StateNumber>1414</StateNumber>
     </table>
     <column id="43" parent="38" name="id">
       <Position>1</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1039</StateNumber>
-      <DefaultExpression>nextval(&apos;bank_id_seq&apos;::regclass)</DefaultExpression>
-      <TypeId>23</TypeId>
+      <StateNumber>1426</StateNumber>
+      <DefaultExpression>nextval(&apos;bankaccounts_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>20</TypeId>
     </column>
-    <column id="44" parent="38" name="name">
+    <column id="44" parent="38" name="currency">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1039</StateNumber>
+      <StateNumber>1426</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="45" parent="38" name="commission">
+    <column id="45" parent="38" name="ammountofmoney">
       <Position>3</Position>
       <DataType>real|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1039</StateNumber>
+      <StateNumber>1426</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <index id="46" parent="38" name="bank_pkey">
-      <ObjectId>16805</ObjectId>
-      <StateNumber>1039</StateNumber>
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-      <Primary>1</Primary>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationIds>0</CollationIds>
-      <ClassIds>1978</ClassIds>
-    </index>
-    <key id="47" parent="38" name="bank_pkey">
-      <ObjectId>16806</ObjectId>
-      <StateNumber>1039</StateNumber>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>bank_pkey</UnderlyingIndexName>
-    </key>
-    <column id="48" parent="39" name="id">
-      <Position>1</Position>
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1041</StateNumber>
-      <DefaultExpression>nextval(&apos;bankaccount_id_seq&apos;::regclass)</DefaultExpression>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="49" parent="39" name="currency">
-      <Position>2</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1041</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="50" parent="39" name="ammountofmoney">
-      <Position>3</Position>
-      <DataType>real|0s</DataType>
-      <StateNumber>1041</StateNumber>
-      <TypeId>700</TypeId>
-    </column>
-    <column id="51" parent="39" name="bankid">
+    <column id="46" parent="38" name="bankid">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1041</StateNumber>
+      <StateNumber>1426</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="52" parent="39" name="clientid">
+    <column id="47" parent="38" name="clientid">
       <Position>5</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1041</StateNumber>
+      <StateNumber>1426</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="53" parent="39" name="bankaccount_pkey">
-      <ObjectId>16813</ObjectId>
-      <StateNumber>1041</StateNumber>
+    <index id="48" parent="38" name="bankaccounts_pkey">
+      <ObjectId>33306</ObjectId>
+      <StateNumber>1426</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
       <AccessMethodId>403</AccessMethodId>
       <CollationIds>0</CollationIds>
-      <ClassIds>1978</ClassIds>
+      <ClassIds>3124</ClassIds>
     </index>
-    <key id="54" parent="39" name="bankaccount_pkey">
-      <ObjectId>16814</ObjectId>
-      <StateNumber>1041</StateNumber>
+    <key id="49" parent="38" name="bankaccounts_pkey">
+      <ObjectId>33307</ObjectId>
+      <StateNumber>1426</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
-      <UnderlyingIndexName>bankaccount_pkey</UnderlyingIndexName>
+      <UnderlyingIndexName>bankaccounts_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="55" parent="39" name="bankaccount_bankid_fkey">
-      <ObjectId>16815</ObjectId>
-      <StateNumber>1041</StateNumber>
+    <foreign-key id="50" parent="38" name="bankaccounts_bankid_fkey">
+      <ObjectId>33308</ObjectId>
+      <StateNumber>1426</StateNumber>
       <ColNames>bankid</ColNames>
-      <RefTableId>16801</RefTableId>
+      <RefTableId>33295</RefTableId>
       <RefColPositions>1</RefColPositions>
-      <RefTableName>bank</RefTableName>
-      <RefKeyName>bank_pkey</RefKeyName>
+      <RefTableName>banks</RefTableName>
+      <RefKeyName>banks_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="56" parent="39" name="bankaccount_clientid_fkey">
-      <ObjectId>16820</ObjectId>
-      <StateNumber>1041</StateNumber>
+    <foreign-key id="51" parent="38" name="bankaccounts_clientid_fkey">
+      <ObjectId>33313</ObjectId>
+      <StateNumber>1426</StateNumber>
       <ColNames>clientid</ColNames>
-      <RefTableId>16794</RefTableId>
+      <RefTableId>33286</RefTableId>
       <RefColPositions>1</RefColPositions>
-      <RefTableName>client</RefTableName>
-      <RefKeyName>client_pkey</RefKeyName>
+      <RefTableName>clients</RefTableName>
+      <RefKeyName>clients_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
+    <column id="52" parent="39" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>1425</StateNumber>
+      <DefaultExpression>nextval(&apos;banks_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="53" parent="39" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>1425</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="54" parent="39" name="commission">
+      <Position>3</Position>
+      <DataType>real|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>1425</StateNumber>
+      <TypeId>700</TypeId>
+    </column>
+    <index id="55" parent="39" name="banks_pkey">
+      <ObjectId>33299</ObjectId>
+      <StateNumber>1425</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationIds>0</CollationIds>
+      <ClassIds>3124</ClassIds>
+    </index>
+    <key id="56" parent="39" name="banks_pkey">
+      <ObjectId>33300</ObjectId>
+      <StateNumber>1425</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>banks_pkey</UnderlyingIndexName>
+    </key>
     <column id="57" parent="40" name="id">
       <Position>1</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1038</StateNumber>
-      <DefaultExpression>nextval(&apos;client_id_seq&apos;::regclass)</DefaultExpression>
-      <TypeId>23</TypeId>
+      <StateNumber>1422</StateNumber>
+      <DefaultExpression>nextval(&apos;clients_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>20</TypeId>
     </column>
     <column id="58" parent="40" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1038</StateNumber>
+      <StateNumber>1422</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="59" parent="40" name="type">
       <Position>3</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1038</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>1422</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <index id="60" parent="40" name="client_pkey">
-      <ObjectId>16798</ObjectId>
-      <StateNumber>1038</StateNumber>
+    <index id="60" parent="40" name="clients_pkey">
+      <ObjectId>33292</ObjectId>
+      <StateNumber>1422</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
       <AccessMethodId>403</AccessMethodId>
       <CollationIds>0</CollationIds>
-      <ClassIds>1978</ClassIds>
+      <ClassIds>3124</ClassIds>
     </index>
-    <key id="61" parent="40" name="client_pkey">
-      <ObjectId>16799</ObjectId>
-      <StateNumber>1038</StateNumber>
+    <key id="61" parent="40" name="clients_pkey">
+      <ObjectId>33293</ObjectId>
+      <StateNumber>1422</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
-      <UnderlyingIndexName>client_pkey</UnderlyingIndexName>
+      <UnderlyingIndexName>clients_pkey</UnderlyingIndexName>
     </key>
     <column id="62" parent="41" name="bankid">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1042</StateNumber>
+      <StateNumber>1413</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="63" parent="41" name="clientid">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1042</StateNumber>
+      <StateNumber>1413</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="64" parent="41" name="client_bank_bankid_fkey">
-      <ObjectId>16828</ObjectId>
-      <StateNumber>1042</StateNumber>
-      <ColNames>bankid</ColNames>
-      <RefTableId>16801</RefTableId>
-      <RefColPositions>1</RefColPositions>
-      <RefTableName>bank</RefTableName>
-      <RefKeyName>bank_pkey</RefKeyName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="65" parent="41" name="client_bank_clientid_fkey">
-      <ObjectId>16833</ObjectId>
-      <StateNumber>1042</StateNumber>
-      <ColNames>clientid</ColNames>
-      <RefTableId>16794</RefTableId>
-      <RefColPositions>1</RefColPositions>
-      <RefTableName>client</RefTableName>
-      <RefKeyName>client_pkey</RefKeyName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="66" parent="42" name="id">
+    <column id="64" parent="42" name="id">
       <Position>1</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1089</StateNumber>
-      <DefaultExpression>nextval(&apos;transaction_operation_id_seq&apos;::regclass)</DefaultExpression>
-      <TypeId>23</TypeId>
+      <StateNumber>1414</StateNumber>
+      <DefaultExpression>nextval(&apos;transactions_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>20</TypeId>
     </column>
-    <column id="67" parent="42" name="senderid">
+    <column id="65" parent="42" name="senderid">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1089</StateNumber>
+      <StateNumber>1414</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="68" parent="42" name="recipientid">
+    <column id="66" parent="42" name="recipientid">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1089</StateNumber>
+      <StateNumber>1414</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="69" parent="42" name="amountofmoney">
+    <column id="67" parent="42" name="amountofmoney">
       <Position>4</Position>
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1089</StateNumber>
+      <StateNumber>1414</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="70" parent="42" name="date">
+    <column id="68" parent="42" name="date">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>1089</StateNumber>
+      <StateNumber>1414</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="71" parent="42" name="transaction_operation_pkey">
-      <ObjectId>16856</ObjectId>
-      <StateNumber>1089</StateNumber>
+    <index id="69" parent="42" name="transactions_pkey">
+      <ObjectId>33273</ObjectId>
+      <StateNumber>1414</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
       <AccessMethodId>403</AccessMethodId>
       <CollationIds>0</CollationIds>
-      <ClassIds>1978</ClassIds>
+      <ClassIds>3124</ClassIds>
     </index>
-    <key id="72" parent="42" name="transaction_operation_pkey">
-      <ObjectId>16857</ObjectId>
-      <StateNumber>1089</StateNumber>
+    <key id="70" parent="42" name="transactions_pkey">
+      <ObjectId>33274</ObjectId>
+      <StateNumber>1414</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
-      <UnderlyingIndexName>transaction_operation_pkey</UnderlyingIndexName>
+      <UnderlyingIndexName>transactions_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="73" parent="42" name="transaction_operation_senderid_fkey">
-      <ObjectId>16858</ObjectId>
-      <StateNumber>1089</StateNumber>
-      <ColNames>senderid</ColNames>
-      <RefTableId>16794</RefTableId>
-      <RefColPositions>1</RefColPositions>
-      <RefTableName>client</RefTableName>
-      <RefKeyName>client_pkey</RefKeyName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="74" parent="42" name="transaction_operation_recipientid_fkey">
-      <ObjectId>16863</ObjectId>
-      <StateNumber>1089</StateNumber>
-      <ColNames>recipientid</ColNames>
-      <RefTableId>16794</RefTableId>
-      <RefColPositions>1</RefColPositions>
-      <RefTableName>client</RefTableName>
-      <RefKeyName>client_pkey</RefKeyName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
   </database-model>
 </dataSource>

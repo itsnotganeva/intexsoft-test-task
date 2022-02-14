@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,6 +20,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableJpaRepositories(basePackages = "by.ganevich.repository")
+@EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
@@ -33,7 +39,21 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource()  {
-        return new DriverManagerDataSource(url, username, password);
+//        return new DriverManagerDataSource(url, username, password);
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("600099");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/bank-system");
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        return dataSource;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() throws Exception {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource()).getObject());
+
+        return transactionManager;
     }
 
     @Bean

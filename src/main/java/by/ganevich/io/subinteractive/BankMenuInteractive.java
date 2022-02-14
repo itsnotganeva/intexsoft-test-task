@@ -5,7 +5,6 @@ import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BankMenuInteractive {
 
-    private final BankService bankService;
+    private BankService bankService;
 
     public void bankMenuPrint() {
         System.out.println("1 - Create bank");
@@ -32,7 +31,7 @@ public class BankMenuInteractive {
         System.out.println("Enter the commission of bank (%): ");
         bank.setCommission(InputManager.inputDouble());
 
-        bankService.createBank(bank);
+        bankService.saveBank(bank);
 
     }
 
@@ -42,24 +41,24 @@ public class BankMenuInteractive {
     }
 
     public void updateBank() {
-//        System.out.println("Enter the name of bank you want to update: ");
-//        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
-//
-//        System.out.println("Enter the new name of bank: ");
-//        bank.setName(InputManager.inputString());
-//
-//        System.out.println("Enter the new commission of bank (%): ");
-//        bank.setCommission(InputManager.inputDouble());
-//
-//        BankService.getInstance().update(bank);
+        System.out.println("Enter the name of bank you want to update: ");
+        Bank bank = bankService.findBankByName(InputManager.inputString());
+
+        System.out.println("Enter the new name of bank: ");
+        bank.setName(InputManager.inputString());
+
+        System.out.println("Enter the new commission of bank (%): ");
+        bank.setCommission(InputManager.inputDouble());
+        bankService.saveBank(bank);
+
     }
 
     public void deleteBank() {
-//        System.out.println("Enter the name of bank you want to delete: ");
-//        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
-//
-//        BankService.getInstance().remove(bank.getId());
-//
-//        System.out.println("Removed!");
+        System.out.println("Enter the name of bank you want to delete: ");
+        Bank bank = bankService.findBankByName(InputManager.inputString());
+
+        bankService.removeBank(bank);
+
+        System.out.println("Removed!");
     }
 }

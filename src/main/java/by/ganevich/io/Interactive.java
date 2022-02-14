@@ -16,6 +16,15 @@ public class Interactive {
     @Autowired
     private BankMenuInteractive bankMenuInteractive;
 
+    @Autowired
+    private ClientMenuInteractive clientMenuInteractive;
+
+    @Autowired
+    private BankAccountMenuInteractive bankAccountMenuInteractive;
+
+    @Autowired
+    private TransactionMenuInteractive transactionMenuInteractive;
+
     private boolean isShow = true;
 
     public void InvokeInteractiveMenu() {
@@ -36,15 +45,15 @@ public class Interactive {
             case 1:
                 bankMenuChoice();
                 break;
-//            case 2:
-//                clientMenuChoice();
-//                break;
-//            case 3:
-//                bankAccountMenuChoice();
-//                break;
-//            case 4:
-//                transactionMenuChoice();
-//                break;
+            case 2:
+                clientMenuChoice();
+                break;
+            case 3:
+                bankAccountMenuChoice();
+                break;
+            case 4:
+                transactionMenuChoice();
+                break;
             case 5:
                 isShow = false;
                 break;
@@ -84,76 +93,79 @@ public class Interactive {
         }
     }
 
-//    public static void clientMenuChoice() {
-//        boolean isClientMenuShow = true;
-//
-//        while (isClientMenuShow) {
-//
-//            ClientMenuInteractive.clientMenuPrint();
-//
-//            switch (InputManager.inputInt()) {
-//                case 1:
-//                    ClientMenuInteractive.createClient();
-//                    break;
-//                case 2:
-//                    ClientMenuInteractive.readClients();
-//                    break;
-//                case 3:
-//                    ClientMenuInteractive.updateClient();
-//                    break;
-//                case 4:
-//                    ClientMenuInteractive.deleteClient();
-//                    break;
-//                case 5:
-//                    ClientMenuInteractive.addClientToBank();
-//                    break;
-//                case 6:
-//                    isClientMenuShow = false;
-//                    break;
-//                default:
-//                    System.out.println("Wrong input!");
-//
-//            }
-//        }
-//    }
-//
-//    public static void bankAccountMenuChoice() {
-//        boolean isBankAccountMenuShow = true;
-//
-//        while (isBankAccountMenuShow) {
-//
-//            BankAccountMenuInteractive.bankAccountMenuPrint();
-//
-//            switch (InputManager.inputInt()) {
-//                case 1:
-//                    BankAccountMenuInteractive.readBankAccounts();
-//                    break;
-//                case 2:
-//                    isBankAccountMenuShow = false;
-//                    break;
-//                default:
-//                    System.out.println("Wrong input!");
-//            }
-//        }
-//    }
-//
-//    public static void transactionMenuChoice() {
-//        boolean isTransactionMenuShow = true;
-//
-//        while (isTransactionMenuShow) {
-//
-//            TransactionMenuInteractive.transactionMenuPrint();
-//
-//            switch (InputManager.inputInt()) {
-//                case 1:
-//                    TransactionMenuInteractive.makeTransaction();
-//                    break;
-//                case 2:
-//                    isTransactionMenuShow = false;
-//                    break;
-//                default:
-//                    System.out.println("Wrong input!");
-//            }
-//        }
-//    }
+    public void clientMenuChoice() {
+        boolean isClientMenuShow = true;
+
+        while (isClientMenuShow) {
+
+            clientMenuInteractive.clientMenuPrint();
+
+            switch (InputManager.inputInt()) {
+                case 1:
+                    clientMenuInteractive.createClient();
+                    break;
+                case 2:
+                    clientMenuInteractive.readClients();
+                    break;
+                case 3:
+                    clientMenuInteractive.updateClient();
+                    break;
+                case 4:
+                    clientMenuInteractive.deleteClient();
+                    break;
+                case 5:
+                    clientMenuInteractive.addClientToBank();
+                    break;
+                case 6:
+                    clientMenuInteractive.sendMoneyToClient();
+                    break;
+                case 7:
+                    isClientMenuShow = false;
+                    break;
+                default:
+                    System.out.println("Wrong input!");
+
+            }
+        }
+    }
+
+    public void bankAccountMenuChoice() {
+        boolean isBankAccountMenuShow = true;
+
+        while (isBankAccountMenuShow) {
+
+            bankAccountMenuInteractive.bankAccountMenuPrint();
+
+            switch (InputManager.inputInt()) {
+                case 1:
+                    bankAccountMenuInteractive.readBankAccounts();
+                    break;
+                case 2:
+                    isBankAccountMenuShow = false;
+                    break;
+                default:
+                    System.out.println("Wrong input!");
+            }
+        }
+    }
+
+    public void transactionMenuChoice() {
+        boolean isTransactionMenuShow = true;
+
+        while (isTransactionMenuShow) {
+
+            transactionMenuInteractive.transactionMenuPrint();
+
+            switch (InputManager.inputInt()) {
+                case 1:
+                    transactionMenuInteractive.showTransactions();
+                    break;
+                case 2:
+                    isTransactionMenuShow = false;
+                    break;
+                default:
+                    System.out.println("Wrong input!");
+            }
+        }
+    }
 }

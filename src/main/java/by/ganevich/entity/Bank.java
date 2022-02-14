@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+@Getter
+@Setter
 @Table(name = "banks")
 public class Bank {
 
@@ -23,19 +26,30 @@ public class Bank {
     private Double commission;
 
     @ManyToMany(cascade = CascadeType.DETACH,
-                fetch = FetchType.LAZY)
+                fetch = FetchType.EAGER)
     @JoinTable(
             name = "clients_banks",
-            joinColumns = @JoinColumn(name = "bank_id"),
-            inverseJoinColumns = @JoinColumn(name = "client_id")
+            joinColumns = @JoinColumn(name = "clientId"),
+            inverseJoinColumns = @JoinColumn(name = "bankId")
     )
-    @Transient
+
     private Set<Client> clients;
 
     @OneToMany(mappedBy = "bankProducer",
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY)
-    @Transient
+            fetch = FetchType.EAGER)
+
     private Set<BankAccount> bankAccounts;
 
+
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", commission=" + commission +
+                ", clients=" + clients +
+                ", bankAccounts=" + bankAccounts +
+                '}';
+    }
 }
