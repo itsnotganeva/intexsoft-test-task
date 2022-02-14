@@ -2,11 +2,9 @@ package by.ganevich;
 
 
 import by.ganevich.io.Interactive;
-import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 @ComponentScan
 public class Application {

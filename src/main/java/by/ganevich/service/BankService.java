@@ -1,25 +1,14 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
-import by.ganevich.repository.BankAccountRepository;
 import by.ganevich.repository.BankRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.stereotype.Service;
-//import by.ganevich.repo.BankRepo;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
