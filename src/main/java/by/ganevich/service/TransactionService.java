@@ -22,23 +22,24 @@ public class TransactionService {
     private CommissionService commissionService;
 
     public void sendMoney(BankAccount senderAccount, BankAccount recipientAccount, Double sumOfMoney) {
+
         Double senderSum = senderAccount.getAmountOfMoney();
         Double recipientSum = recipientAccount.getAmountOfMoney();
+
         if (sumOfMoney <= senderSum) {
-            Double convertSum =
-                    sumOfMoney *
-                            rateService.findRateByCurrency(senderAccount.getCurrency().ordinal()) /
-                            rateService.findRateByCurrency(recipientAccount.getCurrency().ordinal());
+            Double convertSum = sumOfMoney
+                            * rateService.findRateByCurrency(senderAccount.getCurrency().ordinal())
+                            / rateService.findRateByCurrency(recipientAccount.getCurrency().ordinal());
 
             if (senderAccount.getBankProducer().equals(recipientAccount.getBankProducer())) {
 
                 senderAccount.setAmountOfMoney(senderSum - sumOfMoney);
                 recipientAccount.setAmountOfMoney(recipientSum + convertSum);
             } else {
-                Double sumWithCommission = sumOfMoney +
-                        sumOfMoney *
-                                commissionService
-                                        .findCommissionByClientType(senderAccount.getAccountOwner().getType().ordinal());
+                Double sumWithCommission = sumOfMoney
+                        + sumOfMoney
+                        * commissionService
+                        .findCommissionByClientType(senderAccount.getAccountOwner().getType().ordinal());
 
                 senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
                 recipientAccount.setAmountOfMoney(recipientSum + convertSum);

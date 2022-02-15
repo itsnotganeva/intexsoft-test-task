@@ -1,6 +1,8 @@
 package by.ganevich.service;
 
+import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
+import by.ganevich.entity.Client;
 import by.ganevich.repository.BankAccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +21,12 @@ public class BankAccountService {
         bankAccountRepository.save(bankAccount);
     }
 
-    public BankAccount getAccountByClientAndBank(Long bankId, Long clientId) {
-        return bankAccountRepository.findBankAccountByBankIdAndClientId(bankId, clientId);
+    public BankAccount getAccountByClientAndBank(Client client, Bank bank) {
+        return bankAccountRepository.findBankAccountByAccountOwnerAndBankProducer(client, bank);
     }
 
-    public Set<BankAccount> getAllAccountsOfClient(Long clientId) {
-        return bankAccountRepository.findBankAccountByClientId(clientId);
+    public Set<BankAccount> getAllAccountsOfClient(Client client) {
+        return bankAccountRepository.findBankAccountByAccountOwner(client);
     }
 
 }

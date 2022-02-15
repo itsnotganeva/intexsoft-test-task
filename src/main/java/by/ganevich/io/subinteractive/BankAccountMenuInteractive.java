@@ -26,7 +26,7 @@ public class BankAccountMenuInteractive {
         System.out.println("Enter the name of client of who you want to check all bank accounts: ");
         Client client = clientService.findClientByName(InputManager.inputString());
 
-        Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client.getId());
+        Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
         System.out.println(bankAccounts.toString());
     }
 

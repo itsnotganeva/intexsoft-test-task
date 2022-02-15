@@ -38,7 +38,7 @@ public class TransactionMenuInteractive {
         System.out.println("Enter the name of the bank of account from whose the money will be sent: ");
         Bank bankOfSender = bankService.findBankByName(InputManager.inputString());
 
-        BankAccount bankAccount1 = bankAccountService.getAccountByClientAndBank(bankOfSender.getId(), sender.getId());
+        BankAccount bankAccount1 = bankAccountService.getAccountByClientAndBank(sender, bankOfSender);
 
         System.out.println("Enter the name of the client to whose account the money will be sent: ");
         Client recipient = clientService.findClientByName(InputManager.inputString());
@@ -46,7 +46,7 @@ public class TransactionMenuInteractive {
         System.out.println("Enter the name of the bank of account to whose the money will be sent: ");
         Bank bankOfRecipient = bankService.findBankByName(InputManager.inputString());
 
-        BankAccount bankAccount2 = bankAccountService.getAccountByClientAndBank(bankOfRecipient.getId(), recipient.getId());
+        BankAccount bankAccount2 = bankAccountService.getAccountByClientAndBank(recipient, bankOfRecipient);
 
         System.out.println("Enter the sum of money that will be sent: ");
         Double sum = Double.parseDouble(InputManager.inputString());
