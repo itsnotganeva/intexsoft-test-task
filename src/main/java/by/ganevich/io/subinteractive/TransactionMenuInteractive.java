@@ -19,10 +19,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class TransactionMenuInteractive {
 
-    private TransactionService transactionService;
-    private ClientService clientService;
-    private BankService bankService;
-    private BankAccountService bankAccountService;
+    private final TransactionService transactionService;
+    private final ClientService clientService;
+    private final BankService bankService;
+    private final BankAccountService bankAccountService;
 
     public void transactionMenuPrint() {
         System.out.println("1 - Make a transaction");

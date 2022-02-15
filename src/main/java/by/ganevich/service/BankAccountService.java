@@ -15,7 +15,7 @@ import java.util.Set;
 @Slf4j
 public class BankAccountService {
 
-    private BankAccountRepository bankAccountRepository;
+    private final BankAccountRepository bankAccountRepository;
 
     public void saveBankAccount(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);

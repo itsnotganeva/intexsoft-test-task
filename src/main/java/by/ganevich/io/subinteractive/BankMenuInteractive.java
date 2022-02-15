@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BankMenuInteractive {
 
-    private BankService bankService;
+    private final BankService bankService;
 
     public void bankMenuPrint() {
         System.out.println("1 - Create bank");

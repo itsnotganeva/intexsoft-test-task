@@ -16,10 +16,10 @@ import java.util.Set;
 @Slf4j
 public class TransactionService {
 
-    private TransactionRepository transactionRepository;
-    private BankAccountService bankAccountService;
-    private RateService rateService;
-    private CommissionService commissionService;
+    private final TransactionRepository transactionRepository;
+    private final BankAccountService bankAccountService;
+    private final RateService rateService;
+    private final CommissionService commissionService;
 
     public void sendMoney(BankAccount senderAccount, BankAccount recipientAccount, Double sumOfMoney) {
 

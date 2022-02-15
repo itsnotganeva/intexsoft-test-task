@@ -15,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientMenuInteractive {
 
-    private ClientService clientService;
-    private BankService bankService;
-    private BankAccountService bankAccountService;
-    private TransactionService transactionService;
+    private final ClientService clientService;
+    private final BankService bankService;
+    private final BankAccountService bankAccountService;
+    private final TransactionService transactionService;
 
     public void clientMenuPrint() {
         System.out.println("1 - Create client");

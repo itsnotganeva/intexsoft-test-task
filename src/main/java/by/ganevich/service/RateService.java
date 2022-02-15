@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RateService {
 
-    private RateRepository rateRepository;
+    private final RateRepository rateRepository;
 
     public Double findRateByCurrency(int currency) {
         Rate rate = rateRepository.findRateByCurrency(currency);

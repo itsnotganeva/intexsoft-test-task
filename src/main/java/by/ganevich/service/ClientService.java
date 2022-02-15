@@ -14,8 +14,8 @@ import java.util.List;
 @Slf4j
 public class ClientService {
 
-    private ClientRepository clientRepository;
-    private BankAccountRepository bankAccountRepository;
+    private final ClientRepository clientRepository;
+    private final BankAccountRepository bankAccountRepository;
 
     public void saveClient(Client client) {
         clientRepository.save(client);

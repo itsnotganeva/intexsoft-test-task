@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 public class BankService {
 
-    private BankRepository bankRepository;
+    private final BankRepository bankRepository;
 
     public void saveBank(Bank bank) {
         bankRepository.save(bank);

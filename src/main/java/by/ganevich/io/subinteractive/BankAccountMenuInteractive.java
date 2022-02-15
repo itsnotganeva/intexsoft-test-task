@@ -14,8 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class BankAccountMenuInteractive {
 
-    private BankAccountService bankAccountService;
-    private ClientService clientService;
+    private final BankAccountService bankAccountService;
+    private final ClientService clientService;
 
     public void bankAccountMenuPrint() {
         System.out.println("1 - Read bank accounts of client");

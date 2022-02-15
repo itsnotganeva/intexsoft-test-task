@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CommissionService {
 
-    private CommissionRepository commissionRepository;
+    private final CommissionRepository commissionRepository;
 
     public Double findCommissionByClientType(Integer clientType) {
         Commission commission = commissionRepository.findCommissionByClientType(clientType);
