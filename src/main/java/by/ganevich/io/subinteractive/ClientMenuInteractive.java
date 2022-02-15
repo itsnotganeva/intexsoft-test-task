@@ -26,8 +26,7 @@ public class ClientMenuInteractive {
         System.out.println("3 - Update client");
         System.out.println("4 - Delete client");
         System.out.println("5 - Add client to bank");
-        System.out.println("6 - Make a transaction");
-        System.out.println("7 - Back");
+        System.out.println("6 - Back");
     }
 
     public void createClient() {
@@ -66,18 +65,18 @@ public class ClientMenuInteractive {
 
         if (num.equals(1))
             client.setType(ClientType.INDIVIDUAL);
-         else if (num.equals(2))
+        else if (num.equals(2))
             client.setType(ClientType.INDUSTRIAL);
         else throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
 
         clientService.saveClient(client);
     }
 
-    public void deleteClient(){
+    public void deleteClient() {
         System.out.println("Enter the name of client you want to delete: ");
         Client client = clientService.findClientByName(InputManager.inputString());
 
-       clientService.removeClient(client);
+        clientService.removeClient(client);
 
         System.out.println("Removed!");
     }
@@ -91,47 +90,29 @@ public class ClientMenuInteractive {
 
         BankAccount newBankAccount = new BankAccount();
 
-        System.out.println("Enter the currency of bank account:");
-        newBankAccount.setCurrency(InputManager.inputString());
+        System.out.println("Enter the currency of bank account:" +
+                " \n1 - USD \n2 - EUR \n3 - BYN");
+        Integer num = InputManager.inputInt();
+        if (num.equals(1))
+            newBankAccount.setCurrency(Currency.USD);
+        else if (num.equals(2))
+            newBankAccount.setCurrency(Currency.EUR);
+        else if (num.equals(3))
+            newBankAccount.setCurrency(Currency.BYN);
+        else throw new RuntimeException("CHOOSE NUMBER FROM 1 TO 4 TO SET A CURRENCY!");
 
         System.out.println("Enter the amount of money in bank account:");
         newBankAccount.setAmountOfMoney(InputManager.inputDouble());
 
-        newBankAccount.setBankProducer(bank);
         newBankAccount.setAccountOwner(client);
-
-        clientService.addClientToBank(client, bank);
+        newBankAccount.setBankProducer(bank);
 
         clientService.saveClient(client);
+        bankService.saveBank(bank);
 
         bankAccountService.saveBankAccount(newBankAccount);
 
         System.out.println("Bank account was created!");
-   }
+    }
 
-   public void sendMoneyToClient() {
-
-        System.out.println("Enter the name of the client from whose account the money will be sent: ");
-        Client sender = clientService.findClientByName(InputManager.inputString());
-
-        System.out.println("Enter the name of the bank of account from whose the money will be sent: ");
-        Bank bankOfSender = bankService.findBankByName(InputManager.inputString());
-
-        BankAccount bankAccount1 = bankAccountService.getAccountByClientAndBank(bankOfSender.getId(), sender.getId());
-
-        System.out.println("Enter the name of the client to whose account the money will be sent: ");
-        Client recipient = clientService.findClientByName(InputManager.inputString());
-
-        System.out.println("Enter the name of the bank of account to whose the money will be sent: ");
-        Bank bankOfRecipient = bankService.findBankByName(InputManager.inputString());
-
-        BankAccount bankAccount2 = bankAccountService.getAccountByClientAndBank(bankOfRecipient.getId(), recipient.getId());
-
-        System.out.println("Enter the sum of money that will be sent: ");
-        Double sum = Double.parseDouble(InputManager.inputString());
-
-        transactionService.saveTransaction(sum, sender, recipient);
-
-        clientService.sendMoney(bankAccount1, bankAccount2, sum);
-   }
 }

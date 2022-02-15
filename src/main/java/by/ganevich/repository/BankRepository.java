@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
 
-//    @Query(value = "select * from banks where name=?", nativeQuery = true)
     Bank findByName(String name);
 
 }

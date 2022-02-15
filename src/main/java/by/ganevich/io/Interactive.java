@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 public class Interactive {
 
@@ -56,7 +55,7 @@ public class Interactive {
                 break;
             default:
                 System.out.println("Wrong input!");
-            }
+        }
 
     }
 
@@ -114,9 +113,6 @@ public class Interactive {
                     clientMenuInteractive.addClientToBank();
                     break;
                 case 6:
-                    clientMenuInteractive.sendMoneyToClient();
-                    break;
-                case 7:
                     isClientMenuShow = false;
                     break;
                 default:
@@ -155,9 +151,12 @@ public class Interactive {
 
             switch (InputManager.inputInt()) {
                 case 1:
-                    transactionMenuInteractive.showTransactions();
+                    transactionMenuInteractive.sendMoneyToClient();
                     break;
                 case 2:
+                    transactionMenuInteractive.showTransactions();
+                    break;
+                case 3:
                     isTransactionMenuShow = false;
                     break;
                 default:

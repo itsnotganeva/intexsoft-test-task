@@ -25,7 +25,7 @@ import java.util.Properties;
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
-    @Value("${username}")
+    @Value("${postgres.username}")
     private String username;
 
     @Value("${password}")
@@ -34,17 +34,22 @@ public class DatabaseConfig {
     @Value("${url}")
     private String url;
 
+    @Value("${driver}")
+    private String driver;
+
+    @Value("${dialect}")
+    private String dialect;
+
     @Value("${packagesToScan}")
     private String packagesToScan;
 
     @Bean
-    public DataSource dataSource()  {
-//        return new DriverManagerDataSource(url, username, password);
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("600099");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/bank-system");
-        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
+        dataSource.setDriverClassName(dialect);
         return dataSource;
     }
 

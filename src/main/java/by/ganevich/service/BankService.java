@@ -1,11 +1,9 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.Client;
 import by.ganevich.repository.BankRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,13 +34,5 @@ public class BankService {
     public void removeBank(Bank bank) {
         bankRepository.delete(bank);
     }
-
-    public void addClientToBank(Client client, Bank bank) {
-
-        bank.getClients().add(client);
-        client.getBanks().add(bank);
-
-    }
-
 
 }

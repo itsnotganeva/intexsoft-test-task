@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ public class BankAccount {
     private Long id;
 
     @Column(name = "currency")
-    private String currency;
+    private Currency currency;
 
     @Column(name = "ammountOfMoney")
     private Double amountOfMoney;
@@ -28,14 +29,24 @@ public class BankAccount {
     @JoinColumn(name = "bankId")
     private Bank bankProducer;
 
-//    @Override
-//    public String toString() {
-//        return "BankAccount{" +
-//                "id=" + id +
-//                ", currency='" + currency + '\'' +
-//                ", amountOfMoney=" + amountOfMoney +
-//                ", accountOwner=" + accountOwner +
-//                ", bankProducer=" + bankProducer +
-//                '}';
-//    }
+    @OneToMany(cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER,
+            mappedBy = "senderAccount")
+    private Set<Transaction> sentTransactions;
+
+    @OneToMany(cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER,
+            mappedBy = "receiverAccount")
+    private Set<Transaction> receivedTransactions;
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id=" + id +
+                ", currency='" + currency + '\'' +
+                ", amountOfMoney=" + amountOfMoney +
+                ", accountOwner=" + accountOwner +
+                ", bankProducer=" + bankProducer +
+                '}';
+    }
 }

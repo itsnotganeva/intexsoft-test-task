@@ -1,6 +1,6 @@
 package by.ganevich.exception;
 
-public class EntitySaveException extends RuntimeException{
+public class EntitySaveException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -9,7 +9,7 @@ public class EntitySaveException extends RuntimeException{
     }
 
     public EntitySaveException(String message, Throwable cause, boolean enableSuppression,
-                                   boolean writableStackTrace) {
+                               boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

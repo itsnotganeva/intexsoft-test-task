@@ -18,13 +18,18 @@ public class Transaction {
 
     @ManyToOne(cascade = CascadeType.DETACH,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "senderId")
+    @JoinColumn(name = "senderAccountId")
+    private BankAccount senderAccount;
+
+    @ManyToOne(cascade = CascadeType.DETACH,
+            fetch = FetchType.EAGER)
+    @JoinColumn(name = "sender")
     private Client sender;
 
     @ManyToOne(cascade = CascadeType.DETACH,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipientId")
-    private Client receiver;
+    @JoinColumn(name = "recipientAccountId")
+    private BankAccount receiverAccount;
 
     @Column(name = "amountofmoney")
     private Double amountOfMoney;
@@ -32,14 +37,15 @@ public class Transaction {
     @Column(name = "date")
     private Date date;
 
-//    @Override
-//    public String toString() {
-//        return "Transaction{" +
-//                "id=" + id +
-//                ", sender=" + sender +
-//                ", receiver=" + receiver +
-//                ", amountOfMoney=" + amountOfMoney +
-//                ", date=" + date +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", senderAccount=" + senderAccount +
+                ", sender=" + sender +
+                ", receiverAccount=" + receiverAccount +
+                ", amountOfMoney=" + amountOfMoney +
+                ", date=" + date +
+                '}';
+    }
 }

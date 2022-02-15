@@ -11,5 +11,5 @@ import java.util.Set;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    Set<Transaction> findAllByDateBetweenAndAndSender(Date dateBefore, Date dateAfter, Client client);
+    Set<Transaction> findAllByDateBetweenAndSender(Date dateBefore, Date dateAfter, Client client);
 }

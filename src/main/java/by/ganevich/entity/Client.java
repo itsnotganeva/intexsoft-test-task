@@ -26,26 +26,10 @@ public class Client {
             fetch = FetchType.EAGER)
     private Set<BankAccount> bankAccounts;
 
-    @ManyToMany(cascade = CascadeType.DETACH,
-            fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "clients_banks",
-            joinColumns = @JoinColumn(name = "clientId"),
-            inverseJoinColumns = @JoinColumn(name = "bankId")
-    )
-    private Set<Bank> banks;
-
     @OneToMany(cascade = CascadeType.REMOVE,
-                fetch = FetchType.EAGER,
-    mappedBy = "sender")
-
+            fetch = FetchType.EAGER,
+            mappedBy = "sender")
     private Set<Transaction> sentTransactions;
-
-    @OneToMany(cascade = CascadeType.REMOVE,
-    fetch = FetchType.EAGER,
-    mappedBy = "receiver")
-
-    private Set<Transaction> receivedTransactions;
 
     @Override
     public String toString() {
@@ -53,10 +37,6 @@ public class Client {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", bankAccounts=" + bankAccounts +
-                ", banks=" + banks +
-                ", sentTransactions=" + sentTransactions +
-                ", receivedTransactions=" + receivedTransactions +
                 '}';
     }
 }

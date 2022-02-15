@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-//@Data
 @Getter
 @Setter
 @Table(name = "banks")
@@ -23,20 +23,9 @@ public class Bank {
     @Column(name = "commission")
     private Double commission;
 
-    @ManyToMany(cascade = CascadeType.DETACH,
-                fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "clients_banks",
-            joinColumns = @JoinColumn(name = "clientId"),
-            inverseJoinColumns = @JoinColumn(name = "bankId")
-    )
-
-    private Set<Client> clients;
-
     @OneToMany(mappedBy = "bankProducer",
             cascade = CascadeType.REMOVE,
             fetch = FetchType.EAGER)
-
     private Set<BankAccount> bankAccounts;
 
 
@@ -46,8 +35,19 @@ public class Bank {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", commission=" + commission +
-                ", clients=" + clients +
-                ", bankAccounts=" + bankAccounts +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bank bank = (Bank) o;
+        return Objects.equals(id, bank.id) && Objects.equals(name, bank.name) && Objects.equals(commission, bank.commission) && Objects.equals(bankAccounts, bank.bankAccounts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, commission, bankAccounts);
     }
 }

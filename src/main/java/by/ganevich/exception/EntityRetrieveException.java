@@ -1,6 +1,6 @@
 package by.ganevich.exception;
 
-public class EntityRetrieveException extends RuntimeException{
+public class EntityRetrieveException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
