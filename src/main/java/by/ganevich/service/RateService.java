@@ -5,10 +5,12 @@ import by.ganevich.repository.RateRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class RateService {
 
     private final RateRepository rateRepository;

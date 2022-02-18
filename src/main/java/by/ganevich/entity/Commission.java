@@ -15,9 +15,24 @@ public class Commission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "bankId")
+    private Bank bank;
+
     @Column(name = "clientType")
     private Integer clientType;
 
     @Column(name = "commission")
     private Double commission;
+
+    @Override
+    public String toString() {
+        return "Commission{" +
+                ", clientType=" + clientType +
+                ", commission=" + commission +
+                '}';
+    }
 }

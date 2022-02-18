@@ -21,15 +21,26 @@ public class Client {
     @Column(name = "type")
     private ClientType type;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
-            mappedBy = "accountOwner",
-            fetch = FetchType.EAGER)
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            mappedBy = "owner",
+            fetch = FetchType.LAZY
+    )
     private Set<BankAccount> bankAccounts;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER,
-            mappedBy = "sender")
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "sender"
+    )
     private Set<Transaction> sentTransactions;
+
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "receiver"
+    )
+    private Set<Transaction> receivedTransactions;
 
     @Override
     public String toString() {

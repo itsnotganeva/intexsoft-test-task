@@ -7,12 +7,14 @@ import by.ganevich.repository.BankAccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 @Component
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
@@ -22,11 +24,11 @@ public class BankAccountService {
     }
 
     public BankAccount getAccountByClientAndBank(Client client, Bank bank) {
-        return bankAccountRepository.findBankAccountByAccountOwnerAndBankProducer(client, bank);
+        return bankAccountRepository.findBankAccountByOwnerAndBankProducer(client, bank);
     }
 
     public Set<BankAccount> getAllAccountsOfClient(Client client) {
-        return bankAccountRepository.findBankAccountByAccountOwner(client);
+        return bankAccountRepository.findBankAccountByOwner(client);
     }
 
 }

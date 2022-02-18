@@ -11,7 +11,7 @@ import java.util.Set;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
 
-    BankAccount findBankAccountByAccountOwnerAndBankProducer(Client owner, Bank bankProducer);
+    BankAccount findBankAccountByOwnerAndBankProducer(Client owner, Bank bankProducer);
 
-    Set<BankAccount> findBankAccountByAccountOwner(Client owner);
+    Set<BankAccount> findBankAccountByOwner(Client owner);
 }

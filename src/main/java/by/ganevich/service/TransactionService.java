@@ -7,6 +7,7 @@ import by.ganevich.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -39,7 +41,8 @@ public class TransactionService {
                 Double sumWithCommission = sumOfMoney
                         + sumOfMoney
                         * commissionService
-                        .findCommissionByClientType(senderAccount.getAccountOwner().getType().ordinal());
+                        .findCommissionByClientTypeAndBank(senderAccount.getOwner().getType().ordinal(),
+                                senderAccount.getBankProducer());
 
                 senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
                 recipientAccount.setAmountOfMoney(recipientSum + convertSum);
@@ -47,17 +50,18 @@ public class TransactionService {
 
             bankAccountService.saveBankAccount(senderAccount);
             bankAccountService.saveBankAccount(recipientAccount);
+
+            Transaction transaction = new Transaction();
+            long millis = System.currentTimeMillis();
+            transaction.setDate(new Date(millis));
+            transaction.setAmountOfMoney(sumOfMoney);
+            transaction.setSenderAccount(senderAccount);
+            transaction.setReceiverAccount(recipientAccount);
+            transaction.setSender(senderAccount.getOwner());
+            transaction.setReceiver(recipientAccount.getOwner());
+            transactionRepository.save(transaction);
+
         }
-
-        Transaction transaction = new Transaction();
-        long millis = System.currentTimeMillis();
-        transaction.setDate(new Date(millis));
-        transaction.setAmountOfMoney(sumOfMoney);
-        transaction.setSenderAccount(senderAccount);
-        transaction.setReceiverAccount(recipientAccount);
-        transaction.setSender(senderAccount.getAccountOwner());
-        transactionRepository.save(transaction);
-
     }
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
@@ -67,4 +71,13 @@ public class TransactionService {
 
         return transactions;
     }
+
+    public Set<Transaction> readAllByDateAndReceiver(Date dateBefore, Date dateAfter, Client client) {
+
+        Set<Transaction> transactions =
+                transactionRepository.findAllByDateBetweenAndReceiver(dateBefore, dateAfter, client);
+
+        return transactions;
+    }
+
 }

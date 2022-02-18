@@ -2,24 +2,21 @@ package by.ganevich.io;
 
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.io.subinteractive.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class Interactive {
 
-    @Autowired
-    private BankMenuInteractive bankMenuInteractive;
+    private final BankMenuInteractive bankMenuInteractive;
 
-    @Autowired
-    private ClientMenuInteractive clientMenuInteractive;
+    private final ClientMenuInteractive clientMenuInteractive;
 
-    @Autowired
-    private BankAccountMenuInteractive bankAccountMenuInteractive;
+    private final BankAccountMenuInteractive bankAccountMenuInteractive;
 
-    @Autowired
-    private TransactionMenuInteractive transactionMenuInteractive;
+    private final TransactionMenuInteractive transactionMenuInteractive;
 
     private boolean isShow = true;
 

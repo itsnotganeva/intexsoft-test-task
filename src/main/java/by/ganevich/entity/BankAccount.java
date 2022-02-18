@@ -2,6 +2,8 @@ package by.ganevich.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,35 +20,43 @@ public class BankAccount {
     @Column(name = "currency")
     private Currency currency;
 
-    @Column(name = "ammountOfMoney")
+    @Column(name = "amountOfMoney")
     private Double amountOfMoney;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "clientId")
-    private Client accountOwner;
+    private Client owner;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "bankId")
     private Bank bankProducer;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER,
-            mappedBy = "senderAccount")
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "senderAccount"
+    )
     private Set<Transaction> sentTransactions;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER,
-            mappedBy = "receiverAccount")
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "receiverAccount"
+    )
     private Set<Transaction> receivedTransactions;
 
     @Override
     public String toString() {
         return "BankAccount{" +
-                "id=" + id +
-                ", currency='" + currency + '\'' +
-                ", amountOfMoney=" + amountOfMoney +
-                ", accountOwner=" + accountOwner +
-                ", bankProducer=" + bankProducer +
+                ", currency='" + currency  +
                 '}';
     }
 }

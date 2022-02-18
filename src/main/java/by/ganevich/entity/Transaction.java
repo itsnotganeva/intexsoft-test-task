@@ -2,6 +2,8 @@ package by.ganevich.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -16,22 +18,37 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.DETACH,
-            fetch = FetchType.EAGER)
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "senderId")
+    private Client sender;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "receiverId")
+    private Client receiver;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "senderAccountId")
     private BankAccount senderAccount;
 
-    @ManyToOne(cascade = CascadeType.DETACH,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "sender")
-    private Client sender;
-
-    @ManyToOne(cascade = CascadeType.DETACH,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipientAccountId")
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "receiverAccountId")
     private BankAccount receiverAccount;
 
-    @Column(name = "amountofmoney")
+    @Column(name = "amountOfMoney")
     private Double amountOfMoney;
 
     @Column(name = "date")
@@ -40,7 +57,6 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "id=" + id +
                 ", senderAccount=" + senderAccount +
                 ", sender=" + sender +
                 ", receiverAccount=" + receiverAccount +

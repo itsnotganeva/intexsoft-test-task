@@ -56,7 +56,12 @@ public class TransactionMenuInteractive {
     }
 
 
-    public Set<Transaction> showTransactions() {
+    public void showTransactions() {
+
+        System.out.println("Choose which transactions you want to see: \n1 - Sent transactions " +
+                "\n2 - Received transactions");
+        Integer choice = InputManager.inputInt();
+
         System.out.println("Enter the name of the client whose transactions you want to view:");
         Client client = clientService.findClientByName(InputManager.inputString());
 
@@ -70,11 +75,21 @@ public class TransactionMenuInteractive {
 
         Date dateAfter = Date.valueOf(dateAfterStr);
 
-        Set<Transaction> transactions =
-                transactionService.readAllByDateAndSender(dateBefore, dateAfter, client);
-
-        System.out.println(transactions.toString());
-        return transactions;
+        switch (choice) {
+            case 1:
+                Set<Transaction> sentTransactions =
+                        transactionService.readAllByDateAndSender(dateBefore, dateAfter, client);
+                System.out.println(sentTransactions.toString());
+                break;
+            case 2:
+                Set<Transaction> receivedTransactions =
+                        transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
+                System.out.println(receivedTransactions.toString());
+                break;
+            default:
+                System.out.println("Enter the number from 1 to 2 to choice!");
+                break;
+        }
 
     }
 

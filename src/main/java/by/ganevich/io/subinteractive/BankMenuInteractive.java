@@ -1,8 +1,11 @@
 package by.ganevich.io.subinteractive;
 
 import by.ganevich.entity.Bank;
+import by.ganevich.entity.ClientType;
+import by.ganevich.entity.Commission;
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankService;
+import by.ganevich.service.CommissionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +16,7 @@ import java.util.List;
 public class BankMenuInteractive {
 
     private final BankService bankService;
+    private final CommissionService commissionService;
 
     public void bankMenuPrint() {
         System.out.println("1 - Create bank");
@@ -28,10 +32,24 @@ public class BankMenuInteractive {
         System.out.println("Enter the name of bank: ");
         bank.setName(InputManager.inputString());
 
-        System.out.println("Enter the commission of bank (%): ");
-        bank.setCommission(InputManager.inputDouble());
-
         bankService.saveBank(bank);
+
+
+        System.out.println("Enter the commission of bank for individual client: ");
+
+        Commission individualCommission = new Commission();
+        individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
+        individualCommission.setCommission(InputManager.inputDouble());
+        individualCommission.setBank(bank);
+        commissionService.saveCommission(individualCommission);
+
+        System.out.println("Enter the commission of bank for industrial client: ");
+
+        Commission industrialCommission = new Commission();
+        industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
+        industrialCommission.setCommission(InputManager.inputDouble());
+        industrialCommission.setBank(bank);
+        commissionService.saveCommission(industrialCommission);
 
     }
 
@@ -47,9 +65,23 @@ public class BankMenuInteractive {
         System.out.println("Enter the new name of bank: ");
         bank.setName(InputManager.inputString());
 
-        System.out.println("Enter the new commission of bank (%): ");
-        bank.setCommission(InputManager.inputDouble());
         bankService.saveBank(bank);
+
+        System.out.println("Enter the new commission of bank for individual client: ");
+
+        Commission individualCommission = commissionService.findByBankAndClientType(bank, ClientType.INDIVIDUAL);
+        individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
+        individualCommission.setCommission(InputManager.inputDouble());
+        individualCommission.setBank(bank);
+        commissionService.saveCommission(individualCommission);
+
+        System.out.println("Enter the new commission of bank for industrial client: ");
+
+        Commission industrialCommission = commissionService.findByBankAndClientType(bank, ClientType.INDUSTRIAL);
+        industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
+        industrialCommission.setCommission(InputManager.inputDouble());
+        industrialCommission.setBank(bank);
+        commissionService.saveCommission(industrialCommission);
 
     }
 

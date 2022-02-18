@@ -5,7 +5,6 @@ import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
-import by.ganevich.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ public class ClientMenuInteractive {
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
-    private final TransactionService transactionService;
 
     public void clientMenuPrint() {
         System.out.println("1 - Create client");
@@ -104,7 +102,7 @@ public class ClientMenuInteractive {
         System.out.println("Enter the amount of money in bank account:");
         newBankAccount.setAmountOfMoney(InputManager.inputDouble());
 
-        newBankAccount.setAccountOwner(client);
+        newBankAccount.setOwner(client);
         newBankAccount.setBankProducer(bank);
 
         clientService.saveClient(client);
