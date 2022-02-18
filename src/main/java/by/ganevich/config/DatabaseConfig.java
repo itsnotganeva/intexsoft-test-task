@@ -1,5 +1,6 @@
 package by.ganevich.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
@@ -43,6 +44,12 @@ public class DatabaseConfig {
     @Value("${packagesToScan}")
     private String packagesToScan;
 
+    @Value("${spring.jpa.show-sql}")
+    private String showSql;
+
+    @Value("${spring.liquibase.change-log}")
+    private String changeLogFile;
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -51,6 +58,16 @@ public class DatabaseConfig {
         dataSource.setUrl(url);
         dataSource.setDriverClassName(dialect);
         return dataSource;
+    }
+
+    @Bean
+    public SpringLiquibase liquibase(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
+
+        liquibase.setChangeLog(changeLogFile);
+        liquibase.setDataSource(dataSource);
+
+        return liquibase;
     }
 
     @Bean
@@ -79,8 +96,8 @@ public class DatabaseConfig {
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.put(Environment.SHOW_SQL, "true");
+        properties.setProperty("hibernate.dialect", dialect);
+        properties.put(Environment.SHOW_SQL, showSql);
         return properties;
     }
 
