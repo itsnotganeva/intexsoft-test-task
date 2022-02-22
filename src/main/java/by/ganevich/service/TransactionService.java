@@ -33,20 +33,20 @@ public class TransactionService {
                             * rateService.findRateByCurrency(senderAccount.getCurrency().ordinal())
                             / rateService.findRateByCurrency(recipientAccount.getCurrency().ordinal());
 
-            if (senderAccount.getBankProducer().equals(recipientAccount.getBankProducer())) {
+            Double sumWithCommission;
 
-                senderAccount.setAmountOfMoney(senderSum - sumOfMoney);
-                recipientAccount.setAmountOfMoney(recipientSum + convertSum);
+            if (senderAccount.getBankProducer().getName().equals(recipientAccount.getBankProducer().getName())) {
+                sumWithCommission = sumOfMoney;
             } else {
-                Double sumWithCommission = sumOfMoney
+                sumWithCommission = sumOfMoney
                         + sumOfMoney
                         * commissionService
                         .findCommissionByClientTypeAndBank(senderAccount.getOwner().getType().ordinal(),
                                 senderAccount.getBankProducer());
-
-                senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
-                recipientAccount.setAmountOfMoney(recipientSum + convertSum);
             }
+
+            senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
+            recipientAccount.setAmountOfMoney(recipientSum + convertSum);
 
             bankAccountService.saveBankAccount(senderAccount);
             bankAccountService.saveBankAccount(recipientAccount);

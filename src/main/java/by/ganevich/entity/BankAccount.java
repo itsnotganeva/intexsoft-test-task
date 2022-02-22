@@ -56,7 +56,9 @@ public class BankAccount {
     @Override
     public String toString() {
         return "BankAccount{" +
-                ", currency='" + currency  +
+                "currency=" + currency +
+                ", amountOfMoney=" + amountOfMoney +
+                ", bankProducer=" + bankProducer +
                 '}';
     }
 }

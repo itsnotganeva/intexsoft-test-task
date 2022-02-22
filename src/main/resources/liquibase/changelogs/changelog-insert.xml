@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd"
+        logicalFilePath="changelogs">
+
+    <changeSet id="changelog-insert_data_into_clients" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/01-insert-clients-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="changelog-insert_data_into_banks" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/02-insert-banks-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="changelog-insert_data_into_bankAccounts" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/03-insert-BankAccounts-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="changelog-insert_data_into_commissions" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/05-insert-commissionForClients-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="changelog-insert_data_into_exchangeRates" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/06-insert-exchangeRates-table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>

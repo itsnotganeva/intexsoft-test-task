@@ -6,7 +6,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,6 +26,7 @@ public class Bank {
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY
     )
+    @Fetch(FetchMode.JOIN)
     private Set<BankAccount> bankAccounts;
 
     @OneToMany(
@@ -46,16 +46,4 @@ public class Bank {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bank bank = (Bank) o;
-        return Objects.equals(id, bank.id) && Objects.equals(name, bank.name) && Objects.equals(bankAccounts, bank.bankAccounts) && Objects.equals(commissions, bank.commissions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, bankAccounts, commissions);
-    }
 }

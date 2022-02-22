@@ -1,5 +1,5 @@
 CREATE TABLE banks
 (
-    id bigserial PRIMARY KEY,
+    id   bigserial PRIMARY KEY,
     name varchar(255) not null UNIQUE
 )
