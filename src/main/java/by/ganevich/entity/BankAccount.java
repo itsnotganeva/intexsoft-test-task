@@ -2,8 +2,6 @@ package by.ganevich.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +10,24 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "bankAccounts")
+@NamedEntityGraph(
+        name = "bankAccounts-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("owner"),
+                @NamedAttributeNode(value = "bankProducer", subgraph = "banks-sub-graph"),
+                @NamedAttributeNode("sentTransactions"),
+                @NamedAttributeNode("receivedTransactions")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "banks-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("commissions")
+                        }
+                )
+        }
+
+)
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +43,6 @@ public class BankAccount {
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "clientId")
     private Client owner;
 
@@ -35,7 +50,6 @@ public class BankAccount {
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "bankId")
     private Bank bankProducer;
 

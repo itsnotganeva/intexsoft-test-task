@@ -56,7 +56,7 @@ public class DatabaseConfig {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         dataSource.setUrl(url);
-        dataSource.setDriverClassName(dialect);
+        dataSource.setDriverClassName(driver);
         return dataSource;
     }
 

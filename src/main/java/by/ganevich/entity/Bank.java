@@ -2,8 +2,6 @@ package by.ganevich.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +10,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "banks")
+@NamedEntityGraph(
+        name = "banks-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("commissions")
+        }
+)
 public class Bank {
 
     @Id
@@ -26,7 +30,6 @@ public class Bank {
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     private Set<BankAccount> bankAccounts;
 
     @OneToMany(
@@ -34,7 +37,6 @@ public class Bank {
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     private Set<Commission> commissions;
 
     @Override

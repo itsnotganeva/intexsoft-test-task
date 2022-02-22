@@ -10,6 +10,20 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "clients")
+@NamedEntityGraph(
+        name = "clients-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "bankAccounts", subgraph = "bankAccounts-sub-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "banks-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("bankProducer"),
+                        }
+                )
+        }
+)
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

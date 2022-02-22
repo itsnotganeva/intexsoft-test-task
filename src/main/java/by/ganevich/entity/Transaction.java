@@ -2,8 +2,6 @@ package by.ganevich.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -12,6 +10,13 @@ import java.sql.Date;
 @Getter
 @Setter
 @Table(name = "transactions")
+@NamedEntityGraph(
+        name = "transactions-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("sender"),
+                @NamedAttributeNode("receiver")
+        }
+)
 public class Transaction {
 
     @Id
@@ -36,7 +41,6 @@ public class Transaction {
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "senderAccountId")
     private BankAccount senderAccount;
 
@@ -44,7 +48,6 @@ public class Transaction {
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "receiverAccountId")
     private BankAccount receiverAccount;
 
@@ -57,9 +60,9 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                ", senderAccount=" + senderAccount +
+                "id=" + id +
                 ", sender=" + sender +
-                ", receiverAccount=" + receiverAccount +
+                ", receiver=" + receiver +
                 ", amountOfMoney=" + amountOfMoney +
                 ", date=" + date +
                 '}';
