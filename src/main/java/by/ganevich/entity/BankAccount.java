@@ -69,10 +69,10 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
-                "currency=" + currency +
-                ", amountOfMoney=" + amountOfMoney +
-                ", bankProducer=" + bankProducer +
-                '}';
+        return "BankAccount{"
+                + "currency=" + currency
+                + ", amountOfMoney=" + amountOfMoney
+                + ", bankProducer=" + bankProducer
+                + '}';
     }
 }

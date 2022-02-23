@@ -41,11 +41,11 @@ public class Bank {
 
     @Override
     public String toString() {
-        return "Bank{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", commissions=" + commissions +
-                '}';
+        return "Bank{"
+                + "id=" + id
+                + ", name='" + name
+                + '\'' + ", commissions=" + commissions
+                + '}';
     }
 
 }

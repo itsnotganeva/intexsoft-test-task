@@ -59,12 +59,12 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", sender=" + sender +
-                ", receiver=" + receiver +
-                ", amountOfMoney=" + amountOfMoney +
-                ", date=" + date +
-                '}';
+        return "Transaction{"
+                + "id=" + id
+                + ", sender=" + sender
+                + ", receiver=" + receiver
+                + ", amountOfMoney=" + amountOfMoney
+                + ", date=" + date
+                + '}';
     }
 }

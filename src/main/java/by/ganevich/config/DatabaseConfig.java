@@ -73,7 +73,8 @@ public class DatabaseConfig {
     @Bean
     public PlatformTransactionManager transactionManager() throws Exception {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource()).getObject());
+        transactionManager
+                .setEntityManagerFactory(entityManagerFactory(dataSource()).getObject());
 
         return transactionManager;
     }
@@ -83,7 +84,8 @@ public class DatabaseConfig {
         final LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean =
                 new LocalContainerEntityManagerFactoryBean();
         localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
-        localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        localContainerEntityManagerFactoryBean
+                .setPersistenceProviderClass(HibernatePersistenceProvider.class);
         localContainerEntityManagerFactoryBean.setDataSource(dataSource);
         localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
         return localContainerEntityManagerFactoryBean;
