@@ -2,16 +2,25 @@ package by.ganevich.io;
 
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.io.subinteractive.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+
+@Component
+@RequiredArgsConstructor
 public class Interactive {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Interactive.class);
+    private final BankMenuInteractive bankMenuInteractive;
 
-    private static boolean isShow = true;
+    private final ClientMenuInteractive clientMenuInteractive;
 
-    public static void InvokeInteractiveMenu() {
+    private final BankAccountMenuInteractive bankAccountMenuInteractive;
+
+    private final TransactionMenuInteractive transactionMenuInteractive;
+
+    private boolean isShow = true;
+
+    public void InvokeInteractiveMenu() {
         while (isShow) {
             try {
                 mainMenuChoice();
@@ -21,7 +30,7 @@ public class Interactive {
         }
     }
 
-    public static void mainMenuChoice() {
+    public void mainMenuChoice() {
 
         MainMenuInteractive.mainMenuPrint();
 
@@ -43,29 +52,29 @@ public class Interactive {
                 break;
             default:
                 System.out.println("Wrong input!");
-            }
+        }
 
     }
 
-    public static void bankMenuChoice() {
+    public void bankMenuChoice() {
         boolean isBankMenuShow = true;
 
         while (isBankMenuShow) {
 
-            BankMenuInteractive.bankMenuPrint();
+            bankMenuInteractive.bankMenuPrint();
 
             switch (InputManager.inputInt()) {
                 case 1:
-                    BankMenuInteractive.createBank();
+                    bankMenuInteractive.createBank();
                     break;
                 case 2:
-                    BankMenuInteractive.readBank();
+                    bankMenuInteractive.readBank();
                     break;
                 case 3:
-                    BankMenuInteractive.updateBank();
+                    bankMenuInteractive.updateBank();
                     break;
                 case 4:
-                    BankMenuInteractive.deleteBank();
+                    bankMenuInteractive.deleteBank();
                     break;
                 case 5:
                     isBankMenuShow = false;
@@ -77,28 +86,28 @@ public class Interactive {
         }
     }
 
-    public static void clientMenuChoice() {
+    public void clientMenuChoice() {
         boolean isClientMenuShow = true;
 
         while (isClientMenuShow) {
 
-            ClientMenuInteractive.clientMenuPrint();
+            clientMenuInteractive.clientMenuPrint();
 
             switch (InputManager.inputInt()) {
                 case 1:
-                    ClientMenuInteractive.createClient();
+                    clientMenuInteractive.createClient();
                     break;
                 case 2:
-                    ClientMenuInteractive.readClients();
+                    clientMenuInteractive.readClients();
                     break;
                 case 3:
-                    ClientMenuInteractive.updateClient();
+                    clientMenuInteractive.updateClient();
                     break;
                 case 4:
-                    ClientMenuInteractive.deleteClient();
+                    clientMenuInteractive.deleteClient();
                     break;
                 case 5:
-                    ClientMenuInteractive.addClientToBank();
+                    clientMenuInteractive.addClientToBank();
                     break;
                 case 6:
                     isClientMenuShow = false;
@@ -110,16 +119,16 @@ public class Interactive {
         }
     }
 
-    public static void bankAccountMenuChoice() {
+    public void bankAccountMenuChoice() {
         boolean isBankAccountMenuShow = true;
 
         while (isBankAccountMenuShow) {
 
-            BankAccountMenuInteractive.bankAccountMenuPrint();
+            bankAccountMenuInteractive.bankAccountMenuPrint();
 
             switch (InputManager.inputInt()) {
                 case 1:
-                    BankAccountMenuInteractive.readBankAccounts();
+                    bankAccountMenuInteractive.readBankAccounts();
                     break;
                 case 2:
                     isBankAccountMenuShow = false;
@@ -130,18 +139,21 @@ public class Interactive {
         }
     }
 
-    public static void transactionMenuChoice() {
+    public void transactionMenuChoice() {
         boolean isTransactionMenuShow = true;
 
         while (isTransactionMenuShow) {
 
-            TransactionMenuInteractive.transactionMenuPrint();
+            transactionMenuInteractive.transactionMenuPrint();
 
             switch (InputManager.inputInt()) {
                 case 1:
-                    TransactionMenuInteractive.makeTransaction();
+                    transactionMenuInteractive.sendMoneyToClient();
                     break;
                 case 2:
+                    transactionMenuInteractive.showTransactions();
+                    break;
+                case 3:
                     isTransactionMenuShow = false;
                     break;
                 default:

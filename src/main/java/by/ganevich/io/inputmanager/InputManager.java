@@ -13,7 +13,7 @@ public class InputManager {
     public static Integer inputInt() {
         Integer retVal;
 
-        try{
+        try {
             retVal = Integer.parseInt(inputString());
 
             return retVal;
@@ -26,7 +26,7 @@ public class InputManager {
     public static Double inputDouble() {
         Double retVal;
 
-        try{
+        try {
             retVal = Double.parseDouble(inputString());
 
             return retVal;

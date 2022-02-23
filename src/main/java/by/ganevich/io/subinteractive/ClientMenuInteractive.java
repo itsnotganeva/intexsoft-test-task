@@ -1,20 +1,24 @@
 package by.ganevich.io.subinteractive;
 
-import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
-import by.ganevich.entity.Client;
-import by.ganevich.entity.ClientType;
+import by.ganevich.entity.*;
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
+@Component
+@AllArgsConstructor
 public class ClientMenuInteractive {
 
-    public static void clientMenuPrint() {
+    private final ClientService clientService;
+    private final BankService bankService;
+    private final BankAccountService bankAccountService;
+
+    public void clientMenuPrint() {
         System.out.println("1 - Create client");
         System.out.println("2 - Read clients");
         System.out.println("3 - Update client");
@@ -23,13 +27,13 @@ public class ClientMenuInteractive {
         System.out.println("6 - Back");
     }
 
-    public static void createClient() {
+    public void createClient() {
         Client client = new Client();
 
         System.out.println("Enter the name of client: ");
         client.setName(InputManager.inputString());
 
-        System.out.println("Enter the type of client:\n1 - Individual\n 2 - Industrial");
+        System.out.println("Enter the type of client:\n1 - Individual \n2 - Industrial");
         Integer num = InputManager.inputInt();
 
         if (num.equals(1)) {
@@ -38,18 +42,18 @@ public class ClientMenuInteractive {
             client.setType(ClientType.INDUSTRIAL);
         } else throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
 
-        ClientService.getInstance().create(client);
+        clientService.saveClient(client);
     }
 
-    public static void readClients() {
-        List<Client> clients = ClientService.getInstance().read();
+    public void readClients() {
+        List<Client> clients = clientService.readClients();
         System.out.println(clients.toString());
     }
 
-    public static void updateClient() {
+    public void updateClient() {
 
         System.out.println("Enter the name of client you want to update: ");
-        Client client = ClientService.getInstance().findByName(InputManager.inputString());
+        Client client = clientService.findClientByName(InputManager.inputString());
 
         System.out.println("Enter the new name of client: ");
         client.setName(InputManager.inputString());
@@ -59,49 +63,54 @@ public class ClientMenuInteractive {
 
         if (num.equals(1))
             client.setType(ClientType.INDIVIDUAL);
-         else if (num.equals(2))
+        else if (num.equals(2))
             client.setType(ClientType.INDUSTRIAL);
         else throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
 
-        ClientService.getInstance().update(client);
+        clientService.saveClient(client);
     }
 
-    public static void deleteClient(){
+    public void deleteClient() {
         System.out.println("Enter the name of client you want to delete: ");
-        Client client = ClientService.getInstance().findByName(InputManager.inputString());
+        Client client = clientService.findClientByName(InputManager.inputString());
 
-        ClientService.getInstance().remove(client.getId());
+        clientService.removeClient(client);
+
         System.out.println("Removed!");
     }
 
-    public static void addClientToBank() {
-        System.out.println("Enter the name of client for whom you want to create a bank account: ");
-        Client client = ClientService.getInstance().findByName(InputManager.inputString());
+    public void addClientToBank() {
+        System.out.println("Enter the name of the client you want to add to the bank: ");
+        Client client = clientService.findClientByName(InputManager.inputString());
 
         System.out.println("Enter the name of bank in which you want to add client: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+        Bank bank = bankService.findBankByName(InputManager.inputString());
 
-        BankAccount bankAccount = BankAccountService.getInstance().getByClientAndBank(client.getId(), bank.getId());
+        BankAccount newBankAccount = new BankAccount();
 
-        if (Objects.isNull(bankAccount.getBankId())) {
-            BankAccount newBankAccount = new BankAccount();
+        System.out.println("Enter the currency of bank account:" +
+                " \n1 - USD \n2 - EUR \n3 - BYN");
+        Integer num = InputManager.inputInt();
+        if (num.equals(1))
+            newBankAccount.setCurrency(Currency.USD);
+        else if (num.equals(2))
+            newBankAccount.setCurrency(Currency.EUR);
+        else if (num.equals(3))
+            newBankAccount.setCurrency(Currency.BYN);
+        else throw new RuntimeException("CHOOSE NUMBER FROM 1 TO 4 TO SET A CURRENCY!");
 
-            System.out.println("Enter the currency of bank account:");
-            newBankAccount.setCurrency(InputManager.inputString());
+        System.out.println("Enter the amount of money in bank account:");
+        newBankAccount.setAmountOfMoney(InputManager.inputDouble());
 
-            System.out.println("Enter the amount of money in account:");
-            newBankAccount.setAmountOfMoney(InputManager.inputDouble());
+        newBankAccount.setOwner(client);
+        newBankAccount.setBankProducer(bank);
 
-            newBankAccount.setBankId(bank.getId());
-            newBankAccount.setClientId(client.getId());
+        clientService.saveClient(client);
+        bankService.saveBank(bank);
 
-            BankAccountService.getInstance().create(newBankAccount);
+        bankAccountService.saveBankAccount(newBankAccount);
 
-            ClientService.getInstance().addToBank(client, newBankAccount);
-
-            System.out.println("Bank account was created!");
-        }
-        else throw new RuntimeException("Client already has an account of this bank!");
+        System.out.println("Bank account was created!");
     }
 
 }

@@ -1,60 +1,78 @@
 package by.ganevich.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "bankAccounts")
+@NamedEntityGraph(
+        name = "bankAccounts-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("owner"),
+                @NamedAttributeNode(value = "bankProducer", subgraph = "banks-sub-graph"),
+                @NamedAttributeNode("sentTransactions"),
+                @NamedAttributeNode("receivedTransactions")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "banks-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("commissions")
+                        }
+                )
+        }
+
+)
 public class BankAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String currency;
-    private double amountOfMoney;
-    private Long clientId;
-    private Long bankId;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "currency")
+    private Currency currency;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @Column(name = "amountOfMoney")
+    private Double amountOfMoney;
 
-    public String getCurrency() {
-        return currency;
-    }
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "clientId")
+    private Client owner;
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "bankId")
+    private Bank bankProducer;
 
-    public double getAmountOfMoney() {
-        return amountOfMoney;
-    }
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "senderAccount"
+    )
+    private Set<Transaction> sentTransactions;
 
-    public void setAmountOfMoney(double amountOfMoney) {
-        this.amountOfMoney = amountOfMoney;
-    }
-
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public Long getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(Long bankId) {
-        this.bankId = bankId;
-    }
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "receiverAccount"
+    )
+    private Set<Transaction> receivedTransactions;
 
     @Override
     public String toString() {
         return "BankAccount{" +
-                "id=" + id +
-                ", currency='" + currency + '\'' +
+                "currency=" + currency +
                 ", amountOfMoney=" + amountOfMoney +
-                ", clientId=" + clientId +
-                ", bankId=" + bankId +
+                ", bankProducer=" + bankProducer +
                 '}';
     }
 }

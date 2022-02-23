@@ -1,60 +1,68 @@
 package by.ganevich.entity;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.sql.Date;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "transactions")
+@NamedEntityGraph(
+        name = "transactions-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("sender"),
+                @NamedAttributeNode("receiver")
+        }
+)
 public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long senderId;
-    private Long recipientId;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "senderId")
+    private Client sender;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "receiverId")
+    private Client receiver;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "senderAccountId")
+    private BankAccount senderAccount;
+
+    @ManyToOne(
+            cascade = CascadeType.DETACH,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "receiverAccountId")
+    private BankAccount receiverAccount;
+
+    @Column(name = "amountOfMoney")
     private Double amountOfMoney;
+
+    @Column(name = "date")
     private Date date;
-
-    public Long getSenderId() {
-        return senderId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
-
-    public Long getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
-    }
-
-    public Double getAmountOfMoney() {
-        return amountOfMoney;
-    }
-
-    public void setAmountOfMoney(Double amountOfMoney) {
-        this.amountOfMoney = amountOfMoney;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     @Override
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", senderId=" + senderId +
-                ", recipientId=" + recipientId +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
                 ", amountOfMoney=" + amountOfMoney +
                 ", date=" + date +
                 '}';

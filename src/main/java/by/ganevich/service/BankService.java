@@ -1,51 +1,40 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.repo.BankRepo;
+import by.ganevich.repository.BankRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@AllArgsConstructor
+@Slf4j
+@Transactional
 public class BankService {
 
-    public static BankService instance;
+    private final BankRepository bankRepository;
 
-    public static BankService getInstance() {
-        if (instance == null) {
-            BankService.instance = new BankService();
-        }
-        return instance;
+    public void saveBank(Bank bank) {
+        bankRepository.save(bank);
+
+        log.info("Bank " + bank.getId() + " successfully created.");
     }
 
-    private List<Bank> banks = new ArrayList<>();
-
-    private final BankRepo bankRepo = BankRepo.getInstance();
-
-    public void create(Bank bank) {
-        bankRepo.save(bank);
+    public List<Bank> readBanks() {
+        List<Bank> banks = bankRepository.findAll();
+        return banks;
     }
 
-    public Bank readById(Long id) {
-       return bankRepo.getById(id);
+    public Bank findBankByName(String name) {
+        Bank bank = bankRepository.findByName(name);
+        return bank;
     }
 
-    public void remove(Long id) {
-        bankRepo.deleteById(id);
+    public void removeBank(Bank bank) {
+        bankRepository.delete(bank);
     }
 
-    public void update(Bank bank) {
-        bankRepo.save(bank);
-    }
-
-    public List<Bank> read() {
-        return bankRepo.findAll();
-    }
-
-    public Bank findByName(String name) {
-        banks = read();
-        return banks.stream()
-                .filter(b -> b.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No bank with given name"));
-    }
 }

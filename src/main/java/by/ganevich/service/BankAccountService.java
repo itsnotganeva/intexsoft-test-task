@@ -1,33 +1,34 @@
 package by.ganevich.service;
 
+import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
-import by.ganevich.repo.BankAccountRepo;
+import by.ganevich.entity.Client;
+import by.ganevich.repository.BankAccountRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
+@Component
+@AllArgsConstructor
+@Slf4j
+@Transactional
 public class BankAccountService {
 
-    public static BankAccountService instance;
+    private final BankAccountRepository bankAccountRepository;
 
-    public static BankAccountService getInstance() {
-        if (instance == null) {
-            BankAccountService.instance = new BankAccountService();
-        }
-        return instance;
+    public void saveBankAccount(BankAccount bankAccount) {
+        bankAccountRepository.save(bankAccount);
     }
 
-    private final BankAccountRepo bankAccountRepo = BankAccountRepo.getInstance();
-
-    public void create (BankAccount bankAccount) {
-        bankAccountRepo.save(bankAccount);
+    public BankAccount getAccountByClientAndBank(Client client, Bank bank) {
+        return bankAccountRepository.findBankAccountByOwnerAndBankProducer(client, bank);
     }
 
-    public BankAccount getByClientAndBank(Long clientId, Long bankId) {
-        return bankAccountRepo.getByClientAndBank(clientId, bankId);
-    }
-
-    public List<BankAccount> getAllOfClient(Long clientId) {
-        return bankAccountRepo.getByClientId(clientId);
+    public Set<BankAccount> getAllAccountsOfClient(Client client) {
+        return bankAccountRepository.findBankAccountByOwner(client);
     }
 
 }

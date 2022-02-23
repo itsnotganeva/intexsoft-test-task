@@ -1,59 +1,51 @@
 package by.ganevich.entity;
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "banks")
+@NamedEntityGraph(
+        name = "banks-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("commissions")
+        }
+)
 public class Bank {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
-    private Double commission;
 
-    public Long getId() {
-        return id;
-    }
+    @OneToMany(
+            mappedBy = "bankProducer",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY
+    )
+    private Set<BankAccount> bankAccounts;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public double getCommission() {
-        return commission;
-    }
-
-    public void setCommission(double commission) {
-        this.commission = commission;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bank bank = (Bank) o;
-        return Objects.equals(id, bank.id) && Objects.equals(name, bank.name) && Objects.equals(commission, bank.commission);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, commission);
-    }
+    @OneToMany(
+            mappedBy = "bank",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY
+    )
+    private Set<Commission> commissions;
 
     @Override
     public String toString() {
         return "Bank{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", commission=" + commission +
+                ", commissions=" + commissions +
                 '}';
     }
+
 }

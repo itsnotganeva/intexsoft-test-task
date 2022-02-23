@@ -3,41 +3,95 @@ package by.ganevich.io.subinteractive;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
+import by.ganevich.entity.Transaction;
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
+import by.ganevich.service.TransactionService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.util.Set;
+
+@Component
+@AllArgsConstructor
 public class TransactionMenuInteractive {
 
-    public static void transactionMenuPrint() {
-        System.out.println("1 - Make transaction");
-        System.out.println("2 - Back");
+    private final TransactionService transactionService;
+    private final ClientService clientService;
+    private final BankService bankService;
+    private final BankAccountService bankAccountService;
+
+    public void transactionMenuPrint() {
+        System.out.println("1 - Make a transaction");
+        System.out.println("2 - Show transactions of client");
+        System.out.println("3 - Back");
     }
 
-    public static void makeTransaction() {
+    public void sendMoneyToClient() {
 
         System.out.println("Enter the name of the client from whose account the money will be sent: ");
-        Client client1 = ClientService.getInstance().findByName(InputManager.inputString());
+        Client sender = clientService.findClientByName(InputManager.inputString());
 
         System.out.println("Enter the name of the bank of account from whose the money will be sent: ");
-        Bank bank1 = BankService.getInstance().findByName(InputManager.inputString());
+        Bank bankOfSender = bankService.findBankByName(InputManager.inputString());
 
-        BankAccount bankAccount1 = BankAccountService.getInstance().getByClientAndBank(client1.getId(), bank1.getId());
+        BankAccount bankAccount1 = bankAccountService.getAccountByClientAndBank(sender, bankOfSender);
 
         System.out.println("Enter the name of the client to whose account the money will be sent: ");
-        Client client2 = ClientService.getInstance().findByName(InputManager.inputString());
+        Client recipient = clientService.findClientByName(InputManager.inputString());
 
         System.out.println("Enter the name of the bank of account to whose the money will be sent: ");
-        Bank bank2 = BankService.getInstance().findByName(InputManager.inputString());
+        Bank bankOfRecipient = bankService.findBankByName(InputManager.inputString());
 
-        BankAccount bankAccount2 = BankAccountService.getInstance().getByClientAndBank(client2.getId(), bank2.getId());
+        BankAccount bankAccount2 = bankAccountService.getAccountByClientAndBank(recipient, bankOfRecipient);
 
         System.out.println("Enter the sum of money that will be sent: ");
         Double sum = Double.parseDouble(InputManager.inputString());
 
-        ClientService.getInstance().sendMoney(bankAccount1, bankAccount2, sum);
+        transactionService.sendMoney(bankAccount1, bankAccount2, sum);
 
     }
+
+
+    public void showTransactions() {
+
+        System.out.println("Choose which transactions you want to see: \n1 - Sent transactions " +
+                "\n2 - Received transactions");
+        Integer choice = InputManager.inputInt();
+
+        System.out.println("Enter the name of the client whose transactions you want to view:");
+        Client client = clientService.findClientByName(InputManager.inputString());
+
+        System.out.println("Enter the date before sending (YYYY-MM-DD):");
+        String dateBeforeStr = InputManager.inputString();
+
+        Date dateBefore = Date.valueOf(dateBeforeStr);
+
+        System.out.println("Enter the date after sending (YYYY-MM-DD):");
+        String dateAfterStr = InputManager.inputString();
+
+        Date dateAfter = Date.valueOf(dateAfterStr);
+
+        switch (choice) {
+            case 1:
+                Set<Transaction> sentTransactions =
+                        transactionService.readAllByDateAndSender(dateBefore, dateAfter, client);
+                System.out.println(sentTransactions.toString());
+                break;
+            case 2:
+                Set<Transaction> receivedTransactions =
+                        transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
+                System.out.println(receivedTransactions.toString());
+                break;
+            default:
+                System.out.println("Enter the number from 1 to 2 to choice!");
+                break;
+        }
+
+    }
+
 
 }

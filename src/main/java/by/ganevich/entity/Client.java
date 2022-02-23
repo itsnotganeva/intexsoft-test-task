@@ -1,33 +1,60 @@
 package by.ganevich.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "clients")
+@NamedEntityGraph(
+        name = "clients-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "bankAccounts", subgraph = "bankAccounts-sub-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "banks-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("bankProducer"),
+                        }
+                )
+        }
+)
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "type")
     private ClientType type;
 
-    public Long getId() {
-        return id;
-    }
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            mappedBy = "owner",
+            fetch = FetchType.LAZY
+    )
+    private Set<BankAccount> bankAccounts;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "sender"
+    )
+    private Set<Transaction> sentTransactions;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ClientType getType() {
-        return type;
-    }
-
-    public void setType(ClientType type) {
-        this.type = type;
-    }
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            mappedBy = "receiver"
+    )
+    private Set<Transaction> receivedTransactions;
 
     @Override
     public String toString() {

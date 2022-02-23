@@ -1,14 +1,24 @@
 package by.ganevich.io.subinteractive;
 
 import by.ganevich.entity.Bank;
+import by.ganevich.entity.ClientType;
+import by.ganevich.entity.Commission;
 import by.ganevich.io.inputmanager.InputManager;
 import by.ganevich.service.BankService;
+import by.ganevich.service.CommissionService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@AllArgsConstructor
 public class BankMenuInteractive {
 
-    public static void bankMenuPrint() {
+    private final BankService bankService;
+    private final CommissionService commissionService;
+
+    public void bankMenuPrint() {
         System.out.println("1 - Create bank");
         System.out.println("2 - Read banks");
         System.out.println("3 - Update bank");
@@ -16,41 +26,70 @@ public class BankMenuInteractive {
         System.out.println("5 - Back");
     }
 
-    public static void createBank() {
+    public void createBank() {
         Bank bank = new Bank();
 
         System.out.println("Enter the name of bank: ");
         bank.setName(InputManager.inputString());
 
-        System.out.println("Enter the commission of bank (%): ");
-        bank.setCommission(InputManager.inputDouble());
+        bankService.saveBank(bank);
 
-        BankService.getInstance().create(bank);
+
+        System.out.println("Enter the commission of bank for individual client: ");
+
+        Commission individualCommission = new Commission();
+        individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
+        individualCommission.setCommission(InputManager.inputDouble());
+        individualCommission.setBank(bank);
+        commissionService.saveCommission(individualCommission);
+
+        System.out.println("Enter the commission of bank for industrial client: ");
+
+        Commission industrialCommission = new Commission();
+        industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
+        industrialCommission.setCommission(InputManager.inputDouble());
+        industrialCommission.setBank(bank);
+        commissionService.saveCommission(industrialCommission);
+
     }
 
-    public static void readBank() {
-        List<Bank> banks = BankService.getInstance().read();
+    public void readBank() {
+        List<Bank> banks = bankService.readBanks();
         System.out.println(banks.toString());
     }
 
-    public static void updateBank() {
+    public void updateBank() {
         System.out.println("Enter the name of bank you want to update: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+        Bank bank = bankService.findBankByName(InputManager.inputString());
 
         System.out.println("Enter the new name of bank: ");
         bank.setName(InputManager.inputString());
 
-        System.out.println("Enter the new commission of bank (%): ");
-        bank.setCommission(InputManager.inputDouble());
+        bankService.saveBank(bank);
 
-        BankService.getInstance().update(bank);
+        System.out.println("Enter the new commission of bank for individual client: ");
+
+        Commission individualCommission = commissionService.findByBankAndClientType(bank, ClientType.INDIVIDUAL);
+        individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
+        individualCommission.setCommission(InputManager.inputDouble());
+        individualCommission.setBank(bank);
+        commissionService.saveCommission(individualCommission);
+
+        System.out.println("Enter the new commission of bank for industrial client: ");
+
+        Commission industrialCommission = commissionService.findByBankAndClientType(bank, ClientType.INDUSTRIAL);
+        industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
+        industrialCommission.setCommission(InputManager.inputDouble());
+        industrialCommission.setBank(bank);
+        commissionService.saveCommission(industrialCommission);
+
     }
 
-    public static void deleteBank() {
+    public void deleteBank() {
         System.out.println("Enter the name of bank you want to delete: ");
-        Bank bank = BankService.getInstance().findByName(InputManager.inputString());
+        Bank bank = bankService.findBankByName(InputManager.inputString());
 
-        BankService.getInstance().remove(bank.getId());
+        bankService.removeBank(bank);
 
         System.out.println("Removed!");
     }
