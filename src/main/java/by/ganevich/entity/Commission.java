@@ -30,9 +30,9 @@ public class Commission {
 
     @Override
     public String toString() {
-        return "Commission{" +
-                ", clientType=" + clientType +
-                ", commission=" + commission +
-                '}';
+        return "Commission{"
+                + ", clientType=" + clientType
+                + ", commission=" + commission
+                + '}';
     }
 }

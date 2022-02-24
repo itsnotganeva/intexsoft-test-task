@@ -20,7 +20,7 @@ public class Interactive {
 
     private boolean isShow = true;
 
-    public void InvokeInteractiveMenu() {
+    public void invokeInteractiveMenu() {
         while (isShow) {
             try {
                 mainMenuChoice();

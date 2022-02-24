@@ -40,7 +40,9 @@ public class ClientMenuInteractive {
             client.setType(ClientType.INDIVIDUAL);
         } else if (num.equals(2)) {
             client.setType(ClientType.INDUSTRIAL);
-        } else throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
+        } else {
+            throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
+        }
 
         clientService.saveClient(client);
     }
@@ -61,11 +63,13 @@ public class ClientMenuInteractive {
         System.out.println("Enter the new type of client:\n1 - Individual\n2 - Industrial");
         Integer num = InputManager.inputInt();
 
-        if (num.equals(1))
+        if (num.equals(1)) {
             client.setType(ClientType.INDIVIDUAL);
-        else if (num.equals(2))
+        } else if (num.equals(2)) {
             client.setType(ClientType.INDUSTRIAL);
-        else throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
+        } else {
+            throw new RuntimeException("CHOOSE 1 OR 2 TO SET A TYPE!");
+        }
 
         clientService.saveClient(client);
     }
@@ -88,16 +92,21 @@ public class ClientMenuInteractive {
 
         BankAccount newBankAccount = new BankAccount();
 
-        System.out.println("Enter the currency of bank account:" +
-                " \n1 - USD \n2 - EUR \n3 - BYN");
+        System.out.println("Enter the currency of bank account:"
+                + " \n1 - USD \n2 - EUR \n3 - BYN");
         Integer num = InputManager.inputInt();
-        if (num.equals(1))
+        if (num.equals(1)) {
             newBankAccount.setCurrency(Currency.USD);
-        else if (num.equals(2))
+
+        } else if (num.equals(2)) {
             newBankAccount.setCurrency(Currency.EUR);
-        else if (num.equals(3))
+
+        } else if (num.equals(3)) {
             newBankAccount.setCurrency(Currency.BYN);
-        else throw new RuntimeException("CHOOSE NUMBER FROM 1 TO 4 TO SET A CURRENCY!");
+
+        } else {
+            throw new RuntimeException("CHOOSE NUMBER FROM 1 TO 4 TO SET A CURRENCY!");
+        }
 
         System.out.println("Enter the amount of money in bank account:");
         newBankAccount.setAmountOfMoney(InputManager.inputDouble());
