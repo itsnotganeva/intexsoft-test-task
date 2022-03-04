@@ -3,7 +3,7 @@ package by.ganevich.io;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -11,6 +11,6 @@ public class CommandDescriptor {
 
     private String commandName;
 
-    private HashMap<Integer, String> parameters;
+    private Map<String, String> parameters;
 
 }

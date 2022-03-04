@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -17,18 +17,23 @@ import java.util.Set;
 @Getter
 public class ReadBankAccountsCommand implements ICommand{
 
-    private final String commandName = "read bankAccounts";
+    private final String commandName = "readBankAccounts";
 
     private final BankAccountService bankAccountService;
     private final ClientService clientService;
 
-    //read bankAccounts Matvey
     @Override
     public Set<BankAccount> execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
 
-        Client client = clientService.findClientByName(parameters.get(0));
+        if (parameters.containsValue("help")) {
+            String help = "readBankAccounts clientName=?";
+            System.out.println(help);
+            return null;
+        }
+
+        Client client = clientService.findClientByName(parameters.get("clientName"));
 
         Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
 

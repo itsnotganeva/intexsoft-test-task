@@ -14,11 +14,10 @@ import java.util.List;
 @Getter
 public class ReadClientsCommand implements ICommand {
 
-    private final String commandName = "read clients";
+    private final String commandName = "readClients";
 
     private final ClientService clientService;
 
-    //read clients
     @Override
     public List<Client> execute(CommandDescriptor commandDescriptor) {
 

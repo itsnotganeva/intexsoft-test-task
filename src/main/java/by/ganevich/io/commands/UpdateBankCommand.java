@@ -10,38 +10,45 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
 @Getter
 public class UpdateBankCommand implements ICommand {
 
-    private final String commandName = "update bank";
+    private final String commandName = "updateBank";
 
     private final BankService bankService;
     private final CommissionService commissionService;
 
-    //update bank Alfa Alfa 0.015 0.03
     @Override
     public Bank execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
 
-        Bank bank = bankService.findBankByName(parameters.get(0));
+        if (parameters.containsValue("help")){
+            String help = "updateBank bankName=? newBankName=? " +
+                    "newIndividualCommission=? newIndustrialCommission=?";
 
-        bank.setName(parameters.get(1));
+            System.out.println(help);
+            return null;
+        }
+
+        Bank bank = bankService.findBankByName(parameters.get("bankName"));
+
+        bank.setName(parameters.get("newBankName"));
         bankService.saveBank(bank);
 
         Commission individualCommission = commissionService.findByBankAndClientType(bank, ClientType.INDIVIDUAL);
         individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
-        individualCommission.setCommission(Double.valueOf(parameters.get(2)));
+        individualCommission.setCommission(Double.valueOf(parameters.get("newIndividualCommission")));
         individualCommission.setBank(bank);
         commissionService.saveCommission(individualCommission);
 
         Commission industrialCommission = commissionService.findByBankAndClientType(bank, ClientType.INDUSTRIAL);
         industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
-        industrialCommission.setCommission(Double.valueOf(parameters.get(3)));
+        industrialCommission.setCommission(Double.valueOf(parameters.get("newIndustrialCommission")));
         industrialCommission.setBank(bank);
         commissionService.saveCommission(industrialCommission);
 

@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 public class ConsoleCommandResultViewer {
 
     public void viewResult(Object commandResult) {
-        System.out.println(commandResult.toString());
+        if (commandResult == null) {
+            return;
+        } else {
+            System.out.println(commandResult.toString());
+        }
     }
 }

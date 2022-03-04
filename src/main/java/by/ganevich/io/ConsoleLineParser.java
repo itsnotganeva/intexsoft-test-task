@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ConsoleLineParser {
@@ -14,16 +16,25 @@ public class ConsoleLineParser {
 
         String[] command = input.split(" ");
 
-        String commandName = command[0] + " " + command[1];
+        String commandName = command[0];
 
         commandDescriptor.setCommandName(commandName);
 
-        commandDescriptor.setParameters(new HashMap<>());
+        Map<String, String> parsedCommand;
 
-        Arrays.stream(command).skip(2)
-                .forEach(c -> commandDescriptor.getParameters()
-                        .put(Arrays.asList(command).indexOf(c)-2, c));
+        if (command.length > 1 && command[1].equals("help")) {
+            parsedCommand = new HashMap<>();
+            parsedCommand.put("help", "help");
+        } else {
+            parsedCommand = Arrays.stream(command).map(elem -> elem.split("="))
+                    .filter(elem -> elem.length == 2)
+                    .collect(Collectors.toMap(e -> e[0], e -> e[1]));
+
+        }
+        commandDescriptor.setParameters(parsedCommand);
 
         return commandDescriptor;
+
+      //  createClient name=Matvey type=individual
     }
 }

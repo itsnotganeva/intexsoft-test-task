@@ -8,24 +8,24 @@ import org.springframework.stereotype.Component;
 @Getter
 public class HelpCommand implements ICommand{
 
-    private final String commandName = "help command";
+    private final String commandName = "help";
 
     @Override
     public Object execute(CommandDescriptor commandDescriptor) {
 
-        String helpCommand = "create bank bank_name individual_commission industrial_commission \n"
-        + "read banks \n"
-        + "update bank bank_name new_bank_name new_individual_commission new_industrial_commission \n"
-        + "delete bank bank_name \n\n"
-        + "create client client_name individual/industrial \n"
-        + "read clients \n"
-        + "update client client_name new_client_name individual/industrial \n"
-        + "delete client client_name \n"
-        + "add client client_name bank_name currency(usd/eur/byn) amount_of_money \n\n"
-        + "make transaction sender_name "
-                + "sender_bank_name receiver_name receiver_bank_name amount_of_money \n"
-        + "read transactions received/sent client_name date_before date_after \n\n"
-        + "read bankAccounts client_name \n";
+        String helpCommand = "createBank: command to create new bank \n"
+        + "readBanks: command to read all banks \n"
+        + "updateBank: command to update bank \n"
+        + "deleteBank: command to delete bank \n\n"
+        + "createClient: command to create new client \n"
+        + "readClients: command to read all clients \n"
+        + "updateClient: command to update client \n"
+        + "deleteClient: command to delete client \n"
+        + "addClientToBank: command to add client to bank and create a new bank account \n\n"
+        + "makeTransaction: command to make transaction \n"
+        + "readTransactions: command to read transactions of client \n\n"
+        + "readBankAccounts: command to read all bank accounts of client \n\n"
+        + "exit: command to exit from application";
 
         return helpCommand;
     }

@@ -10,7 +10,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -18,28 +18,34 @@ import java.util.Set;
 @Getter
 public class ReadTransactionsCommand implements ICommand{
 
-    private final String commandName = "read transactions";
+    private final String commandName = "readTransactions";
 
     private final TransactionService transactionService;
     private final ClientService clientService;
 
-    //read transactions sent/received Matvey 2022-02-27 2022-03-07
     @Override
     public Set<Transaction> execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
 
-        Client client = clientService.findClientByName(parameters.get(1));
+        if (parameters.containsValue("help")){
+            String help = "readTransactions type=sent/received clientName=? fromDate=YYYY-MM-DD toDate=YYYY-MM-DD";
 
-        Date dateBefore = Date.valueOf(parameters.get(2));
-        Date dateAfter = Date.valueOf(parameters.get(3));
+            System.out.println(help);
+            return null;
+        }
+
+        Client client = clientService.findClientByName(parameters.get("clientName"));
+
+        Date dateBefore = Date.valueOf(parameters.get("fromDate"));
+        Date dateAfter = Date.valueOf(parameters.get("toDate"));
 
         Set<Transaction> transactions = null;
 
-        if (parameters.get(0).equals("sent")) {
+        if (parameters.get("type").equals("sent")) {
             transactions =
                     transactionService.readAllByDateAndSender(dateBefore, dateAfter, client);
-        } else if (parameters.get(0).equals("received")) {
+        } else if (parameters.get("type").equals("received")) {
             transactions =
                     transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
         }

@@ -1,11 +1,12 @@
 package by.ganevich.io.factory;
 
+import by.ganevich.exception.CommandNotFoundException;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.commands.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Component
@@ -28,38 +29,37 @@ public class CommandFactory {
     private final ReadBankAccountsCommand readBankAccountsCommand;
 
     private final HelpCommand helpCommand;
+    private final ExitCommand exitCommand;
 
-    private List<ICommand> commands;
+    private Map<String, ICommand> commands;
 
-    public void collectCommands() {
-        commands.add(createBankCommand);
-        commands.add(readBanksCommand);
-        commands.add(updateBankCommand);
-        commands.add(deleteBankCommand);
-        commands.add(createClientCommand);
-        commands.add(readClientsCommand);
-        commands.add(updateClientCommand);
-        commands.add(deleteClientCommand);
-        commands.add(addClientToBankCommand);
-        commands.add(makeTransactionCommand);
-        commands.add(readTransactionsCommand);
-        commands.add(readBankAccountsCommand);
-        commands.add(helpCommand);
+    public Map<String, ICommand> collectCommands() {
+        commands.put(createBankCommand.getCommandName(), createBankCommand);
+        commands.put(readBanksCommand.getCommandName(), readBanksCommand);
+        commands.put(updateBankCommand.getCommandName(), updateBankCommand);
+        commands.put(deleteBankCommand.getCommandName(), deleteBankCommand);
+        commands.put(createClientCommand.getCommandName(), createClientCommand);
+        commands.put(readClientsCommand.getCommandName(), readClientsCommand);
+        commands.put(updateClientCommand.getCommandName(), updateClientCommand);
+        commands.put(deleteClientCommand.getCommandName(), deleteClientCommand);
+        commands.put(addClientToBankCommand.getCommandName(), addClientToBankCommand);
+        commands.put(makeTransactionCommand.getCommandName(), makeTransactionCommand);
+        commands.put(readTransactionsCommand.getCommandName(), readTransactionsCommand);
+        commands.put(readBankAccountsCommand.getCommandName(), readBankAccountsCommand);
+        commands.put(helpCommand.getCommandName(), helpCommand);
+        commands.put(exitCommand.getCommandName(), exitCommand);
+        return commands;
     }
 
-    public ICommand getCommand(CommandDescriptor commandDescriptor) {
+    public ICommand getCommand(CommandDescriptor commandDescriptor, Map<String, ICommand> commands) {
 
-        collectCommands();
+        ICommand command = commands.get(commandDescriptor.getCommandName());
 
-        ICommand icommand = null;
-
-        for (ICommand command : commands) {
-            if (command.getCommandName().equals(commandDescriptor.getCommandName())) {
-                icommand = command;
-            }
+        if (command == null) {
+            throw new CommandNotFoundException("Wrong input of command! Try again!");
         }
 
-        return icommand;
+        return command;
     }
 
 }

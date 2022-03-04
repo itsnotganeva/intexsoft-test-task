@@ -12,44 +12,49 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
 @Getter
 public class AddClientToBankCommand implements ICommand {
 
-    private final String commandName = "add client";
+    private final String commandName = "addClientToBank";
 
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
 
-    //add client Matvey Alfa usd 500
     @Override
     public BankAccount execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
 
-        Client client = clientService.findClientByName(parameters.get(0));
-        Bank bank = bankService.findBankByName(parameters.get(1));
+        if (parameters.containsValue("help")){
+            String help = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
+            System.out.println(help);
+            return null;
+        }
+
+        Client client = clientService.findClientByName(parameters.get("clientName"));
+        Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         BankAccount newBankAccount = new BankAccount();
 
-        if (parameters.get(2).equals("usd")) {
+        if (parameters.get("currency").equals("usd")) {
             newBankAccount.setCurrency(Currency.USD);
 
-        } else if (parameters.get(2).equals("eur")) {
+        } else if (parameters.get("currency").equals("eur")) {
             newBankAccount.setCurrency(Currency.EUR);
 
-        } else if (parameters.get(2).equals("byn")) {
+        } else if (parameters.get("currency").equals("byn")) {
             newBankAccount.setCurrency(Currency.BYN);
 
         } else {
             throw new RuntimeException("CHOOSE usd/eur/byn TO SET A CURRENCY!");
         }
 
-        newBankAccount.setAmountOfMoney(Double.valueOf(parameters.get(3)));
+        newBankAccount.setAmountOfMoney(Double.valueOf(parameters.get("amountOfMoney")));
 
         newBankAccount.setOwner(client);
         newBankAccount.setBankProducer(bank);

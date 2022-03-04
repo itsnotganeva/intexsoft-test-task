@@ -7,24 +7,29 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
 @Getter
 public class DeleteBankCommand implements ICommand{
 
-    private final String commandName = "delete bank";
+    private final String commandName = "deleteBank";
 
     private final BankService bankService;
 
-    //delete bank Alfa
     @Override
     public Bank execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
 
-        Bank bank = bankService.findBankByName(parameters.get(0));
+        if (parameters.containsValue("help")){
+            String help = "deleteBank bankName=?";
+            System.out.println(help);
+            return null;
+        }
+
+        Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bankService.removeBank(bank);
 

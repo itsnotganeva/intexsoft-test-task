@@ -8,29 +8,34 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
 @Getter
 public class CreateClientCommand implements ICommand{
 
-    private final String commandName = "create client";
+    private final String commandName = "createClient";
 
     private final ClientService clientService;
 
-    //create client Matvey individual
     @Override
     public Client execute(CommandDescriptor commandDescriptor) {
 
-        HashMap<Integer, String> parameters = commandDescriptor.getParameters();
+        Map<String, String> parameters = commandDescriptor.getParameters();
+
+        if (parameters.containsValue("help")){
+            String help = "createClient clientName=? type=?";
+            System.out.println(help);
+            return null;
+        }
 
         Client client = new Client();
-        client.setName(parameters.get(0));
+        client.setName(parameters.get("clientName"));
 
-        if (parameters.get(1).equals("individual")) {
+        if (parameters.get("type").equals("individual")) {
             client.setType(ClientType.INDIVIDUAL);
-        } else if (parameters.get(1).equals("industrial")) {
+        } else if (parameters.get("type").equals("industrial")) {
             client.setType(ClientType.INDUSTRIAL);
         } else {
             throw new RuntimeException("CHOOSE individual OR industrial TO SET A TYPE!");
