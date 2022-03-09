@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class HelpCommand implements ICommand{
+public class HelpCommand implements ICommand {
 
     private final String commandName = "help";
 

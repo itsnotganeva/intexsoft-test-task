@@ -34,7 +34,5 @@ public class ConsoleLineParser {
         commandDescriptor.setParameters(parsedCommand);
 
         return commandDescriptor;
-
-      //  createClient name=Matvey type=individual
     }
 }

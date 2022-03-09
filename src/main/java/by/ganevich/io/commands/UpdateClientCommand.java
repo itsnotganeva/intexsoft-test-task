@@ -2,7 +2,6 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Client;
 import by.ganevich.entity.ClientType;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.ClientService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,24 +12,20 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 @Getter
-public class UpdateClientCommand implements ICommand {
+public class UpdateClientCommand extends BaseCommand {
 
     private final String commandName = "updateClient";
 
     private final ClientService clientService;
 
     @Override
-    public Client execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String description = "updateClient clientName=? newClientName=? newType=individual/industrial";
+        return description;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")){
-            String help = "updateClient clientName=? newClientName=? newType=individual/industrial";
-
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
 
         client.setName(parameters.get("newClientName"));
@@ -47,4 +42,5 @@ public class UpdateClientCommand implements ICommand {
 
         return client;
     }
+
 }

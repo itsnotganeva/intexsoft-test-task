@@ -4,7 +4,6 @@ import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Currency;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
@@ -17,7 +16,7 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 @Getter
-public class AddClientToBankCommand implements ICommand {
+public class AddClientToBankCommand extends BaseCommand {
 
     private final String commandName = "addClientToBank";
 
@@ -26,16 +25,13 @@ public class AddClientToBankCommand implements ICommand {
     private final BankAccountService bankAccountService;
 
     @Override
-    public BankAccount execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String help = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
+        return help;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")){
-            String help = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
@@ -43,13 +39,10 @@ public class AddClientToBankCommand implements ICommand {
 
         if (parameters.get("currency").equals("usd")) {
             newBankAccount.setCurrency(Currency.USD);
-
         } else if (parameters.get("currency").equals("eur")) {
             newBankAccount.setCurrency(Currency.EUR);
-
         } else if (parameters.get("currency").equals("byn")) {
             newBankAccount.setCurrency(Currency.BYN);
-
         } else {
             throw new RuntimeException("CHOOSE usd/eur/byn TO SET A CURRENCY!");
         }

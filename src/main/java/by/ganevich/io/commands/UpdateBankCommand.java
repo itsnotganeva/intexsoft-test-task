@@ -3,7 +3,6 @@ package by.ganevich.io.commands;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 @Getter
-public class UpdateBankCommand implements ICommand {
+public class UpdateBankCommand extends BaseCommand {
 
     private final String commandName = "updateBank";
 
@@ -23,18 +22,14 @@ public class UpdateBankCommand implements ICommand {
     private final CommissionService commissionService;
 
     @Override
-    public Bank execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String description = "updateBank bankName=? newBankName=? "
+                + "newIndividualCommission=? newIndustrialCommission=?";
+        return description;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")){
-            String help = "updateBank bankName=? newBankName=? " +
-                    "newIndividualCommission=? newIndustrialCommission=?";
-
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bank.setName(parameters.get("newBankName"));
@@ -54,4 +49,5 @@ public class UpdateBankCommand implements ICommand {
 
         return bank;
     }
+
 }

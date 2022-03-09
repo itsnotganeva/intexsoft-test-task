@@ -2,7 +2,6 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.ClientService;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 @Getter
-public class ReadBankAccountsCommand implements ICommand{
+public class ReadBankAccountsCommand extends BaseCommand {
 
     private final String commandName = "readBankAccounts";
 
@@ -23,20 +22,18 @@ public class ReadBankAccountsCommand implements ICommand{
     private final ClientService clientService;
 
     @Override
-    public Set<BankAccount> execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String help = "readBankAccounts clientName=?";
+        return help;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")) {
-            String help = "readBankAccounts clientName=?";
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
 
         Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
 
         return bankAccounts;
     }
+
 }

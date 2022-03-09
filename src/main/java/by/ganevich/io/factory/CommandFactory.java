@@ -6,6 +6,7 @@ import by.ganevich.io.commands.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -33,6 +34,7 @@ public class CommandFactory {
 
     private Map<String, ICommand> commands;
 
+    @PostConstruct
     public Map<String, ICommand> collectCommands() {
         commands.put(createBankCommand.getCommandName(), createBankCommand);
         commands.put(readBanksCommand.getCommandName(), readBanksCommand);
@@ -51,7 +53,7 @@ public class CommandFactory {
         return commands;
     }
 
-    public ICommand getCommand(CommandDescriptor commandDescriptor, Map<String, ICommand> commands) {
+    public ICommand getCommand(CommandDescriptor commandDescriptor) {
 
         ICommand command = commands.get(commandDescriptor.getCommandName());
 

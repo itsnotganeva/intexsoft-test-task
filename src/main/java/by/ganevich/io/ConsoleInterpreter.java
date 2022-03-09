@@ -1,11 +1,9 @@
 package by.ganevich.io;
 
-import by.ganevich.io.commands.ICommand;
 import by.ganevich.io.factory.CommandFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.Scanner;
 
 @RequiredArgsConstructor
@@ -19,8 +17,6 @@ public class ConsoleInterpreter {
 
     public void invokeCommand() {
 
-        Map<String, ICommand> commands = commandFactory.collectCommands();
-
         while (true) {
             Scanner in = new Scanner(System.in);
 
@@ -28,7 +24,7 @@ public class ConsoleInterpreter {
 
             CommandDescriptor commandDescriptor = consoleLineParser.parseInput(command);
 
-            Object commandResult = commandExecutor.executeCommand(commandDescriptor, commands);
+            Object commandResult = commandExecutor.executeCommand(commandDescriptor);
 
             consoleCommandResultViewer.viewResult(commandResult);
         }

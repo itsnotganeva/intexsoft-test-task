@@ -2,7 +2,6 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.TransactionService;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 @Getter
-public class ReadTransactionsCommand implements ICommand{
+public class ReadTransactionsCommand extends BaseCommand {
 
     private final String commandName = "readTransactions";
 
@@ -24,17 +23,14 @@ public class ReadTransactionsCommand implements ICommand{
     private final ClientService clientService;
 
     @Override
-    public Set<Transaction> execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String description = "readTransactions type=sent/received clientName=? "
+                + "fromDate=YYYY-MM-DD toDate=YYYY-MM-DD";
+        return description;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")){
-            String help = "readTransactions type=sent/received clientName=? fromDate=YYYY-MM-DD toDate=YYYY-MM-DD";
-
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
 
         Date dateBefore = Date.valueOf(parameters.get("fromDate"));
@@ -52,4 +48,5 @@ public class ReadTransactionsCommand implements ICommand{
 
         return transactions;
     }
+
 }

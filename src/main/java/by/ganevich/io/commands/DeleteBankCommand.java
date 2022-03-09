@@ -1,7 +1,6 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.service.BankService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,23 +11,20 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 @Getter
-public class DeleteBankCommand implements ICommand{
+public class DeleteBankCommand extends BaseCommand {
 
     private final String commandName = "deleteBank";
 
     private final BankService bankService;
 
     @Override
-    public Bank execute(CommandDescriptor commandDescriptor) {
+    public String getDescription() {
+        String description = "deleteBank bankName=?";
+        return description;
+    }
 
-        Map<String, String> parameters = commandDescriptor.getParameters();
-
-        if (parameters.containsValue("help")){
-            String help = "deleteBank bankName=?";
-            System.out.println(help);
-            return null;
-        }
-
+    @Override
+    public Object doExecute(Map<String, String> parameters) {
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bankService.removeBank(bank);

@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 @Getter
-public class CreateBankCommand implements ICommand{
+public class CreateBankCommand implements ICommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
@@ -27,7 +27,7 @@ public class CreateBankCommand implements ICommand{
 
         Map<String, String> parameters = commandDescriptor.getParameters();
 
-        if (parameters.containsValue("help")){
+        if (parameters.containsValue("help")) {
             String help = "createBank bankName=? individualCommission=? industrialCommission=?";
             System.out.println(help);
             return null;
@@ -52,6 +52,5 @@ public class CreateBankCommand implements ICommand{
 
         return bank;
     }
-
 
 }
