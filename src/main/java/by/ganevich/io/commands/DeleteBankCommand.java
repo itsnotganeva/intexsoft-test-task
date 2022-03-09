@@ -1,6 +1,7 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.entity.Bank;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,19 +17,22 @@ public class DeleteBankCommand extends BaseCommand {
     private final String commandName = "deleteBank";
 
     private final BankService bankService;
+    private final CommandResult commandResult;
 
     @Override
-    public String getDescription() {
+    public CommandResult getDescription() {
         String description = "deleteBank bankName=?";
-        return description;
+        commandResult.setT(description);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bankService.removeBank(bank);
 
-        return null;
+        commandResult.setT(null);
+        return commandResult;
     }
 }

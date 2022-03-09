@@ -2,6 +2,7 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Bank;
 import by.ganevich.io.CommandDescriptor;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +18,14 @@ public class ReadBanksCommand implements ICommand {
     private final String commandName = "readBanks";
 
     private final BankService bankService;
+    private final CommandResult commandResult;
 
     @Override
-    public List<Bank> execute(CommandDescriptor commandDescriptor) {
+    public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         List<Bank> banks = bankService.readBanks();
 
-        return banks;
+        commandResult.setT(banks);
+        return commandResult;
     }
 }

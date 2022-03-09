@@ -2,6 +2,7 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.TransactionService;
 import lombok.AllArgsConstructor;
@@ -21,16 +22,18 @@ public class ReadTransactionsCommand extends BaseCommand {
 
     private final TransactionService transactionService;
     private final ClientService clientService;
+    private final CommandResult commandResult;
 
     @Override
-    public String getDescription() {
+    public CommandResult getDescription() {
         String description = "readTransactions type=sent/received clientName=? "
                 + "fromDate=YYYY-MM-DD toDate=YYYY-MM-DD";
-        return description;
+        commandResult.setT(description);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
 
         Date dateBefore = Date.valueOf(parameters.get("fromDate"));
@@ -46,7 +49,8 @@ public class ReadTransactionsCommand extends BaseCommand {
                     transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
         }
 
-        return transactions;
+        commandResult.setT(transactions);
+        return commandResult;
     }
 
 }

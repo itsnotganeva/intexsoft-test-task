@@ -24,7 +24,7 @@ public class ConsoleInterpreter {
 
             CommandDescriptor commandDescriptor = consoleLineParser.parseInput(command);
 
-            Object commandResult = commandExecutor.executeCommand(commandDescriptor);
+            CommandResult commandResult = commandExecutor.executeCommand(commandDescriptor);
 
             consoleCommandResultViewer.viewResult(commandResult);
         }

@@ -3,6 +3,7 @@ package by.ganevich.io.commands;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
 import lombok.AllArgsConstructor;
@@ -20,16 +21,18 @@ public class UpdateBankCommand extends BaseCommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
+    private final CommandResult commandResult;
 
     @Override
-    public String getDescription() {
+    public CommandResult getDescription() {
         String description = "updateBank bankName=? newBankName=? "
                 + "newIndividualCommission=? newIndustrialCommission=?";
-        return description;
+        commandResult.setT(description);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bank.setName(parameters.get("newBankName"));
@@ -47,7 +50,8 @@ public class UpdateBankCommand extends BaseCommand {
         industrialCommission.setBank(bank);
         commissionService.saveCommission(industrialCommission);
 
-        return bank;
+        commandResult.setT(bank);
+        return commandResult;
     }
 
 }

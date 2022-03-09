@@ -1,17 +1,21 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.io.CommandDescriptor;
+import by.ganevich.io.CommandResult;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 @Getter
 public class HelpCommand implements ICommand {
 
     private final String commandName = "help";
+    private final CommandResult commandResult;
 
     @Override
-    public Object execute(CommandDescriptor commandDescriptor) {
+    public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         String helpCommand = "createBank: command to create new bank \n"
         + "readBanks: command to read all banks \n"
@@ -27,7 +31,8 @@ public class HelpCommand implements ICommand {
         + "readBankAccounts: command to read all bank accounts of client \n\n"
         + "exit: command to exit from application";
 
-        return helpCommand;
+        commandResult.setT(helpCommand);
+        return commandResult;
     }
 
 }

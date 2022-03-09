@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ConsoleCommandResultViewer {
 
-    public void viewResult(Object commandResult) {
-        if (commandResult == null) {
+    public void viewResult(CommandResult commandResult) {
+        if (commandResult.getT() == null) {
             return;
         } else {
-            System.out.println(commandResult.toString());
+            System.out.println(commandResult.getT().toString());
         }
     }
 }

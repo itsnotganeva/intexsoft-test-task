@@ -2,6 +2,7 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.ClientService;
 import lombok.AllArgsConstructor;
@@ -20,20 +21,23 @@ public class ReadBankAccountsCommand extends BaseCommand {
 
     private final BankAccountService bankAccountService;
     private final ClientService clientService;
+    private CommandResult commandResult;
 
     @Override
-    public String getDescription() {
-        String help = "readBankAccounts clientName=?";
-        return help;
+    public CommandResult getDescription() {
+        String description = "readBankAccounts clientName=?";
+        commandResult.setT(description);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
 
         Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
 
-        return bankAccounts;
+        commandResult.setT(bankAccounts);
+        return commandResult;
     }
 
 }

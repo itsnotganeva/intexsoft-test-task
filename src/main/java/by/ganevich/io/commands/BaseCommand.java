@@ -1,16 +1,17 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.io.CommandDescriptor;
+import by.ganevich.io.CommandResult;
 
 import java.util.Map;
 
 public abstract class BaseCommand implements ICommand {
 
-    public String getDescription() {
+    public CommandResult getDescription() {
         return null;
     }
 
-    public Object execute(CommandDescriptor commandDescriptor) {
+    public CommandResult execute(CommandDescriptor commandDescriptor) {
         Map<String, String> parameters = commandDescriptor.getParameters();
         if (parameters.containsValue("help")) {
            return getDescription();
@@ -19,7 +20,7 @@ public abstract class BaseCommand implements ICommand {
         }
     }
 
-    public Object doExecute(Map<String, String> parameters){
+    public CommandResult doExecute(Map<String, String> parameters){
         return null;
     }
 }

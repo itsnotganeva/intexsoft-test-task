@@ -4,6 +4,7 @@ import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Currency;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
@@ -23,15 +24,17 @@ public class AddClientToBankCommand extends BaseCommand {
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
+    private final CommandResult commandResult;
 
     @Override
-    public String getDescription() {
+    public CommandResult getDescription() {
         String help = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
-        return help;
+        commandResult.setT(help);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Client client = clientService.findClientByName(parameters.get("clientName"));
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
@@ -56,7 +59,9 @@ public class AddClientToBankCommand extends BaseCommand {
         bankService.saveBank(bank);
 
         bankAccountService.saveBankAccount(newBankAccount);
-        return newBankAccount;
+
+        commandResult.setT(newBankAccount);
+        return commandResult;
     }
 
 }

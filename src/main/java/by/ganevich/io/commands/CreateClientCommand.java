@@ -2,6 +2,7 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Client;
 import by.ganevich.entity.ClientType;
+import by.ganevich.io.CommandResult;
 import by.ganevich.service.ClientService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,15 +18,17 @@ public class CreateClientCommand extends BaseCommand {
     private final String commandName = "createClient";
 
     private final ClientService clientService;
+    private final CommandResult commandResult;
 
     @Override
-    public String getDescription() {
-        String help = "createClient clientName=? type=?";
-        return help;
+    public CommandResult getDescription() {
+        String description = "createClient clientName=? type=?";
+        commandResult.setT(description);
+        return commandResult;
     }
 
     @Override
-    public Object doExecute(Map<String, String> parameters) {
+    public CommandResult doExecute(Map<String, String> parameters) {
         Client client = new Client();
         client.setName(parameters.get("clientName"));
 
@@ -39,7 +42,8 @@ public class CreateClientCommand extends BaseCommand {
 
         clientService.saveClient(client);
 
-        return client;
+        commandResult.setT(client);
+        return commandResult;
     }
 
 }

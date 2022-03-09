@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class CommandExecutor {
     private final CommandFactory commandFactory;
 
-    Object executeCommand(CommandDescriptor commandDescriptor) {
-        Object commandResult = commandFactory.getCommand(commandDescriptor).execute(commandDescriptor);
+    CommandResult executeCommand(CommandDescriptor commandDescriptor) {
+        CommandResult commandResult = commandFactory.getCommand(commandDescriptor).execute(commandDescriptor);
         return commandResult;
     }
 }
