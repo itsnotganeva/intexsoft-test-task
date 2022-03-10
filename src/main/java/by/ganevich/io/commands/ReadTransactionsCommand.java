@@ -22,14 +22,12 @@ public class ReadTransactionsCommand extends BaseCommand {
 
     private final TransactionService transactionService;
     private final ClientService clientService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "readTransactions type=sent/received clientName=? "
                 + "fromDate=YYYY-MM-DD toDate=YYYY-MM-DD";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -49,7 +47,8 @@ public class ReadTransactionsCommand extends BaseCommand {
                     transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
         }
 
-        commandResult.setT(transactions);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(transactions);
         return commandResult;
     }
 

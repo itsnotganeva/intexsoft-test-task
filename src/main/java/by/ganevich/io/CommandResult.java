@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class CommandResult<T> {
-    private T t;
+    private T result;
 }

@@ -21,13 +21,11 @@ public class ReadBankAccountsCommand extends BaseCommand {
 
     private final BankAccountService bankAccountService;
     private final ClientService clientService;
-    private CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "readBankAccounts clientName=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -36,7 +34,8 @@ public class ReadBankAccountsCommand extends BaseCommand {
 
         Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
 
-        commandResult.setT(bankAccounts);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(bankAccounts);
         return commandResult;
     }
 

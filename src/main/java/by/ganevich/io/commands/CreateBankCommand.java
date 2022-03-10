@@ -3,7 +3,6 @@ package by.ganevich.io.commands;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
-import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
@@ -20,15 +19,13 @@ public class CreateBankCommand extends BaseCommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
-    private final CommandResult commandResult;
 
     private final String commandName = "createBank";
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "createBank bankName=? individualCommission=? industrialCommission=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -50,7 +47,8 @@ public class CreateBankCommand extends BaseCommand {
         industrialCommission.setBank(bank);
         commissionService.saveCommission(industrialCommission);
 
-        commandResult.setT(bank);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(bank);
         return commandResult;
     }
 }

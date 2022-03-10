@@ -17,13 +17,11 @@ public class DeleteClientCommand extends BaseCommand {
     private final String commandName = "deleteClient";
 
     private final ClientService clientService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "deleteClient clientName=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -32,7 +30,9 @@ public class DeleteClientCommand extends BaseCommand {
 
         clientService.removeClient(client);
 
-        commandResult.setT(null);
+        CommandResult commandResult = new CommandResult();
+        String result = "Client removed!";
+        commandResult.setResult(result);
         return commandResult;
     }
 }

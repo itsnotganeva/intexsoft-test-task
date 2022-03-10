@@ -18,14 +18,14 @@ public class ReadBanksCommand implements ICommand {
     private final String commandName = "readBanks";
 
     private final BankService bankService;
-    private final CommandResult commandResult;
 
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         List<Bank> banks = bankService.readBanks();
 
-        commandResult.setT(banks);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(banks);
         return commandResult;
     }
 }

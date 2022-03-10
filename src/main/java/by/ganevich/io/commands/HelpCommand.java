@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class HelpCommand implements ICommand {
 
     private final String commandName = "help";
-    private final CommandResult commandResult;
 
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
@@ -31,7 +30,8 @@ public class HelpCommand implements ICommand {
         + "readBankAccounts: command to read all bank accounts of client \n\n"
         + "exit: command to exit from application";
 
-        commandResult.setT(helpCommand);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(helpCommand);
         return commandResult;
     }
 

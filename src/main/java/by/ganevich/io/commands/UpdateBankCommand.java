@@ -21,14 +21,12 @@ public class UpdateBankCommand extends BaseCommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "updateBank bankName=? newBankName=? "
                 + "newIndividualCommission=? newIndustrialCommission=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -50,7 +48,8 @@ public class UpdateBankCommand extends BaseCommand {
         industrialCommission.setBank(bank);
         commissionService.saveCommission(industrialCommission);
 
-        commandResult.setT(bank);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(bank);
         return commandResult;
     }
 

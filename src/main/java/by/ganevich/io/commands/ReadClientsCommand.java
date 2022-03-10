@@ -18,14 +18,14 @@ public class ReadClientsCommand implements ICommand {
     private final String commandName = "readClients";
 
     private final ClientService clientService;
-    private final CommandResult commandResult;
 
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         List<Client> clients = clientService.readClients();
 
-        commandResult.setT(clients);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(clients);
         return commandResult;
     }
 }

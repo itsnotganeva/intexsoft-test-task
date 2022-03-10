@@ -25,14 +25,12 @@ public class MakeTransactionCommand extends BaseCommand {
     private final BankService bankService;
     private final BankAccountService bankAccountService;
     private final TransactionService transactionService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "makeTransaction senderName=? senderBankName=?"
                 + " receiverName=? receiverBankName=? amountOfMoney=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -47,7 +45,11 @@ public class MakeTransactionCommand extends BaseCommand {
 
         transactionService.sendMoney(senderAccount,
                 receiverAccount, Double.valueOf(parameters.get("amountOfMoney")));
-        return null;
+
+        CommandResult commandResult = new CommandResult();
+        String result = "Transaction completed successfully!";
+        commandResult.setResult(result);
+        return commandResult;
     }
 
 }

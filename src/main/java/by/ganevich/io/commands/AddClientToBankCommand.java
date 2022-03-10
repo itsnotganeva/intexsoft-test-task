@@ -24,13 +24,11 @@ public class AddClientToBankCommand extends BaseCommand {
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
-        String help = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
-        commandResult.setT(help);
-        return commandResult;
+    public String getDescriptionValue() {
+        String description = "addClientToBank clientName=? bankName=? currency=? amountOfMoney=?";
+        return description;
     }
 
     @Override
@@ -60,7 +58,8 @@ public class AddClientToBankCommand extends BaseCommand {
 
         bankAccountService.saveBankAccount(newBankAccount);
 
-        commandResult.setT(newBankAccount);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(newBankAccount);
         return commandResult;
     }
 

@@ -8,8 +8,12 @@ import java.util.Map;
 public abstract class BaseCommand implements ICommand {
 
     public CommandResult getDescription() {
-        return null;
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(getDescriptionValue());
+        return commandResult;
     }
+
+    public abstract String getDescriptionValue();
 
     public CommandResult execute(CommandDescriptor commandDescriptor) {
         Map<String, String> parameters = commandDescriptor.getParameters();
@@ -20,7 +24,5 @@ public abstract class BaseCommand implements ICommand {
         }
     }
 
-    public CommandResult doExecute(Map<String, String> parameters){
-        return null;
-    }
+    public abstract CommandResult doExecute(Map<String, String> parameters);
 }

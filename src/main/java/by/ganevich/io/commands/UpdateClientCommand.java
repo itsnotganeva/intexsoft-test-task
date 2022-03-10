@@ -18,13 +18,11 @@ public class UpdateClientCommand extends BaseCommand {
     private final String commandName = "updateClient";
 
     private final ClientService clientService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "updateClient clientName=? newClientName=? newType=individual/industrial";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -43,7 +41,8 @@ public class UpdateClientCommand extends BaseCommand {
 
         clientService.saveClient(client);
 
-        commandResult.setT(client);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(client);
         return commandResult;
     }
 

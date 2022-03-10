@@ -17,13 +17,11 @@ public class DeleteBankCommand extends BaseCommand {
     private final String commandName = "deleteBank";
 
     private final BankService bankService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "deleteBank bankName=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -32,7 +30,9 @@ public class DeleteBankCommand extends BaseCommand {
 
         bankService.removeBank(bank);
 
-        commandResult.setT(null);
+        CommandResult commandResult = new CommandResult();
+        String result = "Bank removed!";
+        commandResult.setResult(result);
         return commandResult;
     }
 }

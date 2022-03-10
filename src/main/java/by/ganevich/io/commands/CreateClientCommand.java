@@ -18,13 +18,11 @@ public class CreateClientCommand extends BaseCommand {
     private final String commandName = "createClient";
 
     private final ClientService clientService;
-    private final CommandResult commandResult;
 
     @Override
-    public CommandResult getDescription() {
+    public String getDescriptionValue() {
         String description = "createClient clientName=? type=?";
-        commandResult.setT(description);
-        return commandResult;
+        return description;
     }
 
     @Override
@@ -42,7 +40,8 @@ public class CreateClientCommand extends BaseCommand {
 
         clientService.saveClient(client);
 
-        commandResult.setT(client);
+        CommandResult commandResult = new CommandResult();
+        commandResult.setResult(client);
         return commandResult;
     }
 
