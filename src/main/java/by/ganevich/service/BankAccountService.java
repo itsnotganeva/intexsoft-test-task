@@ -6,12 +6,12 @@ import by.ganevich.entity.Client;
 import by.ganevich.repository.BankAccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-@Component
+@Service
 @AllArgsConstructor
 @Slf4j
 @Transactional
@@ -31,4 +31,11 @@ public class BankAccountService {
         return bankAccountRepository.findBankAccountByOwner(client);
     }
 
+    public Set<BankAccount> findBankAccountByClientId(Long id) {
+        return bankAccountRepository.findBankAccountByOwnerId(id);
+    }
+
+    public BankAccount findBankAccountByNumber(Integer number) {
+        return bankAccountRepository.findBankAccountByNumber(number);
+    }
 }

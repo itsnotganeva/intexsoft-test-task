@@ -18,5 +18,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @EntityGraph(value = "transactions-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
     Set<Transaction> findAllByDateBetweenAndReceiver(Date dateBefore, Date dateAfter, Client client);
 
+    Set<Transaction> findAllByDateBetweenAndSenderIdOrReceiverId(Date dateBefore, Date dateAfter,
+                                                                 Long senderId, Long receiverId);
+
 
 }

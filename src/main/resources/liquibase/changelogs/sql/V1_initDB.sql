@@ -14,6 +14,7 @@ CREATE TABLE banks
 CREATE TABLE bankAccounts
 (
     id bigserial PRIMARY KEY,
+    number int not null unique,
     currency varchar(255) not null,
     amountOfMoney real,
     bankId int not null,

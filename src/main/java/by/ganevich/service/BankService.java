@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +36,14 @@ public class BankService {
 
     public void removeBank(Bank bank) {
         bankRepository.delete(bank);
+    }
+
+    public Optional<Bank> findBankById(Long id) {
+        return bankRepository.findById(id);
+    }
+
+    public void deleteBankById(Long id) {
+        bankRepository.deleteById(id);
     }
 
 }
