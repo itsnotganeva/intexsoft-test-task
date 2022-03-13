@@ -1,7 +1,12 @@
 package by.ganevich.controller;
 
+import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
+import by.ganevich.mapper.IMapper;
 import by.ganevich.service.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,43 +17,76 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Client controller", description = "To manage clients")
 public class ClientController {
 
     private final ClientService clientService;
 
+    private final IMapper<ClientDto, Client> clientMapper;
+
     @PostMapping(value = "/clients")
-    public ResponseEntity<?> create(@RequestBody Client client) {
-        clientService.saveClient(client);
+    @Operation(
+            summary = "Client creation",
+            description = "Allows to create a new client"
+    )
+    public ResponseEntity<?> create(
+            @RequestBody @Parameter(description = "client to be added to the database")
+                    ClientDto clientDto
+    ) {
+        clientService.saveClient(clientMapper.toEntity(clientDto, Client.class));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/clients")
-    public ResponseEntity<List<Client>> read() {
+    @Operation(
+            summary = "Reading clients",
+            description = "Allows to read all clients"
+    )
+    public ResponseEntity<List<ClientDto>> read() {
         final List<Client> clients = clientService.readClients();
+        List<ClientDto> clientsDto = clientMapper.listToDto(clients, ClientDto.class);
 
-        return clients != null &&  !clients.isEmpty()
-                ? new ResponseEntity<>(clients, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(clientsDto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/clients/{id}")
-    public ResponseEntity<Optional<Client>> read(@PathVariable(name = "id") Long id) {
+    @Operation(
+            summary = "Reading client",
+            description = "Allows to read specific client by id"
+    )
+    public ResponseEntity<ClientDto> read(
+            @PathVariable(name = "id") @Parameter(description = "id of client") Long id
+    ) {
         final Optional<Client> client = clientService.findClientById(id);
+        ClientDto clientDto = clientMapper.optionalToDto(client, ClientDto.class);
 
-        return client != null
-                ? new ResponseEntity<>(client, HttpStatus.OK)
+        return clientDto != null
+                ? new ResponseEntity<>(clientDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/clients/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @RequestBody Client client) {
-        clientService.saveClient(client);
+    @Operation(
+            summary = "Client update",
+            description = "Allows to update specific client by id"
+    )
+    public ResponseEntity<?> update(
+            @PathVariable(name = "id") @Parameter(description = "id of client to update") Long id,
+            @RequestBody @Parameter(description = "updated client") ClientDto clientDto
+    ) {
+        clientService.saveClient(clientMapper.toEntity(clientDto, Client.class));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/clients/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
+    @Operation(
+            summary = "Client deletion",
+            description = "Allows to delete specific client by id"
+    )
+    public ResponseEntity<?> delete(
+            @PathVariable(name = "id") @Parameter(description = "id of client") Long id
+    ) {
         clientService.deleteClientById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);

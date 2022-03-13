@@ -18,10 +18,11 @@ public class BankService {
 
     private final BankRepository bankRepository;
 
-    public void saveBank(Bank bank) {
+    public Bank saveBank(Bank bank) {
         bankRepository.save(bank);
 
         log.info("Bank " + bank.getId() + " successfully created.");
+        return bank;
     }
 
     public List<Bank> readBanks() {

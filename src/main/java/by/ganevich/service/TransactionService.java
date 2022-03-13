@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -83,7 +84,7 @@ public class TransactionService {
         return transactions;
     }
 
-    public Set<Transaction> readAllByClientId (Date dateBefore, Date dateAfter, Long id) {
+    public List<Transaction> readAllByClientId (Date dateBefore, Date dateAfter, Long id) {
         return transactionRepository
                 .findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
     }

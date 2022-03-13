@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -18,8 +19,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @EntityGraph(value = "transactions-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
     Set<Transaction> findAllByDateBetweenAndReceiver(Date dateBefore, Date dateAfter, Client client);
 
-    Set<Transaction> findAllByDateBetweenAndSenderIdOrReceiverId(Date dateBefore, Date dateAfter,
-                                                                 Long senderId, Long receiverId);
+    List<Transaction> findAllByDateBetweenAndSenderIdOrReceiverId(Date dateBefore, Date dateAfter,
+                                                                  Long senderId, Long receiverId);
 
 
 }

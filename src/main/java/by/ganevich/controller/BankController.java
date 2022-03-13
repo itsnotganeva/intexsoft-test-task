@@ -1,7 +1,12 @@
 package by.ganevich.controller;
 
+import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
+import by.ganevich.mapper.IMapper;
 import by.ganevich.service.BankService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,43 +17,76 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Bank controller", description = "To manage banks")
 public class BankController {
 
     private final BankService bankService;
 
+    private final IMapper<BankDto, Bank> bankMapper;
+
     @PostMapping(value = "/banks")
-    public ResponseEntity<?> create(@RequestBody Bank bank) {
-        bankService.saveBank(bank);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @Operation(
+            summary = "Bank creation",
+            description = "Allows to create a new bank"
+    )
+    public BankDto create(
+            @RequestBody @Parameter(description = "bank to be added to the database")
+                    BankDto bankDto
+    ) {
+        return bankMapper
+                .toDto(bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class)), BankDto.class);
     }
 
     @GetMapping(value = "/banks")
-    public ResponseEntity<List<Bank>> read() {
+    @Operation(
+            summary = "Reading banks",
+            description = "Allows to read all banks"
+    )
+    public ResponseEntity<List<BankDto>> read() {
         final List<Bank> banks = bankService.readBanks();
+        List<BankDto> banksDto = bankMapper.listToDto(banks, BankDto.class);
 
-        return banks != null && !banks.isEmpty()
-                ? new ResponseEntity<>(banks, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(banksDto, HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/banks/{id}")
-    public ResponseEntity<Optional<Bank>> read(@PathVariable(name = "id") Long id) {
+    @Operation(
+            summary = "Reading bank",
+            description = "Allows to read specific bank by id"
+    )
+    public ResponseEntity<BankDto> read(
+            @PathVariable(name = "id") @Parameter(description = "id of bank") Long id
+    ) {
         final Optional<Bank> bank = bankService.findBankById(id);
+        BankDto bankDto = bankMapper.optionalToDto(bank, BankDto.class);
 
-        return bank != null
-                ? new ResponseEntity<>(bank, HttpStatus.OK)
+        return bankDto != null
+                ? new ResponseEntity<>(bankDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/banks/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @RequestBody Bank bank) {
-        bankService.saveBank(bank);
+    @Operation(
+            summary = "Bank update",
+            description = "Allows to update specific bank by id"
+    )
+    public ResponseEntity<?> update(
+            @PathVariable(name = "id") @Parameter(description = "id of bank to update") Long id,
+            @RequestBody @Parameter(description = "updated bank") BankDto bankDto) {
+        bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/banks/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
+    @Operation(
+            summary = "Bank deletion",
+            description = "Allows to delete specific bank by id"
+    )
+    public ResponseEntity<?> delete(
+            @PathVariable(name = "id") @Parameter(description = "id of bank") Long id
+    ) {
         bankService.deleteBankById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
