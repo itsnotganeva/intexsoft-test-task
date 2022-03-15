@@ -12,10 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class BankDto {
 
-    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(value = "name")
     private String name;
 
     @JsonProperty(value = "commissions")

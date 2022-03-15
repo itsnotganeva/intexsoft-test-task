@@ -11,19 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BankAccountDto {
 
-    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(value = "number")
     private Integer number;
 
-    @JsonProperty(value = "currency")
     private Currency currency;
 
-    @JsonProperty(value = "amountOfMoney")
     private Double amountOfMoney;
 
-    @JsonProperty(value = "owner")
     private ClientDto owner;
 
     @JsonProperty(value = "bank")

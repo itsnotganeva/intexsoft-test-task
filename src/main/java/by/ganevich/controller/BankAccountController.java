@@ -33,7 +33,7 @@ public class BankAccountController {
                     BankAccountDto bankAccountDto
     ) {
         bankAccountService.saveBankAccount(bankAccountMapper.toEntity(bankAccountDto, BankAccount.class));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/clients/{id}/bank-accounts")
@@ -45,13 +45,10 @@ public class BankAccountController {
             @PathVariable(name = "id") @Parameter(description = "id of client") Long id
     ) {
         final List<BankAccount> bankAccounts = bankAccountService.findBankAccountByClientId(id);
-
         List<BankAccountDto> bankAccountsDto
                 = bankAccountMapper.listToDto(bankAccounts, BankAccountDto.class);
 
-        return bankAccounts != null && !bankAccounts.isEmpty()
-                ? new ResponseEntity<>(bankAccountsDto, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(bankAccountsDto, HttpStatus.OK);
     }
 
 

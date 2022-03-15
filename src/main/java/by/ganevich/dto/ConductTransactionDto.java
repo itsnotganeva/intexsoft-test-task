@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommissionDto {
+public class ConductTransactionDto {
 
-    private Integer clientType;
+    private Integer senderAccountNumber;
 
-    private Double commission;
+    private Integer receiverAccountNumber;
+
+    private Double amountOfMoney;
+
 }
