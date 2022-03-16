@@ -6,13 +6,14 @@ import by.ganevich.entity.Transaction;
 import by.ganevich.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
-@Component
+@Service
 @AllArgsConstructor
 @Slf4j
 @Transactional
@@ -23,7 +24,10 @@ public class TransactionService {
     private final RateService rateService;
     private final CommissionService commissionService;
 
-    public void sendMoney(BankAccount senderAccount, BankAccount recipientAccount, Double sumOfMoney) {
+    public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
+
+        BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
+        BankAccount recipientAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
 
         Double senderSum = senderAccount.getAmountOfMoney();
         Double recipientSum = recipientAccount.getAmountOfMoney();
@@ -80,4 +84,8 @@ public class TransactionService {
         return transactions;
     }
 
+    public List<Transaction> readAllByClientId (Date dateBefore, Date dateAfter, Long id) {
+        return transactionRepository
+                .findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
+    }
 }

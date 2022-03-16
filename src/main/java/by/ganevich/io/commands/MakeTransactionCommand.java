@@ -1,7 +1,5 @@
 package by.ganevich.io.commands;
 
-import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankAccountService;
@@ -28,23 +26,23 @@ public class MakeTransactionCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "makeTransaction senderName=? senderBankName=?"
-                + " receiverName=? receiverBankName=? amountOfMoney=?";
+        String description = "makeTransaction senderName=? senderAccountNumber=?"
+                + " receiverName=? receiverAccountNumber=? amountOfMoney=?";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
         Client sender = clientService.findClientByName(parameters.get("senderName"));
-        Bank senderBank = bankService.findBankByName(parameters.get("senderBankName"));
-        BankAccount senderAccount = bankAccountService.getAccountByClientAndBank(sender, senderBank);
+        Integer senderAccountNumber = Integer.parseInt(parameters.get("senderAccountNumber"));
+//        BankAccount senderAccount = bankAccountService.getAccountByClientAndBank(sender, senderBank);
 
         Client receiver = clientService.findClientByName(parameters.get("receiverName"));
-        Bank receiverBank = bankService.findBankByName(parameters.get("receiverBankName"));
-        BankAccount receiverAccount = bankAccountService.getAccountByClientAndBank(receiver, receiverBank);
+        Integer receiverAccountNumber = Integer.parseInt(parameters.get("receiverAccountNumber"));
+//        BankAccount receiverAccount = bankAccountService.getAccountByClientAndBank(receiver, receiverBank);
 
-        transactionService.sendMoney(senderAccount,
-                receiverAccount, Double.valueOf(parameters.get("amountOfMoney")));
+        transactionService.sendMoney(senderAccountNumber,
+                receiverAccountNumber, Double.valueOf(parameters.get("amountOfMoney")));
 
         CommandResult commandResult = new CommandResult();
         String result = "Transaction completed successfully!";
