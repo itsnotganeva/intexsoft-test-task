@@ -3,7 +3,7 @@ package by.ganevich.controller;
 import by.ganevich.dto.ConductTransactionDto;
 import by.ganevich.dto.TransactionDto;
 import by.ganevich.entity.Transaction;
-import by.ganevich.mapper.IMapper;
+import by.ganevich.mapper.interfaces.TransactionListMapperImpl;
 import by.ganevich.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,7 +23,7 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    private final IMapper<TransactionDto, Transaction> transactionMapper;
+    private final TransactionListMapperImpl transactionListMapper;
 
     @GetMapping(value = "/clients/{id}/transactions")
     @Operation(
@@ -39,7 +39,7 @@ public class TransactionController {
                 .readAllByClientId(Date.valueOf(dateBefore), Date.valueOf(dateAfter), id);
 
         List<TransactionDto> transactionsDto
-                = transactionMapper.listToDto(transactions, TransactionDto.class);
+                = transactionListMapper.toDtoList(transactions);
 
         return transactionsDto != null && !transactions.isEmpty()
                 ? new ResponseEntity<>(transactionsDto, HttpStatus.OK)

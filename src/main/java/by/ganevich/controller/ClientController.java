@@ -2,7 +2,8 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
-import by.ganevich.mapper.IMapper;
+import by.ganevich.mapper.interfaces.ClientListMapperImpl;
+import by.ganevich.mapper.interfaces.ClientMapperImpl;
 import by.ganevich.service.ClientService;
 import by.ganevich.validator.EntityValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,8 @@ public class ClientController {
     private final ClientService clientService;
     private final EntityValidator<Client> clientValidator;
 
-    private final IMapper<ClientDto, Client> clientMapper;
+    private final ClientMapperImpl clientMapper;
+    private final ClientListMapperImpl clientListMapper;
 
     @PostMapping(value = "/clients")
     @Operation(
@@ -35,7 +37,7 @@ public class ClientController {
             @RequestBody @Parameter(description = "client to be added to the database")
                     ClientDto clientDto
     ) {
-        Client client = clientMapper.toEntity(clientDto, Client.class);
+        Client client = clientMapper.toEntity(clientDto);
         if (!clientValidator.validateEntity(client)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -50,7 +52,7 @@ public class ClientController {
     )
     public ResponseEntity<List<ClientDto>> read() {
         final List<Client> clients = clientService.readClients();
-        List<ClientDto> clientsDto = clientMapper.listToDto(clients, ClientDto.class);
+        List<ClientDto> clientsDto = clientListMapper.toDtoList(clients);
 
         return new ResponseEntity<>(clientsDto, HttpStatus.OK);
     }
@@ -64,7 +66,7 @@ public class ClientController {
             @PathVariable(name = "id") @Parameter(description = "id of client") Long id
     ) {
         final Optional<Client> client = clientService.findClientById(id);
-        ClientDto clientDto = clientMapper.optionalToDto(client, ClientDto.class);
+        ClientDto clientDto = clientMapper.toDto(client.get());
 
         return clientDto != null
                 ? new ResponseEntity<>(clientDto, HttpStatus.OK)
@@ -80,7 +82,7 @@ public class ClientController {
             @PathVariable(name = "id") @Parameter(description = "id of client to update") Long id,
             @RequestBody @Parameter(description = "updated client") ClientDto clientDto
     ) {
-        Client client = clientMapper.toEntity(clientDto, Client.class);
+        Client client = clientMapper.toEntity(clientDto);
         if (!clientValidator.validateEntity(client)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
