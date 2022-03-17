@@ -2,8 +2,10 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
+import by.ganevich.entity.BankAccount;
 import by.ganevich.mapper.IMapper;
 import by.ganevich.service.BankService;
+import by.ganevich.validator.EntityValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class BankController {
 
     private final BankService bankService;
+    private final EntityValidator<Bank> bankValidator;
 
     private final IMapper<BankDto, Bank> bankMapper;
 
@@ -29,12 +32,16 @@ public class BankController {
             summary = "Bank creation",
             description = "Allows to create a new bank"
     )
-    public BankDto create(
+    public ResponseEntity<?> create(
             @RequestBody @Parameter(description = "bank to be added to the database")
                     BankDto bankDto
     ) {
-        return bankMapper
-                .toDto(bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class)), BankDto.class);
+        Bank bank = bankMapper.toEntity(bankDto, BankAccount.class);
+        if (!bankValidator.validateEntity(bank)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        bankService.saveBank(bank);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/banks")
@@ -74,8 +81,13 @@ public class BankController {
     public ResponseEntity<?> update(
             @PathVariable(name = "id") @Parameter(description = "id of bank to update") Long id,
             @RequestBody @Parameter(description = "updated bank") BankDto bankDto) {
-        bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class));
 
+        Bank bank = bankMapper.toEntity(bankDto, Bank.class);
+
+        if (!bankValidator.validateEntity(bank)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        bankService.saveBank(bank);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

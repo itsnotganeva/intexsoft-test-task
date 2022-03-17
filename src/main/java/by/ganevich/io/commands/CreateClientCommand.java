@@ -4,6 +4,7 @@ import by.ganevich.entity.Client;
 import by.ganevich.entity.ClientType;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.ClientService;
+import by.ganevich.validator.EntityValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class CreateClientCommand extends BaseCommand {
 
     private final String commandName = "createClient";
+    private final EntityValidator<Client> clientValidator;
 
     private final ClientService clientService;
 
@@ -36,6 +38,10 @@ public class CreateClientCommand extends BaseCommand {
             client.setType(ClientType.INDUSTRIAL);
         } else {
             throw new RuntimeException("CHOOSE individual OR industrial TO SET A TYPE!");
+        }
+
+        if (!clientValidator.validateEntity(client)) {
+            return null;
         }
 
         clientService.saveClient(client);

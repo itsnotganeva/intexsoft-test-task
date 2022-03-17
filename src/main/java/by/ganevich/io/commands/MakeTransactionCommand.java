@@ -1,6 +1,5 @@
 package by.ganevich.io.commands;
 
-import by.ganevich.entity.Client;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
@@ -26,20 +25,17 @@ public class MakeTransactionCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "makeTransaction senderName=? senderAccountNumber=?"
-                + " receiverName=? receiverAccountNumber=? amountOfMoney=?";
+        String description = "makeTransaction senderAccountNumber=? "
+                + "receiverAccountNumber=? amountOfMoney=?";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Client sender = clientService.findClientByName(parameters.get("senderName"));
-        Integer senderAccountNumber = Integer.parseInt(parameters.get("senderAccountNumber"));
-//        BankAccount senderAccount = bankAccountService.getAccountByClientAndBank(sender, senderBank);
 
-        Client receiver = clientService.findClientByName(parameters.get("receiverName"));
+        Integer senderAccountNumber = Integer.parseInt(parameters.get("senderAccountNumber"));
+
         Integer receiverAccountNumber = Integer.parseInt(parameters.get("receiverAccountNumber"));
-//        BankAccount receiverAccount = bankAccountService.getAccountByClientAndBank(receiver, receiverBank);
 
         transactionService.sendMoney(senderAccountNumber,
                 receiverAccountNumber, Double.valueOf(parameters.get("amountOfMoney")));

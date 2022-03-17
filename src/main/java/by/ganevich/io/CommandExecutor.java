@@ -10,7 +10,8 @@ public class CommandExecutor {
     private final CommandFactory commandFactory;
 
     CommandResult executeCommand(CommandDescriptor commandDescriptor) {
-        CommandResult commandResult = commandFactory.getCommand(commandDescriptor).execute(commandDescriptor);
+        CommandResult commandResult = commandFactory
+                .getCommand(commandDescriptor).execute(commandDescriptor);
         return commandResult;
     }
 }

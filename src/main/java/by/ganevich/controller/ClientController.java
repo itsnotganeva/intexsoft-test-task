@@ -4,6 +4,7 @@ import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
 import by.ganevich.mapper.IMapper;
 import by.ganevich.service.ClientService;
+import by.ganevich.validator.EntityValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class ClientController {
 
     private final ClientService clientService;
+    private final EntityValidator<Client> clientValidator;
 
     private final IMapper<ClientDto, Client> clientMapper;
 
@@ -33,7 +35,11 @@ public class ClientController {
             @RequestBody @Parameter(description = "client to be added to the database")
                     ClientDto clientDto
     ) {
-        clientService.saveClient(clientMapper.toEntity(clientDto, Client.class));
+        Client client = clientMapper.toEntity(clientDto, Client.class);
+        if (!clientValidator.validateEntity(client)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        clientService.saveClient(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -74,7 +80,11 @@ public class ClientController {
             @PathVariable(name = "id") @Parameter(description = "id of client to update") Long id,
             @RequestBody @Parameter(description = "updated client") ClientDto clientDto
     ) {
-        clientService.saveClient(clientMapper.toEntity(clientDto, Client.class));
+        Client client = clientMapper.toEntity(clientDto, Client.class);
+        if (!clientValidator.validateEntity(client)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        clientService.saveClient(client);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

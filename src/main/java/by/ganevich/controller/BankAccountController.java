@@ -4,6 +4,7 @@ import by.ganevich.dto.BankAccountDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.mapper.IMapper;
 import by.ganevich.service.BankAccountService;
+import by.ganevich.validator.EntityValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +21,7 @@ import java.util.List;
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
+    private final EntityValidator<BankAccount> bankAccountValidator;
 
     private final IMapper<BankAccountDto, BankAccount> bankAccountMapper;
 
@@ -32,7 +34,11 @@ public class BankAccountController {
             @RequestBody @Parameter(description = "bank account to be added to the database")
                     BankAccountDto bankAccountDto
     ) {
-        bankAccountService.saveBankAccount(bankAccountMapper.toEntity(bankAccountDto, BankAccount.class));
+        BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto, BankAccount.class);
+        if (!bankAccountValidator.validateEntity(bankAccount)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        bankAccountService.saveBankAccount(bankAccount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

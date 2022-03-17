@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -34,12 +36,14 @@ public class BankAccount {
     private Long id;
 
     @Column(name = "number")
+    @NotNull
     private Integer number;
 
     @Column(name = "currency")
     private Currency currency;
 
     @Column(name = "amountOfMoney")
+    @NotNull
     private Double amountOfMoney;
 
     @ManyToOne(
@@ -47,6 +51,7 @@ public class BankAccount {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "clientId")
+    @Valid
     private Client owner;
 
     @ManyToOne(
@@ -54,6 +59,7 @@ public class BankAccount {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "bankId")
+    @Valid
     private Bank bankProducer;
 
     @OneToMany(
@@ -61,6 +67,7 @@ public class BankAccount {
             fetch = FetchType.LAZY,
             mappedBy = "senderAccount"
     )
+    @Valid
     private Set<Transaction> sentTransactions;
 
     @OneToMany(
@@ -68,6 +75,7 @@ public class BankAccount {
             fetch = FetchType.LAZY,
             mappedBy = "receiverAccount"
     )
+    @Valid
     private Set<Transaction> receivedTransactions;
 
     @Override

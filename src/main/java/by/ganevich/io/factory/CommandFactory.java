@@ -1,6 +1,5 @@
 package by.ganevich.io.factory;
 
-import by.ganevich.exception.CommandNotFoundException;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.commands.*;
 import lombok.AllArgsConstructor;
@@ -56,10 +55,6 @@ public class CommandFactory {
     public ICommand getCommand(CommandDescriptor commandDescriptor) {
 
         ICommand command = commands.get(commandDescriptor.getCommandName());
-
-        if (command == null) {
-            throw new CommandNotFoundException("Wrong input of command! Try again!");
-        }
 
         return command;
     }

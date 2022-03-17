@@ -6,6 +6,7 @@ import by.ganevich.entity.Commission;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
+import by.ganevich.validator.EntityValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class UpdateBankCommand extends BaseCommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
+    private final EntityValidator<Bank> bankValidator;
+    private final EntityValidator<Commission> commissionValidator;
 
     @Override
     public String getDescriptionValue() {
@@ -34,18 +37,26 @@ public class UpdateBankCommand extends BaseCommand {
         Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
         bank.setName(parameters.get("newBankName"));
+
+        if (!bankValidator.validateEntity(bank)){
+            return null;
+        }
         bankService.saveBank(bank);
 
         Commission individualCommission = commissionService.findByBankAndClientType(bank, ClientType.INDIVIDUAL);
         individualCommission.setClientType(ClientType.INDIVIDUAL.ordinal());
         individualCommission.setCommission(Double.valueOf(parameters.get("newIndividualCommission")));
         individualCommission.setBank(bank);
-        commissionService.saveCommission(individualCommission);
 
         Commission industrialCommission = commissionService.findByBankAndClientType(bank, ClientType.INDUSTRIAL);
         industrialCommission.setClientType(ClientType.INDUSTRIAL.ordinal());
         industrialCommission.setCommission(Double.valueOf(parameters.get("newIndustrialCommission")));
         industrialCommission.setBank(bank);
+
+        if (!commissionValidator.validateEntity(individualCommission) || commissionValidator.validateEntity(industrialCommission)) {
+            return null;
+        }
+        commissionService.saveCommission(individualCommission);
         commissionService.saveCommission(industrialCommission);
 
         CommandResult commandResult = new CommandResult();

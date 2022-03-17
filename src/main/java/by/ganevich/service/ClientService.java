@@ -22,6 +22,7 @@ public class ClientService {
 
     public void saveClient(Client client) {
         clientRepository.save(client);
+        log.info("Client " + client.getId() + " successfully created.");
     }
 
     public List<Client> readClients() {

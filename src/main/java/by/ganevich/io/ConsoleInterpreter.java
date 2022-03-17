@@ -18,15 +18,23 @@ public class ConsoleInterpreter {
     public void invokeCommand() {
 
         while (true) {
+
             Scanner in = new Scanner(System.in);
 
             String command = in.nextLine();
 
-            CommandDescriptor commandDescriptor = consoleLineParser.parseInput(command);
+            if (command.isEmpty()) {
+                System.err.println("Input is empty! Try again!");
+            } else {
+                CommandDescriptor commandDescriptor = consoleLineParser.parseInput(command);
 
-            CommandResult commandResult = commandExecutor.executeCommand(commandDescriptor);
-
-            consoleCommandResultViewer.viewResult(commandResult);
+                try {
+                    CommandResult commandResult = commandExecutor.executeCommand(commandDescriptor);
+                    consoleCommandResultViewer.viewResult(commandResult);
+                } catch (NullPointerException e) {
+                    System.err.println("Wrong input of command! Try again!");
+                }
+            }
         }
     }
 }

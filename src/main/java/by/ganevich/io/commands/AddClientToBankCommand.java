@@ -8,6 +8,7 @@ import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
+import by.ganevich.validator.EntityValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class AddClientToBankCommand extends BaseCommand {
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
+    private final EntityValidator<BankAccount> bankAccountValidator;
 
     @Override
     public String getDescriptionValue() {
@@ -56,6 +58,9 @@ public class AddClientToBankCommand extends BaseCommand {
         clientService.saveClient(client);
         bankService.saveBank(bank);
 
+        if (!bankAccountValidator.validateEntity(newBankAccount)) {
+            return null;
+        }
         bankAccountService.saveBankAccount(newBankAccount);
 
         CommandResult commandResult = new CommandResult();
