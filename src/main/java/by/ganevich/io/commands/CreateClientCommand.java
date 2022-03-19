@@ -2,24 +2,34 @@ package by.ganevich.io.commands;
 
 import by.ganevich.entity.Client;
 import by.ganevich.entity.ClientType;
+import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.ClientService;
-import by.ganevich.validator.EntityValidator;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Component
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class CreateClientCommand extends BaseCommand {
 
     private final String commandName = "createClient";
-    private final EntityValidator<Client> clientValidator;
-
     private final ClientService clientService;
+
+    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
+    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+    @NotEmpty(message = "Name must not be empty")
+    private String clientName;
+
+    @Pattern(regexp = "^individual$|^industrial$")
+    @NotEmpty(message = "Type must not be empty")
+    private String type;
 
     @Override
     public String getDescriptionValue() {
@@ -36,12 +46,6 @@ public class CreateClientCommand extends BaseCommand {
             client.setType(ClientType.INDIVIDUAL);
         } else if (parameters.get("type").equals("industrial")) {
             client.setType(ClientType.INDUSTRIAL);
-        } else {
-            throw new RuntimeException("CHOOSE individual OR industrial TO SET A TYPE!");
-        }
-
-        if (!clientValidator.validateEntity(client)) {
-            return null;
         }
 
         clientService.saveClient(client);
@@ -51,4 +55,10 @@ public class CreateClientCommand extends BaseCommand {
         return commandResult;
     }
 
+    @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        this.clientName = commandDescriptor.getParameters().get("clientName");
+        this.type = commandDescriptor.getParameters().get("type");
+        return this;
+    }
 }

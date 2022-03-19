@@ -4,7 +4,7 @@ import by.ganevich.dto.BankAccountDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.mapper.IMapper;
 import by.ganevich.service.BankAccountService;
-import by.ganevich.validator.EntityValidator;
+import by.ganevich.validator.CommandValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +21,7 @@ import java.util.List;
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
-    private final EntityValidator<BankAccount> bankAccountValidator;
+    private final CommandValidator<BankAccount> bankAccountValidator;
 
     private final IMapper<BankAccountDto, BankAccount> bankAccountMapper;
 

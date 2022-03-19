@@ -17,31 +17,11 @@ public abstract class BaseCommand implements ICommand {
 
     public CommandResult execute(CommandDescriptor commandDescriptor) {
         Map<String, String> parameters = commandDescriptor.getParameters();
-        if (validate(commandDescriptor)) {
             if (parameters.containsValue("help")) {
                 return getDescription();
             } else {
-                try {
-                    return doExecute(parameters);
-                } catch (NumberFormatException e) {
-                    System.err.println("Wrong input of parameters!");
-                    return null;
-                }
+                return doExecute(parameters);
             }
-        } else {
-            return null;
-        }
-
-    }
-
-    public boolean validate(CommandDescriptor commandDescriptor) {
-        Map<String, String> parameters = commandDescriptor.getParameters();
-        if (parameters.containsValue("")) {
-            System.err.println("Fill in all command parameters");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public abstract CommandResult doExecute(Map<String, String> parameters);

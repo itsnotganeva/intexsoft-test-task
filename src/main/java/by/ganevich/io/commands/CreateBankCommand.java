@@ -3,28 +3,39 @@ package by.ganevich.io.commands;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
+import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
-import by.ganevich.validator.EntityValidator;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Component
-@AllArgsConstructor
 @Getter
-@Validated
+@RequiredArgsConstructor
 public class CreateBankCommand extends BaseCommand {
 
     private final BankService bankService;
     private final CommissionService commissionService;
-    private final EntityValidator<Bank> bankValidator;
-    private final EntityValidator<Commission> commissionValidator;
 
+    @Pattern(regexp = "[A-Z][a-z]*", message = "Bank name must start with a capital letter")
+    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+    @NotEmpty(message = "Name must not be empty")
+    private String bankName;
+
+    @Pattern(regexp = "\\(?\\d+\\.\\d+\\)?")
+    @NotEmpty(message = "Individual commission must not be empty")
+    private String individualCommission;
+
+    @Pattern(regexp = "\\(?\\d+\\.\\d+\\)?")
+    @NotEmpty(message = "Industrial commission must not be empty")
+    private String industrialCommission;
 
     private final String commandName = "createBank";
 
@@ -40,10 +51,6 @@ public class CreateBankCommand extends BaseCommand {
         Bank bank = new Bank();
         bank.setName(parameters.get("bankName"));
 
-        if (!bankValidator.validateEntity(bank)) {
-            return null;
-        }
-
         bankService.saveBank(bank);
 
         Commission individualCommission = new Commission();
@@ -57,9 +64,8 @@ public class CreateBankCommand extends BaseCommand {
         industrialCommission.setCommission(Double.valueOf(parameters.get("industrialCommission")));
         industrialCommission.setBank(bank);
 
-        if (!commissionValidator.validateEntity(individualCommission) || commissionValidator.validateEntity(industrialCommission)) {
-            return null;
-        }
+        bank.getCommissions().add(individualCommission);
+        bank.getCommissions().add(industrialCommission);
 
         commissionService.saveCommission(industrialCommission);
         commissionService.saveCommission(individualCommission);
@@ -67,5 +73,13 @@ public class CreateBankCommand extends BaseCommand {
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(bank);
         return commandResult;
+    }
+
+    @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        this.bankName = commandDescriptor.getParameters().get("bankName");
+        this.individualCommission = commandDescriptor.getParameters().get("individualCommission");
+        this.industrialCommission = commandDescriptor.getParameters().get("industrialCommission");
+        return this;
     }
 }

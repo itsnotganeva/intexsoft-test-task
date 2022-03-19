@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ConsoleCommandResultViewer {
 
-    public void viewResult(CommandResult commandResult) {
+    public void showResult(CommandResult commandResult) {
         System.out.println(commandResult.getResult().toString());
     }
 }

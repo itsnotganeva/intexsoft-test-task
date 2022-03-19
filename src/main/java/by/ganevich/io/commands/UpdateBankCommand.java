@@ -3,27 +3,47 @@ package by.ganevich.io.commands;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
+import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
-import by.ganevich.validator.EntityValidator;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Component
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class UpdateBankCommand extends BaseCommand {
 
     private final String commandName = "updateBank";
 
     private final BankService bankService;
     private final CommissionService commissionService;
-    private final EntityValidator<Bank> bankValidator;
-    private final EntityValidator<Commission> commissionValidator;
+
+    @Pattern(regexp = "[A-Z][a-z]*", message = "Bank name must start with a capital letter")
+    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+    @NotEmpty(message = "Name must not be empty")
+    private String bankName;
+
+    @Pattern(regexp = "[A-Z][a-z]*", message = "Bank name must start with a capital letter")
+    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+    @NotEmpty(message = "Name must not be empty")
+    private String newBankName;
+
+    @Pattern(regexp = "\"[-+]?[0-9]*\\\\.?[0-9]+([eE][-+]?[0-9]+)?\"")
+    @NotEmpty(message = "Individual commission must not be empty")
+    private String newIndividualCommission;
+
+    @Pattern(regexp = "\"[-+]?[0-9]*\\\\.?[0-9]+([eE][-+]?[0-9]+)?\"")
+    @NotEmpty(message = "Industrial commission must not be empty")
+    private String newIndustrialCommission;
+
 
     @Override
     public String getDescriptionValue() {
@@ -38,9 +58,6 @@ public class UpdateBankCommand extends BaseCommand {
 
         bank.setName(parameters.get("newBankName"));
 
-        if (!bankValidator.validateEntity(bank)){
-            return null;
-        }
         bankService.saveBank(bank);
 
         Commission individualCommission = commissionService.findByBankAndClientType(bank, ClientType.INDIVIDUAL);
@@ -53,9 +70,6 @@ public class UpdateBankCommand extends BaseCommand {
         industrialCommission.setCommission(Double.valueOf(parameters.get("newIndustrialCommission")));
         industrialCommission.setBank(bank);
 
-        if (!commissionValidator.validateEntity(individualCommission) || commissionValidator.validateEntity(industrialCommission)) {
-            return null;
-        }
         commissionService.saveCommission(individualCommission);
         commissionService.saveCommission(industrialCommission);
 
@@ -64,4 +78,12 @@ public class UpdateBankCommand extends BaseCommand {
         return commandResult;
     }
 
+    @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        this.bankName = commandDescriptor.getParameters().get("bankName");
+        this.newBankName = commandDescriptor.getParameters().get("newBankName");
+        this.newIndividualCommission = commandDescriptor.getParameters().get("newIndividualCommission");
+        this.newIndustrialCommission = commandDescriptor.getParameters().get("newIndustrialCommission");
+        return this;
+    }
 }

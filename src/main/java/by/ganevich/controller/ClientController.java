@@ -4,7 +4,7 @@ import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
 import by.ganevich.mapper.IMapper;
 import by.ganevich.service.ClientService;
-import by.ganevich.validator.EntityValidator;
+import by.ganevich.validator.CommandValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ClientController {
 
     private final ClientService clientService;
-    private final EntityValidator<Client> clientValidator;
+    private final CommandValidator<Client> clientValidator;
 
     private final IMapper<ClientDto, Client> clientMapper;
 

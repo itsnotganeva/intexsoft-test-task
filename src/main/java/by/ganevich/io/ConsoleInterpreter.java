@@ -27,10 +27,9 @@ public class ConsoleInterpreter {
                 System.err.println("Input is empty! Try again!");
             } else {
                 CommandDescriptor commandDescriptor = consoleLineParser.parseInput(command);
-
                 try {
                     CommandResult commandResult = commandExecutor.executeCommand(commandDescriptor);
-                    consoleCommandResultViewer.viewResult(commandResult);
+                    consoleCommandResultViewer.showResult(commandResult);
                 } catch (NullPointerException e) {
                     System.err.println("Wrong input of command! Try again!");
                 }

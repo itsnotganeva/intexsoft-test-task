@@ -20,6 +20,11 @@ public class ReadBanksCommand implements ICommand {
     private final BankService bankService;
 
     @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        return null;
+    }
+
+    @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         List<Bank> banks = bankService.readBanks();

@@ -24,12 +24,10 @@ public class ConsoleLineParser {
             parsedCommand = new HashMap<>();
             parsedCommand.put("help", "help");
         } else {
-
             for (String keyValue : input.substring(input.indexOf(" ")+1).split(" ")) {
                 String[] pairs = keyValue.split("=", 2);
                 parsedCommand.put(pairs[0], pairs.length == 1 ? "" : pairs[1]);
             }
-
         }
 
         commandDescriptor.setParameters(parsedCommand);
