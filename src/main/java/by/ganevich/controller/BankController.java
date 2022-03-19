@@ -2,10 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
-import by.ganevich.mapper.IMapper;
+import by.ganevich.mapper.interfaces.BankMapperImpl;
 import by.ganevich.service.BankService;
-import by.ganevich.validator.EntityValidator;
+import by.ganevich.validator.CommandValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +25,6 @@ public class BankController {
     private final CommandValidator<Bank> bankValidator;
 
     private final BankMapperImpl bankMapper;
-    private final BankListMapperImpl bankListMapper;
 
     @PostMapping(value = "/banks")
     @Operation(
@@ -52,10 +50,9 @@ public class BankController {
     )
     public ResponseEntity<List<BankDto>> read() {
         final List<Bank> banks = bankService.readBanks();
-        List<BankDto> banksDto = bankListMapper.toDtoList(banks);
+        List<BankDto> banksDto = bankMapper.toDtoList(banks);
 
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
-
     }
 
     @GetMapping(value = "/banks/{id}")

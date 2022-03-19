@@ -2,10 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankAccountDto;
 import by.ganevich.entity.BankAccount;
-import by.ganevich.mapper.IMapper;
+import by.ganevich.mapper.interfaces.BankAccountMapperImpl;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.validator.CommandValidator;
-import by.ganevich.validator.EntityValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +23,7 @@ public class BankAccountController {
     private final BankAccountService bankAccountService;
     private final CommandValidator<BankAccount> bankAccountValidator;
 
-    private final IMapper<BankAccountDto, BankAccount> bankAccountMapper;
+    private final BankAccountMapperImpl bankAccountMapper;
 
     @PostMapping(value = "/bank-accounts")
     @Operation(
@@ -53,7 +52,7 @@ public class BankAccountController {
     ) {
         final List<BankAccount> bankAccounts = bankAccountService.findBankAccountByClientId(id);
         List<BankAccountDto> bankAccountsDto
-                = bankAccountListMapper.toDtoList(bankAccounts);
+                = bankAccountMapper.toDtoList(bankAccounts);
 
         return new ResponseEntity<>(bankAccountsDto, HttpStatus.OK);
     }
