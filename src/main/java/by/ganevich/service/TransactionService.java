@@ -88,4 +88,12 @@ public class TransactionService {
         return transactionRepository
                 .findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
     }
+
+    public List<Transaction> readAll() {
+        return transactionRepository.findAll();
+    }
+
+    public void saveTransaction(Transaction transaction) {
+        transactionRepository.save(transaction);
+    }
 }

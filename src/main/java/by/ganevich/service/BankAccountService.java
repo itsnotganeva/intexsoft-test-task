@@ -39,4 +39,8 @@ public class BankAccountService {
     public BankAccount findBankAccountByNumber(Integer number) {
         return bankAccountRepository.findBankAccountByNumber(number);
     }
+
+    public List<BankAccount> readAll() {
+        return bankAccountRepository.findAll();
+    }
 }
