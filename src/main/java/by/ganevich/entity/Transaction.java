@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -30,7 +28,6 @@ public class    Transaction {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "senderId")
-    @Valid
     private Client sender;
 
     @ManyToOne(
@@ -38,7 +35,6 @@ public class    Transaction {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "receiverId")
-    @Valid
     private Client receiver;
 
     @ManyToOne(
@@ -46,7 +42,6 @@ public class    Transaction {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "senderAccountId")
-    @Valid
     private BankAccount senderAccount;
 
     @ManyToOne(
@@ -54,11 +49,9 @@ public class    Transaction {
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "receiverAccountId")
-    @Valid
     private BankAccount receiverAccount;
 
     @Column(name = "amountOfMoney")
-    @NotNull
     private Double amountOfMoney;
 
     @Column(name = "date")

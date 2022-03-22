@@ -13,10 +13,10 @@ VALUES ('Belarus');
 
 
 INSERT INTO bankAccounts(number, currency, amountOfMoney, bankId, clientId)
-VALUES (231, 0, 500, 1, 1);
+VALUES (23132, 0, 500, 1, 1);
 
 INSERT INTO bankAccounts(number, currency, amountOfMoney, bankId, clientId)
-VALUES (456, 1, 700, 2, 2);
+VALUES (45656, 1, 700, 2, 2);
 
 
 INSERT INTO commissionForClients(bankId, clientType, commission)

@@ -14,7 +14,7 @@ public class HelpCommand implements ICommand {
     private final String commandName = "help";
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return null;
     }
 

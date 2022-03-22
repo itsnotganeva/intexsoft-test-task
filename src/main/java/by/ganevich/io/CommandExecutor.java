@@ -2,7 +2,7 @@ package by.ganevich.io;
 
 import by.ganevich.io.commands.ICommand;
 import by.ganevich.io.factory.CommandFactory;
-import by.ganevich.validator.CommandValidator;
+import by.ganevich.validator.CustomValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CommandExecutor {
     private final CommandFactory commandFactory;
-    private final CommandValidator<ICommand> commandValidator;
+    private final CustomValidator<ICommand> customValidator;
 
     CommandResult executeCommand(CommandDescriptor commandDescriptor) throws IOException {
         ICommand command = commandFactory.getCommand(commandDescriptor);
@@ -21,12 +21,12 @@ public class CommandExecutor {
         if (commandDescriptor.getParameters().containsValue("help")) {
             return command.execute(commandDescriptor);
         } else {
-            command.setParameters(commandDescriptor);
-            if (commandValidator.validateCommand(command).isEmpty()) {
+            command.setDto(commandDescriptor);
+            if (customValidator.validateCommand(command).isEmpty()) {
                 return command.execute(commandDescriptor);
             } else {
                 CommandResult commandResult = new CommandResult();
-                commandResult.setResult(commandValidator.validateCommand(command));
+                commandResult.setResult(customValidator.validateCommand(command));
                 return commandResult;
             }
         }

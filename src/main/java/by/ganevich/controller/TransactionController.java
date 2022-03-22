@@ -3,8 +3,9 @@ package by.ganevich.controller;
 import by.ganevich.dto.ConductTransactionDto;
 import by.ganevich.dto.TransactionDto;
 import by.ganevich.entity.Transaction;
-import by.ganevich.mapper.interfaces.TransactionMapperImpl;
+import by.ganevich.mapper.interfaces.TransactionMapper;
 import by.ganevich.service.TransactionService;
+import by.ganevich.validator.CustomValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,8 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    private final TransactionMapperImpl transactionMapper;
+    private final CustomValidator<ConductTransactionDto> transactionValidator;
+    private final TransactionMapper transactionMapper;
 
     @GetMapping(value = "/clients/{id}/transactions")
     @Operation(
@@ -44,7 +46,6 @@ public class TransactionController {
         return transactionsDto != null && !transactions.isEmpty()
                 ? new ResponseEntity<>(transactionsDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
     @PostMapping(value = "/transactions")
@@ -56,10 +57,13 @@ public class TransactionController {
             @RequestBody @Parameter(description = "dto data to conduct transaction")
                     ConductTransactionDto conductTransactionDto
     ) {
+        if (!transactionValidator.validateDto(conductTransactionDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         transactionService.sendMoney(
-                        conductTransactionDto.getSenderAccountNumber(),
-                        conductTransactionDto.getReceiverAccountNumber(),
-                        conductTransactionDto.getAmountOfMoney()
+                        Integer.valueOf(conductTransactionDto.getSenderAccountNumber()),
+                        Integer.valueOf(conductTransactionDto.getReceiverAccountNumber()),
+                        Double.valueOf(conductTransactionDto.getAmountOfMoney())
                 );
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

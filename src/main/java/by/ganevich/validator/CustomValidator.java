@@ -13,9 +13,9 @@ import java.util.Set;
 
 @Component
 @AllArgsConstructor
-public class CommandValidator<T> {
+public class CustomValidator<T> {
 
-    public boolean validateEntity (T entity) {
+    public boolean validateDto (T entity) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
 

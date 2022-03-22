@@ -1,19 +1,21 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.ClientDto;
+import by.ganevich.dto.TransactionToViewDto;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,23 +29,10 @@ public class ReadTransactionsCommand extends BaseCommand {
     private final TransactionService transactionService;
     private final ClientService clientService;
 
-    @Pattern(regexp = "^sent$|^received$")
-    @NotEmpty(message = "Type must not be empty")
-    private String type;
+    private final ClientMapper clientMapper;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String clientName;
-
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
-    @NotEmpty(message = "DateBefore must not be empty")
-    private String dateBefore;
-
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
-    @NotEmpty(message = "DateAfter must not be empty")
-    private String dateAfter;
-
+    @Valid
+    private TransactionToViewDto transactionToViewDto;
 
     @Override
     public String getDescriptionValue() {
@@ -54,32 +43,38 @@ public class ReadTransactionsCommand extends BaseCommand {
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Client client = clientService.findClientByName(parameters.get("clientName"));
 
-        Date dateBefore = Date.valueOf(parameters.get("fromDate"));
-        Date dateAfter = Date.valueOf(parameters.get("toDate"));
+        CommandResult commandResult = new CommandResult();
+        Set<Transaction> transactions = new HashSet<>();
 
-        Set<Transaction> transactions = null;
+        Client client = clientMapper.toEntity(transactionToViewDto.getClient());
+        Date dateBefore = Date.valueOf(transactionToViewDto.getDateBefore());
+        Date dateAfter = Date.valueOf(transactionToViewDto.getDateAfter());
 
-        if (parameters.get("type").equals("sent")) {
+        if (transactionToViewDto.getType().equals("sent")) {
             transactions =
                     transactionService.readAllByDateAndSender(dateBefore, dateAfter, client);
-        } else if (parameters.get("type").equals("received")) {
+        } else if (transactionToViewDto.getType().equals("received")) {
             transactions =
                     transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
         }
 
-        CommandResult commandResult = new CommandResult();
         commandResult.setResult(transactions);
         return commandResult;
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.type = commandDescriptor.getParameters().get("type");
-        this.clientName = commandDescriptor.getParameters().get("clientName");
-        this.dateBefore = commandDescriptor.getParameters().get("dateBefore");
-        this.dateAfter = commandDescriptor.getParameters().get("dateAfter");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+        TransactionToViewDto transactionToViewDto = new TransactionToViewDto();
+        ClientDto clientDto = clientMapper
+                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+
+        transactionToViewDto.setClient(clientDto);
+        transactionToViewDto.setType(commandDescriptor.getParameters().get("type"));
+        transactionToViewDto.setDateBefore(commandDescriptor.getParameters().get("dateBefore"));
+        transactionToViewDto.setDateAfter(commandDescriptor.getParameters().get("dateAfter"));
+
+        this.transactionToViewDto = transactionToViewDto;
         return this;
     }
 }

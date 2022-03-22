@@ -1,17 +1,16 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
-import by.ganevich.entity.ClientType;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Component
@@ -21,33 +20,20 @@ public class CreateClientCommand extends BaseCommand {
 
     private final String commandName = "createClient";
     private final ClientService clientService;
+    private final ClientMapper clientMapper;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String clientName;
-
-    @Pattern(regexp = "^individual$|^industrial$")
-    @NotEmpty(message = "Type must not be empty")
-    private String type;
+    @Valid
+    private ClientDto clientDto;
 
     @Override
     public String getDescriptionValue() {
-        String description = "createClient clientName=? type=?";
+        String description = "createClient clientName=? type=INDIVIDUAL/INDUSTRIAL";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Client client = new Client();
-        client.setName(parameters.get("clientName"));
-
-        if (parameters.get("type").equals("individual")) {
-            client.setType(ClientType.INDIVIDUAL);
-        } else if (parameters.get("type").equals("industrial")) {
-            client.setType(ClientType.INDUSTRIAL);
-        }
-
+        Client client = clientMapper.toEntity(clientDto);
         clientService.saveClient(client);
 
         CommandResult commandResult = new CommandResult();
@@ -56,9 +42,12 @@ public class CreateClientCommand extends BaseCommand {
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.clientName = commandDescriptor.getParameters().get("clientName");
-        this.type = commandDescriptor.getParameters().get("type");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+        ClientDto clientDto = new ClientDto();
+        clientDto.setName(commandDescriptor.getParameters().get("clientName"));
+        clientDto.setType(commandDescriptor.getParameters().get("type"));
+
+        this.clientDto = clientDto;
         return this;
     }
 }

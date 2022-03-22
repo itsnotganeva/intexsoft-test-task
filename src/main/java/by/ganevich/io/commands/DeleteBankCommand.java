@@ -1,16 +1,17 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.BankMapper;
 import by.ganevich.service.BankService;
+import by.ganevich.service.CommissionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Component
@@ -19,13 +20,12 @@ import java.util.Map;
 public class DeleteBankCommand extends BaseCommand {
 
     private final String commandName = "deleteBank";
+    private final CommissionService commissionService;
     private final BankService bankService;
+    private final BankMapper bankMapper;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Bank name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String bankName;
-
+    @Valid
+    private BankDto bankDto;
 
     @Override
     public String getDescriptionValue() {
@@ -35,19 +35,30 @@ public class DeleteBankCommand extends BaseCommand {
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Bank bank = bankService.findBankByName(parameters.get("bankName"));
 
-        bankService.removeBank(bank);
+        String result;
+
+        Bank bank = bankMapper.toEntity(bankDto);
+        if (bank == null) {
+            result = "Bank already removed!";
+        } else {
+
+            bankService.removeBank(bank);
+            result = "Bank is successfully removed!";
+        }
 
         CommandResult commandResult = new CommandResult();
-        String result = "Bank removed!";
         commandResult.setResult(result);
         return commandResult;
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.bankName = commandDescriptor.getParameters().get("bankName");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+
+        BankDto bankDto = bankMapper
+                .toDto(bankService.findBankByName(commandDescriptor.getParameters().get("bankName")));
+        this.bankDto = bankDto;
+
         return this;
     }
 }
