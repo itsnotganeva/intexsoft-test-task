@@ -4,7 +4,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import by.ganevich.csv.CsvWriter;
-import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Transaction;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CsvTransactionMapper implements CsvMapper {
+public class CsvTransactionMapper implements CsvMapper<Transaction> {
     @Override
     public List<Transaction> toEntity(String fileName) throws FileNotFoundException {
         CsvToBean csv = new CsvToBean();
@@ -23,7 +22,7 @@ public class CsvTransactionMapper implements CsvMapper {
         CSVReader csvReader = new CSVReader(new FileReader(fileName));
 
         List<Transaction> transactions = new ArrayList<>();
-        List list = csv.parse(setColumMapping(), csvReader);
+        List list = csv.parse(setColumnMapping(), csvReader);
 
         for (Object object : list) {
             Transaction transaction = (Transaction) object;
@@ -42,7 +41,7 @@ public class CsvTransactionMapper implements CsvMapper {
         csvWriter.writeCsv(fileName, toCsv);
     }
 
-    private static ColumnPositionMappingStrategy setColumMapping()
+    private static ColumnPositionMappingStrategy setColumnMapping()
     {
         ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
         strategy.setType(Transaction.class);

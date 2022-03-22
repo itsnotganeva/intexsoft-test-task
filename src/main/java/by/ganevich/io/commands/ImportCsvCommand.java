@@ -1,5 +1,6 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.csv.CsvImporter;
 import by.ganevich.csv.csvMapper.*;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
@@ -27,59 +28,26 @@ import java.util.Map;
 public class ImportCsvCommand extends BaseCommand {
 
     private final String commandName = "importCsv";
-
-    private final ClientService clientService;
-    private final TransactionService transactionService;
-    private final BankService bankService;
-    private final BankAccountService bankAccountService;
-
-    @Pattern(regexp = "^clients$|^banks$|^bankAccounts$|^transactions$")
-    @NotEmpty(message = "TableName must not be empty")
-    private String tableName;
+    private final CsvImporter csvImporter;
 
     @Override
     public String getDescriptionValue() {
-        String description = "importCsv tableName=?";
+        String description = "importCsv";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws FileNotFoundException {
-        if (parameters.get("tableName").equals("clients")) {
-            CsvClientMapper clientMapper = new CsvClientMapper();
-            List<Client> clients = clientMapper.toEntity("importClients.csv");
-            for (Client c : clients) {
-                clientService.saveClient(c);
-            }
-        } else if (parameters.get("tableName").equals("banks")) {
-            CsvBankMapper bankMapper = new CsvBankMapper();
-            List<Bank> banks = bankMapper.toEntity("importBanks.csv");
-            for (Bank b : banks) {
-                bankService.saveBank(b);
-            }
-        } else if (parameters.get("tableName").equals("bankAccounts")) {
-            CsvBankAccountMapper bankAccountMapper = new CsvBankAccountMapper();
-            List<BankAccount> bankAccounts = bankAccountMapper
-                    .toEntity("importBankAccounts.csv");
-            for (BankAccount b : bankAccounts) {
-                bankAccountService.saveBankAccount(b);
-            }
-        } else if (parameters.get("tableName").equals("transactions")) {
-            CsvTransactionMapper transactionMapper = new CsvTransactionMapper();
-            List<Transaction> transactions = transactionMapper
-                    .toEntity("importTransactions.csv");
-            for (Transaction t : transactions) {
-                transactionService.saveTransaction(t);
-            }
-        }
+
+        csvImporter.importCsv();
+
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Import is complete!");
         return commandResult;
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.tableName = commandDescriptor.getParameters().get("tableName");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return this;
     }
 }

@@ -34,8 +34,7 @@ public class Bank {
 
     @OneToMany(
             mappedBy = "bank",
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL
     )
     private Set<Commission> commissions;
 

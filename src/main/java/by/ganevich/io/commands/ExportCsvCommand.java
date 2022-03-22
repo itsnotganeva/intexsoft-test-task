@@ -1,5 +1,6 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.csv.CsvExporter;
 import by.ganevich.csv.csvMapper.*;
 import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
@@ -28,57 +29,26 @@ import java.util.Map;
 public class ExportCsvCommand extends BaseCommand{
     private final String commandName = "exportCsv";
 
-    private final ClientService clientService;
-    private final TransactionService transactionService;
-    private final BankService bankService;
-    private final BankAccountService bankAccountService;
-
-    @Pattern(regexp = "^clients$|^banks$|^bankAccounts$|^transactions$")
-    @NotEmpty(message = "TableName must not be empty")
-    private String tableName;
+    private final CsvExporter csvExporter;
 
     @Override
     public String getDescriptionValue() {
-        String description = "exportCsv tableName=?";
+        String description = "exportCsv";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
 
-        if (parameters.get("tableName").equals("clients")) {
-            CsvClientMapper clientMapper = new CsvClientMapper();
-            List<Client> clients = clientService.readClients();
-            for (Client c : clients) {
-                clientMapper.toCsv("exportClients.csv", c);
-            }
-        } else if (parameters.get("tableName").equals("banks")) {
-            CsvBankMapper bankMapper = new CsvBankMapper();
-            List<Bank> banks = bankService.readBanks();
-            for (Bank b : banks) {
-                bankMapper.toCsv("exportBanks.csv", b);
-            }
-        } else if (parameters.get("tableName").equals("bankAccounts")) {
-            CsvBankAccountMapper bankAccountMapper = new CsvBankAccountMapper();
-            List<BankAccount> bankAccounts = bankAccountService.readAll();
-            for (BankAccount b : bankAccounts) {
-                bankAccountMapper.toCsv("exportBankAccounts.csv", b);
-            }
-        } else if (parameters.get("tableName").equals("transactions")) {
-            CsvTransactionMapper transactionMapper = new CsvTransactionMapper();
-            List<Transaction> transactions = transactionService.readAll();
-            for (Transaction t : transactions) {
-                transactionMapper.toCsv("exportTransactions.csv", t);
-            }
-        }
+        csvExporter.exportCsv();
+
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Export is complete!");
         return commandResult;
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.tableName = commandDescriptor.getParameters().get("tableName");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return this;
     }
 }

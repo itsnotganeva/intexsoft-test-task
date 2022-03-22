@@ -4,7 +4,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import by.ganevich.csv.CsvWriter;
-import by.ganevich.entity.Bank;
 import by.ganevich.entity.Client;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CsvClientMapper implements CsvMapper{
+public class CsvClientMapper implements CsvMapper<Client> {
     @Override
     public List<Client> toEntity(String fileName) throws FileNotFoundException {
         CsvToBean csv = new CsvToBean();
@@ -23,7 +22,7 @@ public class CsvClientMapper implements CsvMapper{
         CSVReader csvReader = new CSVReader(new FileReader(fileName));
 
         List<Client> clients = new ArrayList<>();
-        List list = csv.parse(setColumMapping(), csvReader);
+        List list = csv.parse(setColumnMapping(), csvReader);
         for (Object object : list) {
             Client client = (Client) object;;
             clients.add(client);
@@ -37,7 +36,7 @@ public class CsvClientMapper implements CsvMapper{
         csvWriter.writeCsv(fileName, toCsv);
     }
 
-    private static ColumnPositionMappingStrategy setColumMapping()
+    private static ColumnPositionMappingStrategy setColumnMapping()
     {
         ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
         strategy.setType(Client.class);
