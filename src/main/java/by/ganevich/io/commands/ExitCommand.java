@@ -14,7 +14,7 @@ public class ExitCommand implements ICommand {
     private final String commandName = "exit";
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return null;
     }
 

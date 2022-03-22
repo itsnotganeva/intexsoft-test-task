@@ -20,7 +20,7 @@ public class ReadBanksCommand implements ICommand {
     private final BankService bankService;
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return null;
     }
 

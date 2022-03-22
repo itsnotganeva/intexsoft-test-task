@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 
 @Data
 @NoArgsConstructor
@@ -12,5 +15,7 @@ public class CommissionDto {
 
     private Integer clientType;
 
-    private Double commission;
+    @Pattern(regexp = "\\(?\\d+\\.\\d+\\)?")
+    @NotEmpty(message = "Commission must not be empty")
+    private String commission;
 }

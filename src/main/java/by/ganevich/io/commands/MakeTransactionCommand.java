@@ -1,18 +1,14 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.ConductTransactionDto;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
-import by.ganevich.service.BankAccountService;
-import by.ganevich.service.BankService;
-import by.ganevich.service.ClientService;
 import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Component
@@ -22,23 +18,10 @@ public class MakeTransactionCommand extends BaseCommand {
 
     private final String commandName = "makeTransaction";
 
-    private final ClientService clientService;
-    private final BankService bankService;
-    private final BankAccountService bankAccountService;
     private final TransactionService transactionService;
 
-    @Size(min = 5, max = 5)
-    @NotEmpty(message = "Sender account number commission must not be empty")
-    private String senderAccountNumber;
-
-    @Size(min = 5, max = 5)
-    @NotEmpty(message = "Receiver account number commission must not be empty")
-    private String receiverAccountNumber;
-
-    @Pattern(regexp = "\"[-+]?[0-9]*\\\\.?[0-9]+([eE][-+]?[0-9]+)?\"")
-    @NotEmpty(message = "Amount of money must not be empty")
-    private String amountOfMoney;
-
+    @Valid
+    private ConductTransactionDto conductTransactionDto;
 
     @Override
     public String getDescriptionValue() {
@@ -50,12 +33,13 @@ public class MakeTransactionCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
-        Integer senderAccountNumber = Integer.parseInt(parameters.get("senderAccountNumber"));
+        Integer senderAccountNumber = Integer.parseInt(conductTransactionDto.getSenderAccountNumber());
 
-        Integer receiverAccountNumber = Integer.parseInt(parameters.get("receiverAccountNumber"));
+        Integer receiverAccountNumber = Integer.parseInt(conductTransactionDto.getReceiverAccountNumber());
 
-        transactionService.sendMoney(senderAccountNumber,
-                receiverAccountNumber, Double.valueOf(parameters.get("amountOfMoney")));
+        Double sum = Double.valueOf(conductTransactionDto.getAmountOfMoney());
+
+        transactionService.sendMoney(senderAccountNumber, receiverAccountNumber, sum);
 
         CommandResult commandResult = new CommandResult();
         String result = "Transaction completed successfully!";
@@ -64,10 +48,17 @@ public class MakeTransactionCommand extends BaseCommand {
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.senderAccountNumber = commandDescriptor.getParameters().get("senderAccountNumber");
-        this.receiverAccountNumber = commandDescriptor.getParameters().get("receiverAccountNumber");
-        this.amountOfMoney = commandDescriptor.getParameters().get("amountOfMoney");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+        ConductTransactionDto conductTransactionDto = new ConductTransactionDto();
+        conductTransactionDto
+                .setSenderAccountNumber(commandDescriptor.getParameters().get("senderAccountNumber"));
+
+        conductTransactionDto
+                .setReceiverAccountNumber(commandDescriptor.getParameters().get("receiverAccountNumber"));
+
+        conductTransactionDto.setAmountOfMoney(commandDescriptor.getParameters().get("amountOfMoney"));
+
+        this.conductTransactionDto = conductTransactionDto;
         return this;
     }
 }

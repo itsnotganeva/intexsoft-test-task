@@ -1,18 +1,18 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,11 +26,10 @@ public class ReadBankAccountsCommand extends BaseCommand {
     private final BankAccountService bankAccountService;
     private final ClientService clientService;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String clientName;
+    private final ClientMapper clientMapper;
 
+    @Valid
+    private ClientDto clientDto;
 
     @Override
     public String getDescriptionValue() {
@@ -40,18 +39,25 @@ public class ReadBankAccountsCommand extends BaseCommand {
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Client client = clientService.findClientByName(parameters.get("clientName"));
-
-        Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
 
         CommandResult commandResult = new CommandResult();
-        commandResult.setResult(bankAccounts);
-        return commandResult;
+        Client client = clientMapper.toEntity(clientDto);
+
+        if (client == null) {
+            commandResult.setResult("The entered client name does not exist!");
+            return commandResult;
+        } else {
+            Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
+            commandResult.setResult(bankAccounts);
+            return commandResult;
+        }
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.clientName = commandDescriptor.getParameters().get("clientName");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+        ClientDto clientDto = clientMapper
+                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+        this.clientDto = clientDto;
         return this;
     }
 }

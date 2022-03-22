@@ -1,17 +1,16 @@
 package by.ganevich.io.commands;
 
+import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
-import by.ganevich.entity.ClientType;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Component
@@ -22,39 +21,35 @@ public class UpdateClientCommand extends BaseCommand {
     private final String commandName = "updateClient";
     private final ClientService clientService;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String clientName;
+    private final ClientMapper clientMapper;
 
-    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-    @NotEmpty(message = "Name must not be empty")
-    private String newClientName;
+    @Valid
+    private ClientDto clientDto;
 
-    @Pattern(regexp = "^individual$|^industrial$")
-    @NotEmpty(message = "Type must not be empty")
-    private String newType;
+//    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
+//    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+//    @NotEmpty(message = "Name must not be empty")
+//    private String clientName;
+//
+//    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
+//    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
+//    @NotEmpty(message = "Name must not be empty")
+//    private String newClientName;
+//
+//    @Pattern(regexp = "^individual$|^industrial$")
+//    @NotEmpty(message = "Type must not be empty")
+//    private String newType;
 
 
     @Override
     public String getDescriptionValue() {
-        String description = "updateClient clientName=? newClientName=? newType=individual/industrial";
+        String description = "updateClient clientName=? newClientName=? newType=INDIVIDUAL/INDUSTRIAL";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
-        Client client = clientService.findClientByName(parameters.get("clientName"));
-
-        client.setName(parameters.get("newClientName"));
-
-        if (parameters.get("newType").equals("individual")) {
-            client.setType(ClientType.INDIVIDUAL);
-        } else if (parameters.get("newType").equals("industrial")) {
-            client.setType(ClientType.INDUSTRIAL);
-        }
-
+        Client client = clientMapper.toEntity(clientDto);
         clientService.saveClient(client);
 
         CommandResult commandResult = new CommandResult();
@@ -63,10 +58,14 @@ public class UpdateClientCommand extends BaseCommand {
     }
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
-        this.clientName = commandDescriptor.getParameters().get("clientName");
-        this.newClientName = commandDescriptor.getParameters().get("newClientName");
-        this.newType = commandDescriptor.getParameters().get("newType");
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
+        ClientDto clientDto = clientMapper
+                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+
+        clientDto.setName(commandDescriptor.getParameters().get("newClientName"));
+        clientDto.setType(commandDescriptor.getParameters().get("newType"));
+
+        this.clientDto = clientDto;
         return this;
     }
 }
