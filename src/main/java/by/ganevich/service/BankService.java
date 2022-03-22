@@ -19,9 +19,10 @@ public class BankService {
     private final BankRepository bankRepository;
 
     public Bank saveBank(Bank bank) {
-        bankRepository.save(bank);
 
+        bankRepository.save(bank);
         log.info("Bank " + bank.getId() + " successfully created.");
+
         return bank;
     }
 

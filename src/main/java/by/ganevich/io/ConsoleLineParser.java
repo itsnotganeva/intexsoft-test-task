@@ -2,10 +2,8 @@ package by.ganevich.io;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class ConsoleLineParser {
@@ -20,19 +18,19 @@ public class ConsoleLineParser {
 
         commandDescriptor.setCommandName(commandName);
 
-        Map<String, String> parsedCommand;
+        Map<String, String> parsedCommand = new HashMap<>();
 
         if (command.length > 1 && command[1].equals("help")) {
             parsedCommand = new HashMap<>();
             parsedCommand.put("help", "help");
         } else {
-            parsedCommand = Arrays.stream(command).map(elem -> elem.split("="))
-                    .filter(elem -> elem.length == 2)
-                    .collect(Collectors.toMap(e -> e[0], e -> e[1]));
-
+            for (String keyValue : input.substring(input.indexOf(" ")+1).split(" ")) {
+                String[] pairs = keyValue.split("=", 2);
+                parsedCommand.put(pairs[0], pairs.length == 1 ? "" : pairs[1]);
+            }
         }
-        commandDescriptor.setParameters(parsedCommand);
 
+        commandDescriptor.setParameters(parsedCommand);
         return commandDescriptor;
     }
 }

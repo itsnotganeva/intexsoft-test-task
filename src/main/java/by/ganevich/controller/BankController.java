@@ -2,8 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
-import by.ganevich.mapper.IMapper;
+import by.ganevich.mapper.interfaces.BankMapperImpl;
 import by.ganevich.service.BankService;
+import by.ganevich.validator.CommandValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,20 +22,25 @@ import java.util.Optional;
 public class BankController {
 
     private final BankService bankService;
+    private final CommandValidator<Bank> bankValidator;
 
-    private final IMapper<BankDto, Bank> bankMapper;
+    private final BankMapperImpl bankMapper;
 
     @PostMapping(value = "/banks")
     @Operation(
             summary = "Bank creation",
             description = "Allows to create a new bank"
     )
-    public BankDto create(
+    public ResponseEntity<?> create(
             @RequestBody @Parameter(description = "bank to be added to the database")
                     BankDto bankDto
     ) {
-        return bankMapper
-                .toDto(bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class)), BankDto.class);
+        Bank bank = bankMapper.toEntity(bankDto);
+        if (!bankValidator.validateEntity(bank)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        bankService.saveBank(bank);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/banks")
@@ -44,10 +50,9 @@ public class BankController {
     )
     public ResponseEntity<List<BankDto>> read() {
         final List<Bank> banks = bankService.readBanks();
-        List<BankDto> banksDto = bankMapper.listToDto(banks, BankDto.class);
+        List<BankDto> banksDto = bankMapper.toDtoList(banks);
 
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
-
     }
 
     @GetMapping(value = "/banks/{id}")
@@ -59,7 +64,7 @@ public class BankController {
             @PathVariable(name = "id") @Parameter(description = "id of bank") Long id
     ) {
         final Optional<Bank> bank = bankService.findBankById(id);
-        BankDto bankDto = bankMapper.optionalToDto(bank, BankDto.class);
+        BankDto bankDto = bankMapper.toDto(bank.get());
 
         return bankDto != null
                 ? new ResponseEntity<>(bankDto, HttpStatus.OK)
@@ -74,8 +79,13 @@ public class BankController {
     public ResponseEntity<?> update(
             @PathVariable(name = "id") @Parameter(description = "id of bank to update") Long id,
             @RequestBody @Parameter(description = "updated bank") BankDto bankDto) {
-        bankService.saveBank(bankMapper.toEntity(bankDto, Bank.class));
 
+        Bank bank = bankMapper.toEntity(bankDto);
+
+        if (!bankValidator.validateEntity(bank)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        bankService.saveBank(bank);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

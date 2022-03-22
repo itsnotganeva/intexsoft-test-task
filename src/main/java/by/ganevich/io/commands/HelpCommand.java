@@ -14,6 +14,11 @@ public class HelpCommand implements ICommand {
     private final String commandName = "help";
 
     @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        return null;
+    }
+
+    @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         String helpCommand = "createBank: command to create new bank \n"

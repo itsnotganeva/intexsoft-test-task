@@ -20,6 +20,11 @@ public class ReadClientsCommand implements ICommand {
     private final ClientService clientService;
 
     @Override
+    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+        return null;
+    }
+
+    @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
         List<Client> clients = clientService.readClients();
