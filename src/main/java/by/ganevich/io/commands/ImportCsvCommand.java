@@ -1,25 +1,16 @@
 package by.ganevich.io.commands;
 
-import by.ganevich.csv.CsvImporter;
-import by.ganevich.csv.csvMapper.*;
-import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
-import by.ganevich.entity.Client;
-import by.ganevich.entity.Transaction;
+import by.ganevich.csv.importCsv.BankAccountImporter;
+import by.ganevich.csv.importCsv.BankImporter;
+import by.ganevich.csv.importCsv.ClientImporter;
+import by.ganevich.csv.importCsv.TransactionImporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
-import by.ganevich.service.BankAccountService;
-import by.ganevich.service.BankService;
-import by.ganevich.service.ClientService;
-import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -28,7 +19,11 @@ import java.util.Map;
 public class ImportCsvCommand extends BaseCommand {
 
     private final String commandName = "importCsv";
-    private final CsvImporter csvImporter;
+
+    private final BankImporter bankImporter;
+    private final ClientImporter clientImporter;
+    private final BankAccountImporter bankAccountImporter;
+    private final TransactionImporter transactionImporter;
 
     @Override
     public String getDescriptionValue() {
@@ -39,7 +34,10 @@ public class ImportCsvCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws FileNotFoundException {
 
-        csvImporter.importCsv();
+        bankImporter.importCsv("importBanks.csv");
+        clientImporter.importCsv("importClients.scv");
+        bankAccountImporter.importCsv("importBankAccounts.csv");
+        transactionImporter.importCsv("importTransactions.csv");
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Import is complete!");

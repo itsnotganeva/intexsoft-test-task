@@ -6,7 +6,6 @@ import by.ganevich.validator.CustomValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Component

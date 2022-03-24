@@ -5,7 +5,6 @@ import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import by.ganevich.csv.CsvWriter;
 import by.ganevich.entity.BankAccount;
-
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;

@@ -33,6 +33,8 @@ public class HelpCommand implements ICommand {
         + "makeTransaction: command to make transaction \n"
         + "readTransactions: command to read transactions of client \n\n"
         + "readBankAccounts: command to read all bank accounts of client \n\n"
+        + "exportCsv: export data from db to csv files \n"
+        + "importCsv: import data from csv files to db \n\n"
         + "exit: command to exit from application";
 
         CommandResult commandResult = new CommandResult();

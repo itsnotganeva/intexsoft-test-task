@@ -1,26 +1,16 @@
 package by.ganevich.io.commands;
 
-import by.ganevich.csv.CsvExporter;
-import by.ganevich.csv.csvMapper.*;
-import by.ganevich.entity.Bank;
-import by.ganevich.entity.BankAccount;
-import by.ganevich.entity.Client;
-import by.ganevich.entity.Transaction;
+import by.ganevich.csv.exportCsv.BankAccountExporter;
+import by.ganevich.csv.exportCsv.BankExporter;
+import by.ganevich.csv.exportCsv.ClientExporter;
+import by.ganevich.csv.exportCsv.TransactionExporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
-import by.ganevich.service.BankAccountService;
-import by.ganevich.service.BankService;
-import by.ganevich.service.ClientService;
-import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,7 +19,10 @@ import java.util.Map;
 public class ExportCsvCommand extends BaseCommand{
     private final String commandName = "exportCsv";
 
-    private final CsvExporter csvExporter;
+    private final BankExporter bankExporter;
+    private final ClientExporter clientExporter;
+    private final BankAccountExporter bankAccountExporter;
+    private final TransactionExporter transactionExporter;
 
     @Override
     public String getDescriptionValue() {
@@ -40,7 +33,10 @@ public class ExportCsvCommand extends BaseCommand{
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
 
-        csvExporter.exportCsv();
+        bankExporter.doExport("exportBanks.csv");
+        clientExporter.doExport("exportClients.csv");
+        bankAccountExporter.doExport("exportBankAccounts.csv");
+        transactionExporter.doExport("exportTransactions.csv");
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Export is complete!");
