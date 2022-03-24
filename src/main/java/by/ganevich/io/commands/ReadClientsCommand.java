@@ -20,7 +20,7 @@ public class ReadClientsCommand implements ICommand {
     private final ClientService clientService;
 
     @Override
-    public ICommand setParameters(CommandDescriptor commandDescriptor) {
+    public ICommand setDto(CommandDescriptor commandDescriptor) {
         return null;
     }
 

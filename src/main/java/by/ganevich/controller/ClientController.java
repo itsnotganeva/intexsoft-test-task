@@ -2,9 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.ClientDto;
 import by.ganevich.entity.Client;
-import by.ganevich.mapper.interfaces.ClientMapperImpl;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
-import by.ganevich.validator.CommandValidator;
+import by.ganevich.validator.CustomValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +22,9 @@ import java.util.Optional;
 public class ClientController {
 
     private final ClientService clientService;
-    private final CommandValidator<Client> clientValidator;
+    private final CustomValidator<ClientDto> clientValidator;
 
-    private final ClientMapperImpl clientMapper;
+    private final ClientMapper clientMapper;
 
     @PostMapping(value = "/clients")
     @Operation(
@@ -35,10 +35,11 @@ public class ClientController {
             @RequestBody @Parameter(description = "client to be added to the database")
                     ClientDto clientDto
     ) {
-        Client client = clientMapper.toEntity(clientDto);
-        if (!clientValidator.validateEntity(client)) {
+
+        if (!clientValidator.validateDto(clientDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        Client client = clientMapper.toEntity(clientDto);
         clientService.saveClient(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -80,10 +81,10 @@ public class ClientController {
             @PathVariable(name = "id") @Parameter(description = "id of client to update") Long id,
             @RequestBody @Parameter(description = "updated client") ClientDto clientDto
     ) {
-        Client client = clientMapper.toEntity(clientDto);
-        if (!clientValidator.validateEntity(client)) {
+        if (!clientValidator.validateDto(clientDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        Client client = clientMapper.toEntity(clientDto);
         clientService.saveClient(client);
 
         return new ResponseEntity<>(HttpStatus.OK);

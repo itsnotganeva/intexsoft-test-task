@@ -30,4 +30,8 @@ public class CommissionService {
     public void saveCommission(Commission commission) {
         commissionRepository.save(commission);
     }
+
+    public void delete(Commission commission) {
+        commissionRepository.delete(commission);
+    }
 }

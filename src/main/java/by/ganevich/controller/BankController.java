@@ -2,9 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankDto;
 import by.ganevich.entity.Bank;
-import by.ganevich.mapper.interfaces.BankMapperImpl;
+import by.ganevich.mapper.interfaces.BankMapper;
 import by.ganevich.service.BankService;
-import by.ganevich.validator.CommandValidator;
+import by.ganevich.validator.CustomValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +22,9 @@ import java.util.Optional;
 public class BankController {
 
     private final BankService bankService;
-    private final CommandValidator<Bank> bankValidator;
+    private final CustomValidator<BankDto> bankValidator;
 
-    private final BankMapperImpl bankMapper;
+    private final BankMapper bankMapper;
 
     @PostMapping(value = "/banks")
     @Operation(
@@ -36,7 +36,7 @@ public class BankController {
                     BankDto bankDto
     ) {
         Bank bank = bankMapper.toEntity(bankDto);
-        if (!bankValidator.validateEntity(bank)) {
+        if (!bankValidator.validateDto(bankDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         bankService.saveBank(bank);
@@ -80,11 +80,10 @@ public class BankController {
             @PathVariable(name = "id") @Parameter(description = "id of bank to update") Long id,
             @RequestBody @Parameter(description = "updated bank") BankDto bankDto) {
 
-        Bank bank = bankMapper.toEntity(bankDto);
-
-        if (!bankValidator.validateEntity(bank)) {
+        if (!bankValidator.validateDto(bankDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        Bank bank = bankMapper.toEntity(bankDto);
         bankService.saveBank(bank);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,10 +1,14 @@
 package by.ganevich.dto;
 
-import by.ganevich.entity.Currency;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -13,14 +17,23 @@ public class BankAccountDto {
 
     private Long id;
 
-    private Integer number;
+    @Size(min = 5, max = 5)
+    @NotEmpty(message = "Account number must not be empty")
+    private String number;
 
-    private Currency currency;
+    @Pattern(regexp = "^USD$|^EUR$|^BYN$")
+    @NotEmpty(message = "Currency must not be empty")
+    private String currency;
 
-    private Double amountOfMoney;
+    @Pattern(regexp = "\\(?\\d+\\.\\d+\\)?")
+    @NotEmpty(message = "Amount of money must not be empty")
+    private String amountOfMoney;
 
+    @Valid
+    @NotNull(message = "Client with entered name not found!")
     private ClientDto owner;
 
-    @JsonProperty(value = "bank")
-    private BankDto bankDto;
+    @Valid
+    @NotNull(message = "Bank with entered name not found!")
+    private BankDto bankProducer;
 }

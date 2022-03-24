@@ -2,9 +2,9 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.BankAccountDto;
 import by.ganevich.entity.BankAccount;
-import by.ganevich.mapper.interfaces.BankAccountMapperImpl;
+import by.ganevich.mapper.interfaces.BankAccountMapper;
 import by.ganevich.service.BankAccountService;
-import by.ganevich.validator.CommandValidator;
+import by.ganevich.validator.CustomValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,9 +21,9 @@ import java.util.List;
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
-    private final CommandValidator<BankAccount> bankAccountValidator;
+    private final CustomValidator<BankAccountDto> bankAccountValidator;
 
-    private final BankAccountMapperImpl bankAccountMapper;
+    private final BankAccountMapper bankAccountMapper;
 
     @PostMapping(value = "/bank-accounts")
     @Operation(
@@ -34,10 +34,10 @@ public class BankAccountController {
             @RequestBody @Parameter(description = "bank account to be added to the database")
                     BankAccountDto bankAccountDto
     ) {
-        BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
-        if (!bankAccountValidator.validateEntity(bankAccount)) {
+        if (!bankAccountValidator.validateDto(bankAccountDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
         bankAccountService.saveBankAccount(bankAccount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
