@@ -15,11 +15,11 @@ import java.util.Set;
 @AllArgsConstructor
 public class CustomValidator<T> {
 
-    public boolean validateDto (T entity) {
+    public boolean validateDto (T dto) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
 
-        Set<ConstraintViolation<T>> validate = validator.validate(entity);
+        Set<ConstraintViolation<T>> validate = validator.validate(dto);
 
         if (validate.size() > 0) {
             for (ConstraintViolation<T> violation : validate) {
