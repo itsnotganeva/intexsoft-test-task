@@ -8,9 +8,7 @@ public abstract class CsvImporter {
     public void doImport(String fileName) throws IOException {
         importCsv(fileName);
         File file = new File(fileName);
-        if (file.delete()) {
-            System.out.println("DELETE");
-        } else System.out.println("NOT DELETE");
+        file.delete();
     }
 
 

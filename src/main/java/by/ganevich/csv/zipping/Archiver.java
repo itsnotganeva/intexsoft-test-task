@@ -50,7 +50,6 @@ public class Archiver {
 
     }
 
-
     public void putFileToZip(File file, ZipOutputStream zout) throws IOException {
         FileInputStream fis = new FileInputStream(file.getName());
         ZipEntry zipEntry = new ZipEntry(file.getName());
