@@ -6,7 +6,7 @@ import by.ganevich.service.BankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -17,7 +17,7 @@ public class BankImporter extends CsvImporter {
     private final BankService bankService;
 
     @Override
-    public void importCsv(String fileName) throws FileNotFoundException {
+    public void importCsv(String fileName) throws IOException {
         List<Bank> banks = bankMapper.toEntity(fileName);
         for (Bank b : banks) {
             bankService.saveBank(b);

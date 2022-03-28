@@ -6,7 +6,7 @@ import by.ganevich.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -17,7 +17,7 @@ public class TransactionImporter extends CsvImporter {
     private final CsvTransactionMapper transactionMapper;
 
     @Override
-    public void importCsv(String fileName) throws FileNotFoundException {
+    public void importCsv(String fileName) throws IOException {
         List<Transaction> transactions = transactionMapper
                 .toEntity(fileName);
         for (Transaction t : transactions) {

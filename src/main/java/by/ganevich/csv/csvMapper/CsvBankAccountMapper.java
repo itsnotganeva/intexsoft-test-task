@@ -7,7 +7,6 @@ import by.ganevich.csv.CsvWriter;
 import by.ganevich.entity.BankAccount;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.List;
 @Component
 public class CsvBankAccountMapper implements CsvMapper<BankAccount>{
     @Override
-    public List<BankAccount> toEntity(String fileName) throws FileNotFoundException {
+    public List<BankAccount> toEntity(String fileName) throws IOException {
         CsvToBean csv = new CsvToBean();
 
         CSVReader csvReader = new CSVReader(new FileReader(fileName));
@@ -27,6 +26,7 @@ public class CsvBankAccountMapper implements CsvMapper<BankAccount>{
             BankAccount bankAccount = (BankAccount) object;
             bankAccounts.add(bankAccount);
         }
+        csvReader.close();
         return bankAccounts;
     }
 

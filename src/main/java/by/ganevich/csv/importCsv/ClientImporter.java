@@ -6,7 +6,7 @@ import by.ganevich.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -17,7 +17,7 @@ public class ClientImporter extends CsvImporter {
     private final CsvClientMapper clientMapper;
 
     @Override
-    public void importCsv(String fileName) throws FileNotFoundException {
+    public void importCsv(String fileName) throws IOException {
         List<Client> clients = clientMapper.toEntity(fileName);
         for (Client c : clients) {
             clientService.saveClient(c);
