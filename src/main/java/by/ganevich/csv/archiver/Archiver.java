@@ -19,14 +19,12 @@ import java.util.zip.ZipOutputStream;
 @RequiredArgsConstructor
 public class Archiver {
 
-    private final List<CsvExporter> exporters;
-
     public void pack(Set<File> files) throws IOException {
 
         long millis = System.currentTimeMillis();
         Date date = new Date(millis);
 
-        try(ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("export(" + date.toString() + ").zip")))
+        try(ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("src\\main\\resources\\csv\\export(" + date.toString() + ").zip")))
         {
             for (File file : files) {
                 putFileToZip(file, zout);
@@ -53,7 +51,7 @@ public class Archiver {
 
     public void unpack() {
 
-        try(ZipInputStream zin = new ZipInputStream(new FileInputStream("import.zip")))
+        try(ZipInputStream zin = new ZipInputStream(new FileInputStream("src\\main\\resources\\csv\\import.zip")))
         {
             ZipEntry entry;
 
