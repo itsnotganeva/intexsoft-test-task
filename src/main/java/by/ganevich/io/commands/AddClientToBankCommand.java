@@ -48,10 +48,10 @@ public class AddClientToBankCommand extends BaseCommand {
 
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
 
-        clientService.saveClient(bankAccount.getOwner());
-        bankService.saveBank(bankAccount.getBankProducer());
+        clientService.save(bankAccount.getOwner());
+        bankService.save(bankAccount.getBankProducer());
 
-        bankAccountService.saveBankAccount(bankAccount);
+        bankAccountService.save(bankAccount);
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(bankAccount);

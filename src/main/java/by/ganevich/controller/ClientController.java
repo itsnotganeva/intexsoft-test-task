@@ -40,7 +40,7 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Client client = clientMapper.toEntity(clientDto);
-        clientService.saveClient(client);
+        clientService.save(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -50,7 +50,7 @@ public class ClientController {
             description = "Allows to read all clients"
     )
     public ResponseEntity<List<ClientDto>> read() {
-        final List<Client> clients = clientService.readClients();
+        final List<Client> clients = clientService.readAll();
         List<ClientDto> clientsDto = clientMapper.toDtoList(clients);
 
         return new ResponseEntity<>(clientsDto, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Client client = clientMapper.toEntity(clientDto);
-        clientService.saveClient(client);
+        clientService.save(client);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class TransactionService {
+public class TransactionService implements BaseService<Transaction> {
 
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
@@ -52,8 +52,8 @@ public class TransactionService {
             senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
             recipientAccount.setAmountOfMoney(recipientSum + convertSum);
 
-            bankAccountService.saveBankAccount(senderAccount);
-            bankAccountService.saveBankAccount(recipientAccount);
+            bankAccountService.save(senderAccount);
+            bankAccountService.save(recipientAccount);
 
             Transaction transaction = new Transaction();
             long millis = System.currentTimeMillis();
@@ -93,7 +93,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public void saveTransaction(Transaction transaction) {
+    public void save(Transaction transaction) {
         transactionRepository.save(transaction);
     }
 }

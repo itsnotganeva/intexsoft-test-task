@@ -1,6 +1,10 @@
 package by.ganevich.io.commands;
 
-import by.ganevich.csv.unzipping.Unarchiver;
+import by.ganevich.csv.archiver.Archiver;
+import by.ganevich.csv.importCsv.BankAccountImporter;
+import by.ganevich.csv.importCsv.BankImporter;
+import by.ganevich.csv.importCsv.ClientImporter;
+import by.ganevich.csv.importCsv.TransactionImporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;
@@ -17,7 +21,11 @@ public class ImportCsvCommand extends BaseCommand {
 
     private final String commandName = "importCsv";
 
-    private final Unarchiver unarchiver;
+    private final Archiver archiver;
+    private final BankImporter bankImporter;
+    private final ClientImporter clientImporter;
+    private final BankAccountImporter bankAccountImporter;
+    private final TransactionImporter transactionImporter;
 
     @Override
     public String getDescriptionValue() {
@@ -28,7 +36,12 @@ public class ImportCsvCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
 
-        unarchiver.unpack();
+        archiver.unpack();
+
+        bankImporter.importCsv("importBanks.csv");
+        clientImporter.importCsv("importClients.csv");
+        bankAccountImporter.importCsv("importBankAccounts.csv");
+        transactionImporter.importCsv("importTransactions.csv");
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Import is complete!");

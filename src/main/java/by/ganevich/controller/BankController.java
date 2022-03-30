@@ -39,7 +39,7 @@ public class BankController {
         if (!bankValidator.validateDto(bankDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        bankService.saveBank(bank);
+        bankService.save(bank);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -49,7 +49,7 @@ public class BankController {
             description = "Allows to read all banks"
     )
     public ResponseEntity<List<BankDto>> read() {
-        final List<Bank> banks = bankService.readBanks();
+        final List<Bank> banks = bankService.readAll();
         List<BankDto> banksDto = bankMapper.toDtoList(banks);
 
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
@@ -84,7 +84,7 @@ public class BankController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Bank bank = bankMapper.toEntity(bankDto);
-        bankService.saveBank(bank);
+        bankService.save(bank);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

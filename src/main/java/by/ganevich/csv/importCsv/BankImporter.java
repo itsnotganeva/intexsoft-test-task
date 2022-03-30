@@ -1,26 +1,26 @@
 package by.ganevich.csv.importCsv;
 
-import by.ganevich.csv.csvMapper.CsvBankMapper;
-import by.ganevich.entity.Bank;
+import by.ganevich.csv.csvMapper.BaseCsvMapper;
+import by.ganevich.csv.csvMapper.CsvBankCsvMapper;
 import by.ganevich.service.BankService;
+import by.ganevich.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class BankImporter extends CsvImporter {
 
-    private final CsvBankMapper bankMapper;
+    private final CsvBankCsvMapper bankMapper;
     private final BankService bankService;
 
     @Override
-    public void importCsv(String fileName) throws IOException {
-        List<Bank> banks = bankMapper.toEntity(fileName);
-        for (Bank b : banks) {
-            bankService.saveBank(b);
-        }
+    public BaseService getService() {
+        return this.bankService;
+    }
+
+    @Override
+    public BaseCsvMapper getMapper() {
+        return this.bankMapper;
     }
 }

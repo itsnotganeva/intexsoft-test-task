@@ -50,7 +50,7 @@ public class UpdateBankCommand extends BaseCommand {
             return commandResult;
         }
 
-        bankService.saveBank(bank);
+        bankService.save(bank);
 
         commandResult.setResult(bank);
         return commandResult;

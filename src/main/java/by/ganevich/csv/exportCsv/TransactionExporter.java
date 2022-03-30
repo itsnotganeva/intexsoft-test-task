@@ -1,26 +1,26 @@
 package by.ganevich.csv.exportCsv;
 
-import by.ganevich.csv.csvMapper.CsvTransactionMapper;
-import by.ganevich.entity.Transaction;
+import by.ganevich.csv.csvMapper.BaseCsvMapper;
+import by.ganevich.csv.csvMapper.CsvTransactionCsvMapper;
+import by.ganevich.service.BaseService;
 import by.ganevich.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class TransactionExporter extends CsvExporter {
 
     private final TransactionService transactionService;
-    private final CsvTransactionMapper transactionMapper;
+    private final CsvTransactionCsvMapper transactionMapper;
 
     @Override
-    public void exportCsv(String fileName) throws IOException {
-        List<Transaction> transactions = transactionService.readAll();
-        for (Transaction t : transactions) {
-        transactionMapper.toCsv(fileName, t);
+    public BaseService getService() {
+        return this.transactionService;
     }
+
+    @Override
+    public BaseCsvMapper getMapper() {
+        return this.transactionMapper;
     }
 }

@@ -1,9 +1,6 @@
-package by.ganevich.csv.zipping;
+package by.ganevich.csv.archiver;
 
-import by.ganevich.csv.exportCsv.BankAccountExporter;
-import by.ganevich.csv.exportCsv.BankExporter;
-import by.ganevich.csv.exportCsv.ClientExporter;
-import by.ganevich.csv.exportCsv.TransactionExporter;
+import by.ganevich.csv.exportCsv.CsvExporter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,42 +9,31 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @Component
 @RequiredArgsConstructor
 public class Archiver {
 
-    private final BankExporter bankExporter;
-    private final ClientExporter clientExporter;
-    private final BankAccountExporter bankAccountExporter;
-    private final TransactionExporter transactionExporter;
+    private final List<CsvExporter> exporters;
 
-    public void pack() throws IOException {
+    public void pack(Set<File> files) throws IOException {
 
         long millis = System.currentTimeMillis();
         Date date = new Date(millis);
 
-        File bankFile = bankExporter.doExport("exportBanks.csv");
-        File bankAccountFile = bankAccountExporter.doExport("exportBankAccounts.csv");
-        File clientFile = clientExporter.doExport("exportClients.csv");
-        File transactionFile = transactionExporter.doExport("exportTransactions.csv");
-
-
         try(ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("export(" + date.toString() + ").zip")))
         {
-            putFileToZip(bankFile, zout);
-            putFileToZip(bankAccountFile, zout);
-            putFileToZip(clientFile, zout);
-            putFileToZip(transactionFile, zout);
-
-        }
-        catch(Exception ex){
-
+            for (File file : files) {
+                putFileToZip(file, zout);
+            }
+        } catch(Exception ex){
             System.out.println(ex.getMessage());
         }
-
     }
 
     public void putFileToZip(File file, ZipOutputStream zout) throws IOException {
@@ -64,4 +50,27 @@ public class Archiver {
         file.delete();
     }
 
+
+    public void unpack() {
+
+        try(ZipInputStream zin = new ZipInputStream(new FileInputStream("import.zip")))
+        {
+            ZipEntry entry;
+
+            while((entry=zin.getNextEntry())!=null){
+                File file = new File(entry.getName());
+                FileOutputStream  os = new FileOutputStream(file);
+                for (int c = zin.read(); c != -1; c = zin.read()) {
+                    os.write(c);
+                }
+                os.flush();
+                zin.closeEntry();
+                os.close();
+            }
+
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
 }

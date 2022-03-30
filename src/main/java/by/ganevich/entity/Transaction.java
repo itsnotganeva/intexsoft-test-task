@@ -17,7 +17,7 @@ import java.sql.Date;
                 @NamedAttributeNode("receiver")
         }
 )
-public class    Transaction {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
