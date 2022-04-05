@@ -1,19 +1,18 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.csv.archiver.Archiver;
-import by.ganevich.csv.exportCsv.BankAccountExporter;
-import by.ganevich.csv.exportCsv.BankExporter;
-import by.ganevich.csv.exportCsv.ClientExporter;
-import by.ganevich.csv.exportCsv.TransactionExporter;
+import by.ganevich.csv.exportCsv.CsvExporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,10 +23,9 @@ public class ExportCsvCommand extends BaseCommand{
     private final String commandName = "exportCsv";
 
     private final Archiver archiver;
-    private final BankExporter bankExporter;
-    private final BankAccountExporter bankAccountExporter;
-    private final ClientExporter clientExporter;
-    private final TransactionExporter transactionExporter;
+
+    @Autowired
+    private List<CsvExporter> exporters;
 
     @Override
     public String getDescriptionValue() {
@@ -38,19 +36,13 @@ public class ExportCsvCommand extends BaseCommand{
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
 
-        File bankFile = bankExporter.exportCsv("exportBanks.csv");
-        File bankAccountFile = bankAccountExporter.exportCsv("exportBankAccounts.csv");
-        File clientFile = clientExporter.exportCsv("exportClients.csv");
-        File transactionFile = transactionExporter.exportCsv("exportTransactions.csv");
-
         Set<File> files = new HashSet<>();
-        files.add(bankFile);
-        files.add(bankAccountFile);
-        files.add(clientFile);
-        files.add(transactionFile);
+
+        for (CsvExporter exporter : exporters) {
+            files.add(exporter.exportCsv());
+        }
 
         archiver.pack(files);
-
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Export is complete!");

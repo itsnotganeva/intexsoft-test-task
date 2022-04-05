@@ -10,15 +10,17 @@ import java.util.List;
 
 public abstract class CsvExporter<T> {
 
+    public abstract String getFileName();
+
     public abstract BaseService getService();
 
     public abstract BaseCsvMapper getMapper();
 
-    public File exportCsv(String fileName) throws IOException {
-        File file = new File(fileName);
+    public File exportCsv() throws IOException {
+        File file = new File(getFileName());
         file.delete();
-        doExport(fileName);
-        File exportedFile = new File(fileName);
+        doExport(getFileName());
+        File exportedFile = new File(getFileName());
         return exportedFile;
     }
 

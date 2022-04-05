@@ -9,13 +9,15 @@ import java.util.List;
 
 public abstract class CsvImporter<T> {
 
+    public abstract String getFileName();
+
     public abstract BaseService getService();
 
     public abstract BaseCsvMapper getMapper();
 
-    public void importCsv(String fileName) throws IOException {
-        doImport(fileName);
-        File file = new File(fileName);
+    public void importCsv() throws IOException {
+        doImport(getFileName());
+        File file = new File(getFileName());
         file.delete();
     }
 

@@ -1,6 +1,5 @@
 package by.ganevich.csv.archiver;
 
-import by.ganevich.csv.exportCsv.CsvExporter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -21,8 +20,7 @@ public class Archiver {
 
     public void pack(Set<File> files) throws IOException {
 
-        long millis = System.currentTimeMillis();
-        Date date = new Date(millis);
+        LocalDate date = LocalDate.now();
 
         try(ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("src\\main\\resources\\csv\\export(" + date.toString() + ").zip")))
         {
@@ -34,7 +32,7 @@ public class Archiver {
         }
     }
 
-    public void putFileToZip(File file, ZipOutputStream zout) throws IOException {
+    private void putFileToZip(File file, ZipOutputStream zout) throws IOException {
         FileInputStream fis = new FileInputStream(file.getName());
         ZipEntry zipEntry = new ZipEntry(file.getName());
 
@@ -66,8 +64,7 @@ public class Archiver {
                 os.close();
             }
 
-        }
-        catch(Exception ex){
+        } catch(Exception ex){
             System.out.println(ex.getMessage());
         }
     }

@@ -1,17 +1,16 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.csv.archiver.Archiver;
-import by.ganevich.csv.importCsv.BankAccountImporter;
-import by.ganevich.csv.importCsv.BankImporter;
-import by.ganevich.csv.importCsv.ClientImporter;
-import by.ganevich.csv.importCsv.TransactionImporter;
+import by.ganevich.csv.importCsv.CsvImporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -22,10 +21,8 @@ public class ImportCsvCommand extends BaseCommand {
     private final String commandName = "importCsv";
 
     private final Archiver archiver;
-    private final BankImporter bankImporter;
-    private final ClientImporter clientImporter;
-    private final BankAccountImporter bankAccountImporter;
-    private final TransactionImporter transactionImporter;
+    @Autowired
+    private List<CsvImporter> importers;
 
     @Override
     public String getDescriptionValue() {
@@ -38,10 +35,9 @@ public class ImportCsvCommand extends BaseCommand {
 
         archiver.unpack();
 
-        bankImporter.importCsv("importBanks.csv");
-        clientImporter.importCsv("importClients.csv");
-        bankAccountImporter.importCsv("importBankAccounts.csv");
-        transactionImporter.importCsv("importTransactions.csv");
+        for (CsvImporter importer : importers) {
+            importer.importCsv();
+        }
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Import is complete!");
