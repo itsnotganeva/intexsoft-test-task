@@ -27,7 +27,7 @@ public class ReadClientsCommand implements ICommand {
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
-        List<Client> clients = clientService.readClients();
+        List<Client> clients = clientService.readAll();
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(clients);

@@ -42,7 +42,6 @@ public class DeleteBankCommand extends BaseCommand {
         if (bank == null) {
             result = "Bank already removed!";
         } else {
-
             bankService.removeBank(bank);
             result = "Bank is successfully removed!";
         }

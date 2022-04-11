@@ -38,7 +38,7 @@ public class BankAccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
-        bankAccountService.saveBankAccount(bankAccount);
+        bankAccountService.save(bankAccount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

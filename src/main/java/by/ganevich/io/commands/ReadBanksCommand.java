@@ -27,7 +27,7 @@ public class ReadBanksCommand implements ICommand {
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
-        List<Bank> banks = bankService.readBanks();
+        List<Bank> banks = bankService.readAll();
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(banks);

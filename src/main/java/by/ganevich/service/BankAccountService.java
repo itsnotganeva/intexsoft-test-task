@@ -16,11 +16,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class BankAccountService {
+public class BankAccountService implements BaseService<BankAccount> {
 
     private final BankAccountRepository bankAccountRepository;
 
-    public void saveBankAccount(BankAccount bankAccount) {
+    public void save(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);
     }
 
@@ -38,5 +38,9 @@ public class BankAccountService {
 
     public BankAccount findBankAccountByNumber(Integer number) {
         return bankAccountRepository.findBankAccountByNumber(number);
+    }
+
+    public List<BankAccount> readAll() {
+        return bankAccountRepository.findAll();
     }
 }

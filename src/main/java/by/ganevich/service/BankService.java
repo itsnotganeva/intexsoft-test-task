@@ -14,19 +14,16 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class BankService {
+public class BankService implements BaseService<Bank>{
 
     private final BankRepository bankRepository;
 
-    public Bank saveBank(Bank bank) {
-
+    public void save(Bank bank) {
         bankRepository.save(bank);
         log.info("Bank " + bank.getId() + " successfully created.");
-
-        return bank;
     }
 
-    public List<Bank> readBanks() {
+    public List<Bank> readAll() {
         List<Bank> banks = bankRepository.findAll();
         return banks;
     }

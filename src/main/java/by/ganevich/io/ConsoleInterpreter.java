@@ -4,6 +4,8 @@ import by.ganevich.io.factory.CommandFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 @RequiredArgsConstructor
@@ -30,8 +32,10 @@ public class ConsoleInterpreter {
                 try {
                     CommandResult commandResult = commandExecutor.executeCommand(commandDescriptor);
                     consoleCommandResultViewer.showResult(commandResult);
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | FileNotFoundException e) {
                     System.err.println("Wrong input of command! Try again!");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }

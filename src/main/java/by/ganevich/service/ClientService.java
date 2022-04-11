@@ -15,17 +15,17 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class ClientService {
+public class ClientService implements BaseService<Client> {
 
     private final ClientRepository clientRepository;
     private final BankAccountRepository bankAccountRepository;
 
-    public void saveClient(Client client) {
+    public void save(Client client) {
         clientRepository.save(client);
         log.info("Client " + client.getId() + " successfully created.");
     }
 
-    public List<Client> readClients() {
+    public List<Client> readAll() {
         List<Client> clients = clientRepository.findAll();
         return clients;
     }

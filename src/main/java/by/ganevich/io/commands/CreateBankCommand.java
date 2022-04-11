@@ -43,14 +43,14 @@ public class CreateBankCommand extends BaseCommand {
 
         Bank bank = bankMapper.toEntity(bankDto);
 
-        bankService.saveBank(bank);
+        bankService.save(bank);
 
         Set<Commission> commissions = bank.getCommissions();
 
-        for (Commission c : commissions) {
-            c.setBank(bank);
-            commissionService.saveCommission(c);
-        }
+//        for (Commission c : commissions) {
+//            c.setBank(bank);
+//            commissionService.saveCommission(c);
+//        }
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Bank is successfully created!");

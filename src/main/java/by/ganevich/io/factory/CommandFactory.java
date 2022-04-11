@@ -31,6 +31,9 @@ public class CommandFactory {
     private final HelpCommand helpCommand;
     private final ExitCommand exitCommand;
 
+    private final ImportCsvCommand importCsvCommand;
+    private final ExportCsvCommand exportCsvCommand;
+
     private Map<String, ICommand> commands;
 
     @PostConstruct
@@ -49,6 +52,8 @@ public class CommandFactory {
         commands.put(readBankAccountsCommand.getCommandName(), readBankAccountsCommand);
         commands.put(helpCommand.getCommandName(), helpCommand);
         commands.put(exitCommand.getCommandName(), exitCommand);
+        commands.put(importCsvCommand.getCommandName(), importCsvCommand);
+        commands.put(exportCsvCommand.getCommandName(), exportCsvCommand);
         return commands;
     }
 

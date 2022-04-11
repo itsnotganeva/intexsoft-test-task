@@ -6,13 +6,15 @@ import by.ganevich.validator.CustomValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @AllArgsConstructor
 public class CommandExecutor {
     private final CommandFactory commandFactory;
     private final CustomValidator<ICommand> customValidator;
 
-    CommandResult executeCommand(CommandDescriptor commandDescriptor) {
+    CommandResult executeCommand(CommandDescriptor commandDescriptor) throws IOException {
         ICommand command = commandFactory.getCommand(commandDescriptor);
 
         if (commandDescriptor.getParameters().containsValue("help")) {

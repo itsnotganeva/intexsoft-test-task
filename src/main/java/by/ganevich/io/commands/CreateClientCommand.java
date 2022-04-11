@@ -34,7 +34,7 @@ public class CreateClientCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
         Client client = clientMapper.toEntity(clientDto);
-        clientService.saveClient(client);
+        clientService.save(client);
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(client);
