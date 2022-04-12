@@ -14,6 +14,7 @@ import by.ganevich.service.BankService;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class AddClientToBankCommand extends BaseCommand {
 
@@ -49,6 +51,7 @@ public class AddClientToBankCommand extends BaseCommand {
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
 
         clientService.save(bankAccount.getOwner());
+
         bankService.save(bankAccount.getBankProducer());
 
         bankAccountService.save(bankAccount);

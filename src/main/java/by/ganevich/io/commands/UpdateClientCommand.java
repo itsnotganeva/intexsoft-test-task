@@ -26,21 +26,6 @@ public class UpdateClientCommand extends BaseCommand {
     @Valid
     private ClientDto clientDto;
 
-//    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-//    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-//    @NotEmpty(message = "Name must not be empty")
-//    private String clientName;
-//
-//    @Pattern(regexp = "[A-Z][a-z]*", message = "Client name must start with a capital letter")
-//    @Size(min = 2, max = 25, message = "Name length must be between 2 and 25")
-//    @NotEmpty(message = "Name must not be empty")
-//    private String newClientName;
-//
-//    @Pattern(regexp = "^individual$|^industrial$")
-//    @NotEmpty(message = "Type must not be empty")
-//    private String newType;
-
-
     @Override
     public String getDescriptionValue() {
         String description = "updateClient clientName=? newClientName=? newType=INDIVIDUAL/INDUSTRIAL";

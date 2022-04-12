@@ -26,6 +26,8 @@ public class TransactionService implements BaseService<Transaction> {
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
+        log.info("sendMoney of transactionService is called.");
+
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
         BankAccount recipientAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
 
@@ -65,35 +67,49 @@ public class TransactionService implements BaseService<Transaction> {
             transaction.setReceiver(recipientAccount.getOwner());
             transactionRepository.save(transaction);
 
+            log.info("Transaction from " + senderAccount.getOwner() + " to " + recipientAccount.getOwner() + "was carried successfully.");
         }
     }
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
 
+        log.info("readAllByDateAndSender of transactionService is called.");
+
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndSender(dateBefore, dateAfter, client);
+
+        log.info("Transactions of sender " + client.getName() + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
 
     public Set<Transaction> readAllByDateAndReceiver(Date dateBefore, Date dateAfter, Client client) {
 
+        log.info("readAllByDateAndReceiver of transactionService is called.");
+
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndReceiver(dateBefore, dateAfter, client);
+        log.info("Transactions of receiver " + client.getName() + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
 
     public List<Transaction> readAllByClientId (Date dateBefore, Date dateAfter, Long id) {
-        return transactionRepository
-                .findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
+        List<Transaction> transactions =
+                transactionRepository.findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
+
+        log.info("Transactions of client " + id + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
+        return transactions;
     }
 
     public List<Transaction> readAll() {
-        return transactionRepository.findAll();
+        List<Transaction> transactions = transactionRepository.findAll();
+        log.info("The list of all transactions in successfully read.");
+        return transactions;
     }
 
     public void save(Transaction transaction) {
         transactionRepository.save(transaction);
+        log.info("Transactions is saved");
     }
 }

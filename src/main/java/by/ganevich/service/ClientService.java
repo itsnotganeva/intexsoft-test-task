@@ -21,29 +21,40 @@ public class ClientService implements BaseService<Client> {
     private final BankAccountRepository bankAccountRepository;
 
     public void save(Client client) {
+        log.info("Save of clientService is called");
         clientRepository.save(client);
         log.info("Client " + client.getId() + " successfully created.");
     }
 
     public List<Client> readAll() {
+        log.info("readAll of clientService is called.");
         List<Client> clients = clientRepository.findAll();
+        log.info("The list of clients is successfully read.");
         return clients;
     }
 
     public Client findClientByName(String name) {
-        return clientRepository.findByName(name);
+        log.info("findClientByName of clientService is called");
+        Client client = clientRepository.findByName(name);
+        log.info("Client with name " + name + "is successfully found.");
+        return client;
     }
 
     public void removeClient(Client client) {
+        log.info("removeClient of clientService is called");
         clientRepository.delete(client);
+        log.info("Client " + client.getId()+ " successfully removed.");
     }
 
     public Optional<Client> findClientById(Long id) {
-        return clientRepository.findById(id);
+        Optional<Client> client = clientRepository.findById(id);
+        log.info("Client " + id + " successfully found.");
+        return client;
     }
 
     public void deleteClientById(Long id) {
         clientRepository.deleteById(id);
+        log.info("Client wit id " + id + " successfully removed.");
     }
 
 }
