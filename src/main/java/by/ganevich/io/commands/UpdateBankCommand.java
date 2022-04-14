@@ -10,6 +10,7 @@ import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class UpdateBankCommand extends BaseCommand {
 
@@ -42,6 +44,8 @@ public class UpdateBankCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Update bank command is called");
+
         CommandResult commandResult = new CommandResult();
 
         Bank bank = bankMapper.toEntity(bankDto);
@@ -53,6 +57,8 @@ public class UpdateBankCommand extends BaseCommand {
         bankService.save(bank);
 
         commandResult.setResult(bank);
+
+        log.info("Update bank command is complete");
         return commandResult;
     }
 

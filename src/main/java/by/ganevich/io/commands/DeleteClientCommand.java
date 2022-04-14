@@ -8,6 +8,7 @@ import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class DeleteClientCommand extends BaseCommand {
 
@@ -35,6 +37,8 @@ public class DeleteClientCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Delete client command is called");
+
         String result;
 
         Client client = clientMapper.toEntity(clientDto);
@@ -47,6 +51,8 @@ public class DeleteClientCommand extends BaseCommand {
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(result);
+
+        log.info("Delete client command is complete");
         return commandResult;
     }
 

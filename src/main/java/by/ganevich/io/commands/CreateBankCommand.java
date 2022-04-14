@@ -3,7 +3,6 @@ package by.ganevich.io.commands;
 import by.ganevich.dto.BankDto;
 import by.ganevich.dto.CommissionDto;
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.Commission;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import by.ganevich.mapper.interfaces.BankMapper;
@@ -11,6 +10,7 @@ import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -20,6 +20,7 @@ import java.util.Set;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class CreateBankCommand extends BaseCommand {
 
@@ -41,12 +42,14 @@ public class CreateBankCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Create bank command is called");
+
         Bank bank = bankMapper.toEntity(bankDto);
 
         bankService.save(bank);
 
-        Set<Commission> commissions = bank.getCommissions();
-
+//        Set<Commission> commissions = bank.getCommissions();
+//
 //        for (Commission c : commissions) {
 //            c.setBank(bank);
 //            commissionService.saveCommission(c);
@@ -54,6 +57,8 @@ public class CreateBankCommand extends BaseCommand {
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Bank is successfully created!");
+
+        log.info("Create bank command is complete");
 
         return commandResult;
     }

@@ -9,6 +9,7 @@ import by.ganevich.service.BankService;
 import by.ganevich.service.CommissionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class DeleteBankCommand extends BaseCommand {
 
@@ -36,6 +38,7 @@ public class DeleteBankCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Delete bank command is called");
         String result;
 
         Bank bank = bankMapper.toEntity(bankDto);
@@ -48,6 +51,8 @@ public class DeleteBankCommand extends BaseCommand {
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(result);
+
+        log.info("Delete bank command is complete");
         return commandResult;
     }
 
