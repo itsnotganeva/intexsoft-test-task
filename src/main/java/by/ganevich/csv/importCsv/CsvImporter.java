@@ -18,7 +18,7 @@ public abstract class CsvImporter<T> {
     public abstract BaseCsvMapper getMapper();
 
     public void importCsv() throws IOException {
-        log.info("importCsv is called");
+        log.info("Import csv is called");
         doImport(getFileName());
         File file = new File(getFileName());
         log.info("File " + file.getName() + "is successfully imported");

@@ -10,6 +10,7 @@ import by.ganevich.service.BankAccountService;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.Set;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class ReadBankAccountsCommand extends BaseCommand {
 
@@ -40,6 +42,8 @@ public class ReadBankAccountsCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Read bank accounts command is called");
+
         CommandResult commandResult = new CommandResult();
         Client client = clientMapper.toEntity(clientDto);
 
@@ -48,6 +52,7 @@ public class ReadBankAccountsCommand extends BaseCommand {
             return commandResult;
         } else {
             Set<BankAccount> bankAccounts = bankAccountService.getAllAccountsOfClient(client);
+            log.info("Read bank accounts command is complete");
             commandResult.setResult(bankAccounts);
             return commandResult;
         }

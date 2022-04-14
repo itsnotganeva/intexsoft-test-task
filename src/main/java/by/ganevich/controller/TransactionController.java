@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 @Tag(name = "Transaction controller", description = "To manage transactions")
 public class TransactionController {
 
@@ -37,12 +39,14 @@ public class TransactionController {
             @RequestParam(name = "dateBefore") @Parameter(description = "start date") String dateBefore,
             @RequestParam(name = "dateAfter") @Parameter(description = "final date") String dateAfter
     ) {
+        log.info("REST: Read transactions of client with id + " + id + " by date between " + dateBefore + " and + " + dateAfter + " is called");
         final List<Transaction> transactions = transactionService
                 .readAllByClientId(Date.valueOf(dateBefore), Date.valueOf(dateAfter), id);
 
         List<TransactionDto> transactionsDto
                 = transactionMapper.toDtoList(transactions);
 
+        log.info("REST: Reading of transactions was successful");
         return transactionsDto != null && !transactions.isEmpty()
                 ? new ResponseEntity<>(transactionsDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -57,7 +61,9 @@ public class TransactionController {
             @RequestBody @Parameter(description = "dto data to conduct transaction")
                     ConductTransactionDto conductTransactionDto
     ) {
+        log.info("REST: Make transaction is called");
         if (!transactionValidator.validateDto(conductTransactionDto)) {
+            log.info("REST: The input data of transaction is invalid");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         transactionService.sendMoney(
@@ -65,6 +71,7 @@ public class TransactionController {
                         Integer.valueOf(conductTransactionDto.getReceiverAccountNumber()),
                         Double.valueOf(conductTransactionDto.getAmountOfMoney())
                 );
+        log.info("REST: Transaction was carried out successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

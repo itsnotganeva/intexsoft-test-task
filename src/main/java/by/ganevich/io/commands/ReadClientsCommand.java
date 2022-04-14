@@ -6,6 +6,7 @@ import by.ganevich.io.CommandResult;
 import by.ganevich.service.ClientService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 @Getter
+@Slf4j
 public class ReadClientsCommand implements ICommand {
 
     private final String commandName = "readClients";
@@ -27,10 +29,14 @@ public class ReadClientsCommand implements ICommand {
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
+        log.info("Read clients command is called");
+
         List<Client> clients = clientService.readAll();
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(clients);
+
+        log.info("Read clients command is complete");
         return commandResult;
     }
 }

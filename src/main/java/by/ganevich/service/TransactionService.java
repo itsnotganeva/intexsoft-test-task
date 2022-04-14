@@ -26,7 +26,7 @@ public class TransactionService implements BaseService<Transaction> {
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
-        log.info("sendMoney of transactionService is called.");
+        log.info("TransactionService: Send money is called.");
 
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
         BankAccount recipientAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
@@ -73,7 +73,7 @@ public class TransactionService implements BaseService<Transaction> {
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
 
-        log.info("readAllByDateAndSender of transactionService is called.");
+        log.info("TransactionService: Read all by date and sender is called.");
 
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndSender(dateBefore, dateAfter, client);
@@ -85,7 +85,7 @@ public class TransactionService implements BaseService<Transaction> {
 
     public Set<Transaction> readAllByDateAndReceiver(Date dateBefore, Date dateAfter, Client client) {
 
-        log.info("readAllByDateAndReceiver of transactionService is called.");
+        log.info("TransactionService: Read all by date and receiver is called.");
 
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndReceiver(dateBefore, dateAfter, client);

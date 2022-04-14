@@ -21,7 +21,7 @@ public class BankAccountService implements BaseService<BankAccount> {
     private final BankAccountRepository bankAccountRepository;
 
     public void save(BankAccount bankAccount) {
-        log.info("Save of bankAccountService is called");
+        log.info("BankAccountService: Save of bank accounts is called");
         bankAccountRepository.save(bankAccount);
         log.info("Bank account " + bankAccount.getId() + " successfully created.");
     }
@@ -33,7 +33,7 @@ public class BankAccountService implements BaseService<BankAccount> {
     }
 
     public Set<BankAccount> getAllAccountsOfClient(Client client) {
-        log.info("getAllAccountsOfClient of clientService is called.");
+        log.info("BankAccountService: Get all accounts of client is called.");
         Set<BankAccount> bankAccounts = bankAccountRepository.findBankAccountByOwner(client);
         log.info("Bank accounts of client " + client.getId() + " successfully found.");
         return bankAccounts;

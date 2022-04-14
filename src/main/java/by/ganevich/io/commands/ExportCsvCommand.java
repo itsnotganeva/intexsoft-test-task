@@ -6,6 +6,7 @@ import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class ExportCsvCommand extends BaseCommand{
     private final String commandName = "exportCsv";
@@ -36,6 +38,8 @@ public class ExportCsvCommand extends BaseCommand{
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
 
+        log.info("Export csv command is called");
+
         Set<File> files = new HashSet<>();
 
         for (CsvExporter exporter : exporters) {
@@ -46,6 +50,9 @@ public class ExportCsvCommand extends BaseCommand{
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult("Export is complete!");
+
+        log.info("Export csv command is complete");
+
         return commandResult;
     }
 

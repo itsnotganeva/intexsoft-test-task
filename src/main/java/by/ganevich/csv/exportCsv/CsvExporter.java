@@ -18,7 +18,7 @@ public abstract class CsvExporter<T> {
     public abstract BaseCsvMapper getMapper();
 
     public File exportCsv() throws IOException {
-        log.info("exportCsv is called");
+        log.info("Export csv is called");
         File file = new File(getFileName());
         file.delete();
         doExport(getFileName());

@@ -6,6 +6,7 @@ import by.ganevich.io.CommandResult;
 import by.ganevich.service.BankService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 @Getter
+@Slf4j
 public class ReadBanksCommand implements ICommand {
 
     private final String commandName = "readBanks";
@@ -27,10 +29,14 @@ public class ReadBanksCommand implements ICommand {
     @Override
     public CommandResult execute(CommandDescriptor commandDescriptor) {
 
+        log.info("Read banks command is called");
+
         List<Bank> banks = bankService.readAll();
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(banks);
+
+        log.info("Read bank accounts command is complete");
         return commandResult;
     }
 }

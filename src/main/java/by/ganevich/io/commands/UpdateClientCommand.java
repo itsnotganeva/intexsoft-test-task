@@ -8,6 +8,7 @@ import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class UpdateClientCommand extends BaseCommand {
 
@@ -34,11 +36,15 @@ public class UpdateClientCommand extends BaseCommand {
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
+
+        log.info("Update client command is called");
         Client client = clientMapper.toEntity(clientDto);
         clientService.save(client);
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(client);
+
+        log.info("Update client command is complete");
         return commandResult;
     }
 

@@ -11,6 +11,7 @@ import by.ganevich.service.ClientService;
 import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class ReadTransactionsCommand extends BaseCommand {
 
@@ -44,6 +46,8 @@ public class ReadTransactionsCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Read transactions command is called");
+
         CommandResult commandResult = new CommandResult();
         Set<Transaction> transactions = new HashSet<>();
 
@@ -58,6 +62,8 @@ public class ReadTransactionsCommand extends BaseCommand {
             transactions =
                     transactionService.readAllByDateAndReceiver(dateBefore, dateAfter, client);
         }
+
+        log.info("Read transactions command is complete");
 
         commandResult.setResult(transactions);
         return commandResult;

@@ -48,6 +48,8 @@ public class AddClientToBankCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Add client to bank command is called");
+
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
 
         clientService.save(bankAccount.getOwner());
@@ -58,6 +60,9 @@ public class AddClientToBankCommand extends BaseCommand {
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(bankAccount);
+
+        log.info("Add client to bank command is complete");
+
         return commandResult;
     }
 

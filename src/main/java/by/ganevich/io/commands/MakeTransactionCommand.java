@@ -6,6 +6,7 @@ import by.ganevich.io.CommandResult;
 import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Component
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class MakeTransactionCommand extends BaseCommand {
 
@@ -33,6 +35,8 @@ public class MakeTransactionCommand extends BaseCommand {
     @Override
     public CommandResult doExecute(Map<String, String> parameters) {
 
+        log.info("Make transaction command is called");
+
         Integer senderAccountNumber = Integer.parseInt(conductTransactionDto.getSenderAccountNumber());
 
         Integer receiverAccountNumber = Integer.parseInt(conductTransactionDto.getReceiverAccountNumber());
@@ -44,6 +48,9 @@ public class MakeTransactionCommand extends BaseCommand {
         CommandResult commandResult = new CommandResult();
         String result = "Transaction completed successfully!";
         commandResult.setResult(result);
+
+        log.info("Make transaction command is complete");
+
         return commandResult;
     }
 
