@@ -29,7 +29,7 @@ public class TransactionController {
     private final CustomValidator<ConductTransactionDto> transactionValidator;
     private final TransactionMapper transactionMapper;
 
-    @GetMapping(value = "/clients/{id}/transactions")
+    @GetMapping(value = "/clients/{id}/transactions/get")
     @Operation(
             summary = "Reading transactions",
             description = "Allows to read all transactions of client by date"
@@ -52,7 +52,7 @@ public class TransactionController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/transactions")
+    @PostMapping(value = "/transactions/add")
     @Operation(
             summary = "Сonducting transactions",
             description = "Allows to conduct transaction"

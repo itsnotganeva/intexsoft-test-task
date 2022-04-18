@@ -27,11 +27,9 @@ import java.util.Map;
 public class AddClientToBankCommand extends BaseCommand {
 
     private final String commandName = "addClientToBank";
-
     private final ClientService clientService;
     private final BankService bankService;
     private final BankAccountService bankAccountService;
-
     private final BankMapper bankMapper;
     private final ClientMapper clientMapper;
     private final BankAccountMapper bankAccountMapper;

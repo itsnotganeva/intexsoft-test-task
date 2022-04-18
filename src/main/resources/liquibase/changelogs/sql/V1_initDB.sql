@@ -1,8 +1,25 @@
+create table roles
+(
+    id bigSerial PRIMARY KEY,
+    name varchar (50) not null
+);
+
+create table users
+(
+    id bigSerial primary key,
+    login varchar(50) not null,
+    password varchar(500) not null,
+    roleId bigSerial not null,
+    foreign key (roleId) references roles (id)
+);
+
 CREATE TABLE clients
 (
     id bigserial PRIMARY KEY,
     name varchar(255) not null,
-    type int not null
+    type int not null,
+    userId bigSerial not null,
+    foreign key (userId) references users (id)
 );
 
 CREATE TABLE banks
@@ -53,3 +70,4 @@ create table exchangeRates
     currency int not null UNIQUE,
     rate real not null
 );
+

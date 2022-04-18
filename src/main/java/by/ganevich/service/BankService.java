@@ -27,7 +27,7 @@ public class BankService implements BaseService<Bank>{
     public List<Bank> readAll() {
         log.info("BankService: Read All banks is called.");
         List<Bank> banks = bankRepository.findAll();
-        log.info("The list of banks id successfully read.");
+        log.info("The list of banks is successfully read.");
         return banks;
     }
 

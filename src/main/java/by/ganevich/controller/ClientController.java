@@ -28,7 +28,7 @@ public class ClientController {
 
     private final ClientMapper clientMapper;
 
-    @PostMapping(value = "/clients")
+    @PostMapping(value = "/clients/add")
     @Operation(
             summary = "Client creation",
             description = "Allows to create a new client"
@@ -48,7 +48,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/clients")
+    @GetMapping(value = "/clients/get")
     @Operation(
             summary = "Reading clients",
             description = "Allows to read all clients"
@@ -61,7 +61,7 @@ public class ClientController {
         return new ResponseEntity<>(clientsDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/clients/{id}")
+    @GetMapping(value = "/clients/{id}/get")
     @Operation(
             summary = "Reading client",
             description = "Allows to read specific client by id"
@@ -78,7 +78,7 @@ public class ClientController {
                 ? new ResponseEntity<>(clientDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);    }
 
-    @PutMapping(value = "/clients/{id}")
+    @PutMapping(value = "/clients/{id}/update")
     @Operation(
             summary = "Client update",
             description = "Allows to update specific client by id"
@@ -98,7 +98,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/clients/{id}")
+    @DeleteMapping(value = "/clients/{id}/delete")
     @Operation(
             summary = "Client deletion",
             description = "Allows to delete specific client by id"

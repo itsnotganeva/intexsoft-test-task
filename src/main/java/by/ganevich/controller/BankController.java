@@ -28,7 +28,7 @@ public class BankController {
     private final BankMapper bankMapper;
 
 
-    @PostMapping(value = "/banks")
+    @PostMapping(value = "/banks/add")
     @Operation(
             summary = "Bank creation",
             description = "Allows to create a new bank"
@@ -48,7 +48,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/banks")
+    @GetMapping(value = "/banks/get")
     @Operation(
             summary = "Reading banks",
             description = "Allows to read all banks"
@@ -62,7 +62,7 @@ public class BankController {
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/banks/{id}")
+    @GetMapping(value = "/banks/{id}/get")
     @Operation(
             summary = "Reading bank",
             description = "Allows to read specific bank by id"
@@ -80,7 +80,7 @@ public class BankController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/banks/{id}")
+    @PutMapping(value = "/banks/{id}/update")
     @Operation(
             summary = "Bank update",
             description = "Allows to update specific bank by id"
@@ -101,7 +101,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/banks/{id}")
+    @DeleteMapping(value = "/banks/{id}/delete")
     @Operation(
             summary = "Bank deletion",
             description = "Allows to delete specific bank by id"
