@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -29,6 +30,7 @@ public class TransactionController {
     private final CustomValidator<ConductTransactionDto> transactionValidator;
     private final TransactionMapper transactionMapper;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients/{id}/transactions")
     @Operation(
             summary = "Reading transactions",
@@ -52,6 +54,7 @@ public class TransactionController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT', 'ROLE_OPERATOR')")
     @PostMapping(value = "/transactions")
     @Operation(
             summary = "Сonducting transactions",

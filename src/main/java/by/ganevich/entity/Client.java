@@ -56,6 +56,10 @@ public class Client {
     )
     private Set<Transaction> receivedTransactions;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+
     @Override
     public String toString() {
         return "Client{"
