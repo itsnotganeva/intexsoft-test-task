@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +28,8 @@ public class BankController {
     private final CustomValidator<BankDto> bankValidator;
     private final BankMapper bankMapper;
 
-
-    @PostMapping(value = "/banks/add")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping(value = "/banks")
     @Operation(
             summary = "Bank creation",
             description = "Allows to create a new bank"
@@ -48,7 +49,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/banks/get")
+    @GetMapping(value = "/banks")
     @Operation(
             summary = "Reading banks",
             description = "Allows to read all banks"
@@ -62,7 +63,7 @@ public class BankController {
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/banks/{id}/get")
+    @GetMapping(value = "/banks/{id}")
     @Operation(
             summary = "Reading bank",
             description = "Allows to read specific bank by id"
@@ -79,8 +80,8 @@ public class BankController {
                 ? new ResponseEntity<>(bankDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    @PutMapping(value = "/banks/{id}/update")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping(value = "/banks/{id}")
     @Operation(
             summary = "Bank update",
             description = "Allows to update specific bank by id"
@@ -101,7 +102,8 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/banks/{id}/delete")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping(value = "/banks/{id}")
     @Operation(
             summary = "Bank deletion",
             description = "Allows to delete specific bank by id"

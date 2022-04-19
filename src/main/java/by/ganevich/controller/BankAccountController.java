@@ -27,7 +27,7 @@ public class BankAccountController {
 
     private final BankAccountMapper bankAccountMapper;
 
-    @PostMapping(value = "/bank-accounts/add")
+    @PostMapping(value = "/bank-accounts")
     @Operation(
             summary = "Bank account creation",
             description = "Allows to create a new bank account"
@@ -47,7 +47,7 @@ public class BankAccountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/clients/{id}/bank-accounts/get")
+    @GetMapping(value = "/clients/{id}/bank-accounts")
     @Operation(
             summary = "Reading bank accounts",
             description = "Allows to read all bank accounts of client"

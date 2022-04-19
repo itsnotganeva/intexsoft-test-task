@@ -4,6 +4,7 @@ import by.ganevich.config.security.jwt.JwtFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,27 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/*",
-                        "/register/operator",
-                        "/banks/add",
-                        "/banks/{id}/update",
-                        "/banks/{id}/delete",
-                        "/clients/{id}/delete").hasRole("ADMIN")
-                .antMatchers("/bank-accounts/add", "/transactions/add").hasRole("CLIENT")
-                .antMatchers("/clients/get",
-                        "/clients/{id}/get",
-                        "/clients/{id}/update",
-                        "/clients/{id}/delete").hasRole("OPERATOR")
-                .antMatchers("/register",
-                        "/auth",
-                        "/clients/{id}/bank-accounts/get",
-                        "/banks/get",
-                        "/banks/{id}/get",
-                        "/clients/{id}/transactions/get").permitAll()
+                .antMatchers("/clients/**", "/banks/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT", "ROLE_OPERATOR")
+                .antMatchers("/bank-accounts").hasAnyAuthority("ROLE_CLIENT", "ROLE_OPERATOR")
+                .antMatchers("/register", "/auth").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

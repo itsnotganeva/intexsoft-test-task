@@ -18,8 +18,11 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${validTime}")
+    private String validTime;
+
     public String generateToken(String login) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.now().plusDays(Long.parseLong(validTime)).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
@@ -32,7 +35,7 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            log.severe("invalid token");
+            log.info("invalid token");
         }
         return false;
     }

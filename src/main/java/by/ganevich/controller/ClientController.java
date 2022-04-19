@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ClientController {
 
     private final ClientMapper clientMapper;
 
-    @PostMapping(value = "/clients/add")
+    @PostMapping(value = "/clients")
     @Operation(
             summary = "Client creation",
             description = "Allows to create a new client"
@@ -48,7 +49,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/clients/get")
+    @GetMapping(value = "/clients")
     @Operation(
             summary = "Reading clients",
             description = "Allows to read all clients"
@@ -61,7 +62,7 @@ public class ClientController {
         return new ResponseEntity<>(clientsDto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/clients/{id}/get")
+    @GetMapping(value = "/clients/{id}")
     @Operation(
             summary = "Reading client",
             description = "Allows to read specific client by id"
@@ -78,7 +79,7 @@ public class ClientController {
                 ? new ResponseEntity<>(clientDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);    }
 
-    @PutMapping(value = "/clients/{id}/update")
+    @PutMapping(value = "/clients/{id}")
     @Operation(
             summary = "Client update",
             description = "Allows to update specific client by id"
@@ -98,7 +99,8 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/clients/{id}/delete")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping(value = "/clients/{id}")
     @Operation(
             summary = "Client deletion",
             description = "Allows to delete specific client by id"
