@@ -10,6 +10,7 @@ import by.ganevich.entity.User;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

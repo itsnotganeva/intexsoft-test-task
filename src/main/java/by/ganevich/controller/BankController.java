@@ -49,6 +49,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/banks")
     @Operation(
             summary = "Reading banks",
@@ -63,6 +64,7 @@ public class BankController {
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/banks/{id}")
     @Operation(
             summary = "Reading bank",
