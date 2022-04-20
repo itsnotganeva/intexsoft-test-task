@@ -71,9 +71,13 @@ public class AuthController {
 
 
     @PostMapping("/auth")
-    public AuthResponseDto auth(@RequestBody RegistrationRequestDto request) {
+    public String auth(@RequestBody RegistrationRequestDto request) {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
+        UserState userState = userStateService.findByStateName("NOT ACTIVATED");
+        if (userEntity.getState().equals(userState)) {
+            return "You are not activated!";
+        }
         String token = jwtProvider.generateToken(userEntity.getLogin());
-        return new AuthResponseDto(token);
+        return token;
     }
 }
