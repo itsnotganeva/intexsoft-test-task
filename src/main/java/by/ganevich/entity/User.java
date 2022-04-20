@@ -21,11 +21,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "securityCode")
+    private String code;
+
     @ManyToOne()
     @JoinColumn(name = "roleId")
     private Role role;
 
-
     @OneToOne(mappedBy = "user")
     private Client client;
+
+    @ManyToOne()
+    @JoinColumn(name = "stateId")
+    private UserState state;
+
 }

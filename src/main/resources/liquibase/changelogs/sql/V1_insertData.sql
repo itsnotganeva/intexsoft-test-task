@@ -34,6 +34,12 @@ VALUES (1, 2.9);
 INSERT INTO exchangeRates(currency, rate)
 VALUES (2, 1);
 
+INSERT INTO userState(state)
+VALUES ('ACTIVATED');
+
+INSERT INTO userState(state)
+VALUES ('NOT ACTIVATED');
+
 INSERT INTO roles(name)
 VALUES ('ROLE_ADMIN');
 
@@ -43,5 +49,5 @@ VALUES ('ROLE_CLIENT');
 INSERT INTO roles(name)
 VALUES ('ROLE_OPERATOR');
 
-INSERT INTO users(login, password, roleId)
-VALUES ('admin', '$2a$10$HWT5OgpemJUSD3KAzNTFTOz9AiS/QYg4BRJZowyEAMlTpIXqvkjMq', 1);
+INSERT INTO users(login, password, roleId, stateId)
+VALUES ('admin', '$2a$10$HWT5OgpemJUSD3KAzNTFTOz9AiS/QYg4BRJZowyEAMlTpIXqvkjMq', 1, 1);

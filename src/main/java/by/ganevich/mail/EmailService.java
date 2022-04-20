@@ -46,7 +46,7 @@ public class EmailService {
         helper.setText(process, true);
         helper.setTo(user.getLogin());
         javaMailSender.send(mimeMessage);
-        return "Sent";
+        return number;
     }
 
 }

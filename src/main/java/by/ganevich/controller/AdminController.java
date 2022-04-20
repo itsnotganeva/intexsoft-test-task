@@ -18,10 +18,10 @@ public class AdminController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/register/operator")
     public String registerOperator(@RequestBody RegistrationRequestDto registrationRequest) {
-        User u = new User();
-        u.setPassword(registrationRequest.getPassword());
-        u.setLogin(registrationRequest.getLogin());
-        userService.saveUser(u, "ROLE_OPERATOR");
+        User user = new User();
+        user.setPassword(registrationRequest.getPassword());
+        user.setLogin(registrationRequest.getLogin());
+        userService.saveUser(user, "ROLE_OPERATOR");
 
         return "OK";
     }
