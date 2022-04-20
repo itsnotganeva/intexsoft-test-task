@@ -40,7 +40,7 @@ public class AuthController {
         client.setUser(u);
         clientService.save(client);
 
-        emailService.sendEmail(u);
+        emailService.sendEmail(registrationRequest);
         return "OK";
     }
 
