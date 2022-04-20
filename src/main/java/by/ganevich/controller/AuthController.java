@@ -7,13 +7,15 @@ import by.ganevich.dto.RegistrationRequestDto;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.ClientType;
 import by.ganevich.entity.User;
+import by.ganevich.mail.EmailService;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.mail.MessagingException;
 
 @RestController
 @AllArgsConstructor
@@ -23,8 +25,10 @@ public class AuthController {
     private UserService userService;
     private JwtProvider jwtProvider;
 
+    private final EmailService emailService;
+
     @PostMapping("/register")
-    public String registerUser(@RequestBody RegistrationRequestDto registrationRequest) {
+    public String registerUser(@RequestBody RegistrationRequestDto registrationRequest) throws MessagingException {
         User u = new User();
         u.setPassword(registrationRequest.getPassword());
         u.setLogin(registrationRequest.getLogin());
@@ -35,8 +39,12 @@ public class AuthController {
         client.setType(ClientType.valueOf(registrationRequest.getType()));
         client.setUser(u);
         clientService.save(client);
+
+        emailService.sendEmail(u);
         return "OK";
     }
+
+
 
     @PostMapping("/auth")
     public AuthResponseDto auth(@RequestBody RegistrationRequestDto request) {
