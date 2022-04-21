@@ -2,7 +2,6 @@ package by.ganevich.controller;
 
 
 import by.ganevich.config.security.jwt.JwtProvider;
-import by.ganevich.dto.AuthResponseDto;
 import by.ganevich.dto.RegistrationRequestDto;
 import by.ganevich.dto.VerifyUserDto;
 import by.ganevich.entity.Client;
@@ -50,7 +49,7 @@ public class AuthController {
         clientService.save(client);
 
         user.setCode(emailService.sendEmail(registrationRequest));
-        userService.saveUser(user, "ROLE_CLIENT");
+        userService.saveUser(user);
         return "OK";
     }
 
@@ -63,7 +62,7 @@ public class AuthController {
             UserState userState = userStateService.findByStateName("ACTIVATED");
             user.get().setState(userState);
             user.get().setCode(null);
-            userService.saveUser(user.get(), "ROLE_CLIENT");
+            userService.saveUser(user.get());
             return "OK";
         } else return "Security code is not correct";
 
