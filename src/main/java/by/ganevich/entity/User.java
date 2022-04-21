@@ -31,8 +31,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Client client;
 
-    @ManyToOne()
-    @JoinColumn(name = "stateId")
-    private UserState state;
+    @Column(name = "userState")
+    private State state;
 
 }

@@ -1,9 +1,3 @@
-create table userState
-(
-    id bigSerial PRIMARY KEY,
-    state varchar(50) not null
-);
-
 create table roles
 (
     id bigSerial PRIMARY KEY,
@@ -17,9 +11,8 @@ create table users
     password varchar(500) not null,
     roleId bigSerial not null,
     securityCode varchar(6),
-    foreign key (roleId) references roles (id),
-    stateId bigSerial not null,
-    foreign key (stateId) references userState (id)
+    userState varchar(255) not null,
+    foreign key (roleId) references roles (id)
 );
 
 CREATE TABLE clients

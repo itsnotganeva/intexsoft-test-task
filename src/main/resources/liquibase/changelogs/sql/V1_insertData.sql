@@ -4,14 +4,6 @@ VALUES ('Alfa');
 INSERT INTO banks(name)
 VALUES ('Belarus');
 
-
--- INSERT INTO bankAccounts(number, currency, amountOfMoney, bankId, clientId)
--- VALUES (23132, 0, 500, 1, 1);
---
--- INSERT INTO bankAccounts(number, currency, amountOfMoney, bankId, clientId)
--- VALUES (45656, 1, 700, 2, 2);
-
-
 INSERT INTO commissionForClients(bankId, clientType, commission)
 VALUES (1, 0, 0.01);
 
@@ -34,12 +26,6 @@ VALUES (1, 2.9);
 INSERT INTO exchangeRates(currency, rate)
 VALUES (2, 1);
 
-INSERT INTO userState(state)
-VALUES ('ACTIVATED');
-
-INSERT INTO userState(state)
-VALUES ('NOT ACTIVATED');
-
 INSERT INTO roles(name)
 VALUES ('ROLE_ADMIN');
 
@@ -49,5 +35,5 @@ VALUES ('ROLE_CLIENT');
 INSERT INTO roles(name)
 VALUES ('ROLE_OPERATOR');
 
-INSERT INTO users(login, password, roleId, stateId)
-VALUES ('admin', '$2a$10$HWT5OgpemJUSD3KAzNTFTOz9AiS/QYg4BRJZowyEAMlTpIXqvkjMq', 1, 1);
+INSERT INTO users(login, password, roleId, userState)
+VALUES ('admin', '$2a$10$HWT5OgpemJUSD3KAzNTFTOz9AiS/QYg4BRJZowyEAMlTpIXqvkjMq', 1, 0);

@@ -2,6 +2,7 @@ package by.ganevich.mail;
 
 import by.ganevich.dto.RegistrationRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,12 @@ import java.util.Map;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmailService {
 
     private final TemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
+    private final String subject = "BankSystem security verification";
 
     private static String getRandomNumberString() {
         Random rnd = new Random();
@@ -42,7 +44,7 @@ public class EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setSubject("BankSystem security verification");
+        helper.setSubject(subject);
         helper.setText(process, true);
         helper.setTo(user.getLogin());
         javaMailSender.send(mimeMessage);
