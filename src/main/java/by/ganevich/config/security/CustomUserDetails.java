@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -17,14 +19,10 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
         CustomUserDetails c = new CustomUserDetails();
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList());
         c.login = user.getLogin();
         c.password = user.getPassword();
-        c.grantedAuthorities = new ArrayList<>();
-
-        for (String role : user.getRoles()) {
-            Collection<GrantedAuthority> collection = Collections.singletonList(new SimpleGrantedAuthority(role));
-            c.grantedAuthorities.add(collection.iterator().next());
-        }
+        c.grantedAuthorities = authorities;
         return c;
     }
 
