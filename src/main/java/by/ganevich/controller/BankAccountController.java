@@ -28,7 +28,7 @@ public class BankAccountController {
 
     private final BankAccountMapper bankAccountMapper;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT')")
     @PostMapping(value = "/bank-accounts")
     @Operation(
             summary = "Bank account creation",
@@ -49,7 +49,7 @@ public class BankAccountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients/{id}/bank-accounts")
     @Operation(
             summary = "Reading bank accounts",

@@ -49,7 +49,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients")
     @Operation(
             summary = "Reading clients",
@@ -63,7 +63,7 @@ public class ClientController {
         return new ResponseEntity<>(clientsDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients/{id}")
     @Operation(
             summary = "Reading client",
@@ -81,7 +81,7 @@ public class ClientController {
                 ? new ResponseEntity<>(clientDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);    }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @PutMapping(value = "/clients/{id}")
     @Operation(
             summary = "Client update",
@@ -102,7 +102,7 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_OPERATOR')")
+    @PreAuthorize("hasRole('ROLE_OPERATOR')")
     @DeleteMapping(value = "/clients/{id}")
     @Operation(
             summary = "Client deletion",

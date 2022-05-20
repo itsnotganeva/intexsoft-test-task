@@ -1,5 +1,6 @@
 package by.ganevich.entity;
 
+import by.ganevich.entity.enums.Currency;
 import lombok.Getter;
 import lombok.Setter;
 

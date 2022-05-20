@@ -6,9 +6,10 @@ import by.ganevich.dto.AuthResponseDto;
 import by.ganevich.dto.RegistrationRequestDto;
 import by.ganevich.dto.VerifyUserDto;
 import by.ganevich.entity.Client;
-import by.ganevich.entity.ClientType;
-import by.ganevich.entity.State;
 import by.ganevich.entity.User;
+import by.ganevich.entity.enums.ClientType;
+import by.ganevich.entity.enums.Role;
+import by.ganevich.entity.enums.State;
 import by.ganevich.mail.EmailService;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.UserService;
@@ -41,7 +42,7 @@ public class AuthController {
         user.setPassword(registrationRequest.getPassword());
         user.setLogin(registrationRequest.getLogin());
         user.setState(State.NOT_ACTIVATED);
-        userService.saveUser(user, "ROLE_CLIENT");
+        userService.saveUser(user, Role.ROLE_CLIENT);
 
         Client client = new Client();
         client.setName(registrationRequest.getName());
