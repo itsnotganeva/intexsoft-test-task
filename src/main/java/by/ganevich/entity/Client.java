@@ -1,5 +1,6 @@
 package by.ganevich.entity;
 
+import by.ganevich.entity.enums.ClientType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,8 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
-import by.ganevich.entity.ClientType;
 import by.ganevich.entity.Commission;
+import by.ganevich.entity.enums.ClientType;
 import by.ganevich.repository.CommissionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -28,7 +28,7 @@ public class BankController {
     private final CustomValidator<BankDto> bankValidator;
     private final BankMapper bankMapper;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/banks")
     @Operation(
             summary = "Bank creation",
@@ -49,7 +49,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/banks")
     @Operation(
             summary = "Reading banks",
@@ -64,7 +64,7 @@ public class BankController {
         return new ResponseEntity<>(banksDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/banks/{id}")
     @Operation(
             summary = "Reading bank",
@@ -82,7 +82,7 @@ public class BankController {
                 ? new ResponseEntity<>(bankDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/banks/{id}")
     @Operation(
             summary = "Bank update",
@@ -104,7 +104,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/banks/{id}")
     @Operation(
             summary = "Bank deletion",

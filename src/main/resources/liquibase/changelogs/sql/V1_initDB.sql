@@ -1,16 +1,12 @@
-create table roles
-(
-    id bigSerial PRIMARY KEY,
-    name varchar (50) not null
-);
-
 create table users
 (
     id bigSerial primary key,
     login varchar(50) not null,
     password varchar(500) not null,
-    roleId bigSerial not null,
-    foreign key (roleId) references roles (id)
+    roles varchar[] not null,
+    securityCode varchar(6),
+    userState varchar(255) not null
+--     foreign key (roleId) references roles (id)
 );
 
 CREATE TABLE clients

@@ -5,20 +5,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
     private String login;
     private String password;
-    private Collection<? extends GrantedAuthority> grantedAuthorities;
+    private Collection<GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
         CustomUserDetails c = new CustomUserDetails();
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList());
         c.login = user.getLogin();
         c.password = user.getPassword();
-        c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
+        c.grantedAuthorities = authorities;
         return c;
     }
 

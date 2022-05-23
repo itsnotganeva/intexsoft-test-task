@@ -30,7 +30,7 @@ public class TransactionController {
     private final CustomValidator<ConductTransactionDto> transactionValidator;
     private final TransactionMapper transactionMapper;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients/{id}/transactions")
     @Operation(
             summary = "Reading transactions",
@@ -54,7 +54,7 @@ public class TransactionController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT', 'ROLE_OPERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_OPERATOR')")
     @PostMapping(value = "/transactions")
     @Operation(
             summary = "Сonducting transactions",

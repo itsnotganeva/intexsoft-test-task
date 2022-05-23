@@ -1,10 +1,22 @@
 package by.ganevich.entity;
 
+import by.ganevich.entity.enums.State;
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import java.util.List;
 
+@TypeDefs({
+        @TypeDef(
+                name = "list-array",
+                typeClass = ListArrayType.class
+        )
+})
 @Entity
 @Getter
 @Setter
@@ -21,11 +33,21 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne()
-    @JoinColumn(name = "roleId")
-    private Role role;
-
+    @Column(name = "securityCode")
+    private String code;
 
     @OneToOne(mappedBy = "user")
     private Client client;
+
+    @Column(name = "userState")
+    private State state;
+
+    @Type(type = "list-array")
+    @Column(
+            name = "roles",
+            columnDefinition = "text[]"
+    )
+    private List<String> roles;
+
+
 }
