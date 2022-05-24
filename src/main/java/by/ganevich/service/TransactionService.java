@@ -108,8 +108,9 @@ public class TransactionService implements BaseService<Transaction> {
         return transactions;
     }
 
-    public void save(Transaction transaction) {
-        transactionRepository.save(transaction);
+    public Transaction save(Transaction transaction) {
+        Transaction savedTransaction = transactionRepository.save(transaction);
         log.info("Transactions is saved");
+        return savedTransaction;
     }
 }

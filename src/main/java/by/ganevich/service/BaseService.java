@@ -5,5 +5,5 @@ import java.util.List;
 public interface BaseService<T> {
 
     List<T> readAll();
-    void save(T entity);
+    T save(T entity);
 }

@@ -20,10 +20,11 @@ public class BankAccountService implements BaseService<BankAccount> {
 
     private final BankAccountRepository bankAccountRepository;
 
-    public void save(BankAccount bankAccount) {
+    public BankAccount save(BankAccount bankAccount) {
         log.info("BankAccountService: Save of bank accounts is called");
-        bankAccountRepository.save(bankAccount);
+        BankAccount savedAccount = bankAccountRepository.save(bankAccount);
         log.info("Bank account " + bankAccount.getId() + " successfully created.");
+        return savedAccount;
     }
 
     public BankAccount getAccountByClientAndBank(Client client, Bank bank) {

@@ -18,10 +18,11 @@ public class BankService implements BaseService<Bank>{
 
     private final BankRepository bankRepository;
 
-    public void save(Bank bank) {
+    public Bank save(Bank bank) {
         log.info("BankService: Save of bank is called");
-        bankRepository.save(bank);
+        Bank savedBank = bankRepository.save(bank);
         log.info("Bank " + bank.getId() + " successfully created.");
+        return savedBank;
     }
 
     public List<Bank> readAll() {
@@ -34,7 +35,7 @@ public class BankService implements BaseService<Bank>{
     public Bank findBankByName(String name) {
         log.info("BankService: Find bank by name is called");
         Bank bank = bankRepository.findByName(name);
-        log.info("Bank " + bank.getId() + " successfully found");
+        log.info("Bank successfully found");
         return bank;
     }
 

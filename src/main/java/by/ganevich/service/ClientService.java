@@ -1,7 +1,6 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Client;
-import by.ganevich.repository.BankAccountRepository;
 import by.ganevich.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +17,12 @@ import java.util.Optional;
 public class ClientService implements BaseService<Client> {
 
     private final ClientRepository clientRepository;
-    private final BankAccountRepository bankAccountRepository;
 
-    public void save(Client client) {
+    public Client save(Client client) {
         log.info("ClientService: Save of client is called");
-        clientRepository.save(client);
+        Client savedClient = clientRepository.save(client);
         log.info("Client " + client.getId() + " successfully created.");
+        return savedClient;
     }
 
     public List<Client> readAll() {
