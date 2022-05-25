@@ -35,7 +35,10 @@ public class BankService implements BaseService<Bank>{
     public Bank findBankByName(String name) {
         log.info("BankService: Find bank by name is called");
         Bank bank = bankRepository.findByName(name);
-        log.info("Bank successfully found");
+        if (bank == null) {
+            return null;
+        }
+        log.info("Bank " + bank.getId() + " successfully found");
         return bank;
     }
 

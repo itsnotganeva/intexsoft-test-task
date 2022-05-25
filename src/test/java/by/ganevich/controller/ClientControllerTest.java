@@ -117,7 +117,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void create_Should_Return_Status_Created() throws Exception
+    public void create_Should_Return_Status_Ok() throws Exception
     {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
@@ -132,7 +132,7 @@ public class ClientControllerTest {
 
         MvcResult result = mvc.perform(requestBuilder)
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn();
     }
 

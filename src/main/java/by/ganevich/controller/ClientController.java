@@ -46,7 +46,7 @@ public class ClientController {
         Client client = clientMapper.toEntity(clientDto);
         clientService.save(client);
         log.info("REST: Creating of client was successful");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")

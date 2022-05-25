@@ -98,7 +98,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void create_Should_Return_Status_Created() throws Exception
+    public void create_Should_Return_Status_Ok() throws Exception
     {
         when(bankAccountService.save(any(BankAccount.class))).thenReturn(bankAccounts.stream().findFirst().get());
 
@@ -113,7 +113,7 @@ public class BankAccountControllerTest {
 
         MvcResult result = mvc.perform(requestBuilder)
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn();
     }
 

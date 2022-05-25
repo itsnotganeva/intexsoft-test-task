@@ -29,6 +29,7 @@ public class BankServiceTest {
     public void prepareTestData()
     {
         Bank bank = new Bank();
+        bank.setId(1l);
         bank.setName("Test");
 
         testBanks = new ArrayList<>();
@@ -40,7 +41,6 @@ public class BankServiceTest {
     {
         bankService = new BankService(bankRepository);
     }
-
 
     @Test
     void save()

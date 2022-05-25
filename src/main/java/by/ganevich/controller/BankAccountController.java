@@ -46,7 +46,7 @@ public class BankAccountController {
         BankAccount bankAccount = bankAccountMapper.toEntity(bankAccountDto);
         bankAccountService.save(bankAccount);
         log.info("REST: bank is created successfully");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
