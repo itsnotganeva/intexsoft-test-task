@@ -48,16 +48,22 @@ public class ClientServiceTest {
         clientService = new ClientService(clientRepository);
     }
 
+    private Client getClient(List<Client> clients) {
+        return clients.stream().filter(client -> client.getName().equals("Test")).findFirst().get();
+    }
+
     @Test
     public void findClientByName_Should_Return_Client()
     {
         when(clientRepository.findByName(any(String.class)))
-                .thenReturn(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+                .thenReturn(getClient(testClients));
 
         Client resultClient = clientService.findClientByName("Test");
 
         Assert.assertNotNull(resultClient);
         Assert.assertTrue(resultClient.getName().equals("Test"));
+        Assert.assertEquals(getClient(testClients).getName(), resultClient.getName());
+        Assert.assertEquals(getClient(testClients).getType(), resultClient.getType());
     }
 
     @Test
@@ -71,32 +77,34 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void saveClient()
+    public void saveClient_Should_Return_Client()
     {
         when(clientRepository.save(any(Client.class)))
-                .thenReturn(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+                .thenReturn(getClient(testClients));
 
-        Client resultClient = clientService.save(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+        Client resultClient = clientService.save(getClient(testClients));
 
         Assert.assertNotNull(resultClient);
         Assert.assertTrue(resultClient.getName().equals("Test"));
+        Assert.assertEquals(getClient(testClients).getName(), resultClient.getName());
+        Assert.assertEquals(getClient(testClients).getType(), resultClient.getType());
     }
 
     @Test
     public void removeClient()
     {
         doNothing().when(clientRepository)
-                .delete(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+                .delete(getClient(testClients));
 
         clientService
-                .removeClient(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+                .removeClient(getClient(testClients));
 
         verify(clientRepository, times(1))
-                .delete(testClients.stream().filter(client -> client.getName().equals("Test")).findFirst().get());
+                .delete(getClient(testClients));
     }
 
     @Test
-    public void getAll()
+    public void getAll_Should_Return_Clients()
     {
         when(clientRepository.findAll()).thenReturn(testClients);
 

@@ -1,6 +1,7 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Bank;
+import by.ganevich.entity.Commission;
 import by.ganevich.repository.BankRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,12 +30,28 @@ public class BankServiceTest {
     @BeforeEach
     public void prepareTestData()
     {
+        Commission individual = new Commission();
+        individual.setId(1l);
+        individual.setCommission(0.03);
+        individual.setClientType(0);
+
+        Commission industrial = new Commission();
+        industrial.setId(2l);
+        industrial.setCommission(0.04);
+        industrial.setClientType(1);
+
         Bank bank = new Bank();
         bank.setId(1l);
         bank.setName("Test");
+        bank.setCommissions(new HashSet<>());
+        bank.getCommissions().add(individual);
+        bank.getCommissions().add(industrial);
 
         testBanks = new ArrayList<>();
         testBanks.add(bank);
+    }
+    private Bank getBank(List<Bank> banks) {
+        return testBanks.stream().findFirst().get();
     }
 
     @BeforeEach
@@ -43,17 +61,19 @@ public class BankServiceTest {
     }
 
     @Test
-    void save()
+    void save_Should_Return_Bank()
     {
-        when(bankRepository.save(any(Bank.class))).thenReturn(testBanks.stream().findFirst().get());
-        Bank resultBank = bankService.save(testBanks.stream().findFirst().get());
+        when(bankRepository.save(any(Bank.class))).thenReturn(getBank(testBanks));
+        Bank resultBank = bankService.save(getBank(testBanks));
 
         Assert.assertNotNull(resultBank);
-        Assert.assertTrue(resultBank.getName().equals("Test"));
+        Assert.assertEquals(getBank(testBanks), resultBank);
+        Assert.assertEquals(getBank(testBanks).getName(), resultBank.getName());
+        Assert.assertEquals(getBank(testBanks).getCommissions(), resultBank.getCommissions());
     }
 
     @Test
-    void readAll()
+    void readAll_Should_Return_Banks()
     {
         when(bankRepository.findAll()).thenReturn(testBanks);
         List<Bank> resultBanks = bankService.readAll();
@@ -65,12 +85,14 @@ public class BankServiceTest {
     @Test
     void findBankByName_Should_Return_Bank()
     {
-        when(bankRepository.findByName(any(String.class))).thenReturn(testBanks.stream().findFirst().get());
+        when(bankRepository.findByName(any(String.class))).thenReturn(getBank(testBanks));
 
-        Bank resultBank = bankService.findBankByName(testBanks.stream().findFirst().get().getName());
+        Bank resultBank = bankService.findBankByName(getBank(testBanks).getName());
 
         Assert.assertNotNull(resultBank);
-        Assert.assertEquals(testBanks.stream().findFirst().get(), resultBank);
+        Assert.assertEquals(getBank(testBanks), resultBank);
+        Assert.assertEquals(getBank(testBanks).getName(), resultBank.getName());
+        Assert.assertEquals(getBank(testBanks).getCommissions(), resultBank.getCommissions());
     }
 
     @Test
@@ -86,12 +108,12 @@ public class BankServiceTest {
     public void removeBank()
     {
         doNothing().when(bankRepository)
-                .delete(testBanks.stream().findFirst().get());
+                .delete(getBank(testBanks));
 
         bankService
-                .removeBank(testBanks.stream().findFirst().get());
+                .removeBank(getBank(testBanks));
 
         verify(bankRepository, times(1))
-                .delete(testBanks.stream().findFirst().get());
+                .delete(getBank(testBanks));
     }
 }

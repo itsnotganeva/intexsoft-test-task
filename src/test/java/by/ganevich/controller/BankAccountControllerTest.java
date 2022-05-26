@@ -80,7 +80,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void read() throws Exception
+    public void read_Should_Return_Bank_Accounts() throws Exception
     {
         when(bankAccountService.findBankAccountByClientId(any(Long.class))).thenReturn(bankAccounts);
         RequestBuilder requestBuilder = MockMvcRequestBuilders

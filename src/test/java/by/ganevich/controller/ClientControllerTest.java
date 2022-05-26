@@ -66,7 +66,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void readAll() throws Exception
+    public void readAll_Should_Return_Clients() throws Exception
     {
         when(clientService.readAll()).thenReturn(clients);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -161,7 +161,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void update_Should_Return_Status_OK() throws Exception
+    public void update_Should_Return_Status_Ok() throws Exception
     {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
@@ -206,7 +206,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_OPERATOR")
     @Test
-    public void delete_Should_Return_Status_OK() throws Exception
+    public void delete_Should_Return_Status_Ok() throws Exception
     {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/clients/2")
