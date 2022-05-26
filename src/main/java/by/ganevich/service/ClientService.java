@@ -42,7 +42,7 @@ public class ClientService implements BaseService<Client> {
     public void removeClient(Client client) {
         log.info("ClientService: Remove client is called");
         clientRepository.delete(client);
-        log.info("Client " + client.getId()+ " successfully removed.");
+        log.info("Client " + client.getId() + " successfully removed.");
     }
 
     public Optional<Client> findClientById(Long id) {

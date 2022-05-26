@@ -49,7 +49,7 @@ public class BankAccountService implements BaseService<BankAccount> {
     public BankAccount findBankAccountByNumber(Integer number) {
         BankAccount bankAccount = bankAccountRepository.findBankAccountByNumber(number);
         log.info("Bank account with number " + number + " successfully found.");
-        return  bankAccount;
+        return bankAccount;
     }
 
     public List<BankAccount> readAll() {

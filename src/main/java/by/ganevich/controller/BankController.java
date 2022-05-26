@@ -82,6 +82,7 @@ public class BankController {
                 ? new ResponseEntity<>(bankDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/banks/{id}")
     @Operation(

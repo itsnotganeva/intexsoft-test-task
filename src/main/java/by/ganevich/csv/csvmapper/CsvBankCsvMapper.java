@@ -1,4 +1,4 @@
-package by.ganevich.csv.csvMapper;
+package by.ganevich.csv.csvmapper;
 
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import by.ganevich.entity.Bank;
@@ -13,8 +13,7 @@ public class CsvBankCsvMapper extends BaseCsvMapper<Bank> {
     }
 
     @Override
-    public ColumnPositionMappingStrategy setColumnMapping()
-    {
+    public ColumnPositionMappingStrategy setColumnMapping() {
         ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
         strategy.setType(Bank.class);
         String[] columns = new String[] {"bankName"};

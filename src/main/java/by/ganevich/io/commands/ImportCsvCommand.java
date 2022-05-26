@@ -1,7 +1,7 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.csv.archiver.Archiver;
-import by.ganevich.csv.importCsv.CsvImporter;
+import by.ganevich.csv.importcsv.CsvImporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;

@@ -18,11 +18,11 @@ public abstract class BaseCommand implements ICommand {
 
     public CommandResult execute(CommandDescriptor commandDescriptor) throws IOException {
         Map<String, String> parameters = commandDescriptor.getParameters();
-            if (parameters.containsValue("help")) {
-                return getDescription();
-            } else {
-                return doExecute(parameters);
-            }
+        if (parameters.containsValue("help")) {
+            return getDescription();
+        } else {
+            return doExecute(parameters);
+        }
     }
 
     public abstract CommandResult doExecute(Map<String, String> parameters) throws IOException;

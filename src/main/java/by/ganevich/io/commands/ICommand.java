@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public interface ICommand {
     String getCommandName();
+
     ICommand setDto(CommandDescriptor commandDescriptor);
+
     CommandResult execute(CommandDescriptor commandDescriptor) throws IOException;
 }

@@ -51,14 +51,14 @@ public class BankAccountControllerTest {
                 .apply(springSecurity())
                 .build();
     }
+
     @MockBean
     private BankAccountService bankAccountService;
 
     private List<BankAccount> bankAccounts;
 
     @BeforeEach
-    public void prepareTestData()
-    {
+    public void prepareTestData() {
         Client client = new Client();
         client.setName("Test");
         client.setType(ClientType.INDIVIDUAL);
@@ -80,8 +80,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void read_Should_Return_Bank_Accounts() throws Exception
-    {
+    public void read_Should_Return_Bank_Accounts() throws Exception {
         when(bankAccountService.findBankAccountByClientId(any(Long.class))).thenReturn(bankAccounts);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/clients/1/bank-accounts").accept(MediaType.APPLICATION_JSON);
@@ -98,8 +97,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void create_Should_Return_Status_Ok() throws Exception
-    {
+    public void create_Should_Return_Status_Ok() throws Exception {
         when(bankAccountService.save(any(BankAccount.class))).thenReturn(bankAccounts.stream().findFirst().get());
 
         BankAccountDto bankAccountDto = bankAccountMapper.toDto(bankAccounts.stream().findFirst().get());
@@ -119,8 +117,7 @@ public class BankAccountControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void create_Should_Return_Status_Bad_Request() throws Exception
-    {
+    public void create_Should_Return_Status_Bad_Request() throws Exception {
         when(bankAccountService.save(any(BankAccount.class))).thenReturn(bankAccounts.stream().findFirst().get());
 
         BankAccount invalidAccount = bankAccounts.stream().findFirst().get();

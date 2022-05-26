@@ -28,20 +28,19 @@ public class BankServiceTest {
     private static List<Bank> testBanks;
 
     @BeforeEach
-    public void prepareTestData()
-    {
+    public void prepareTestData() {
         Commission individual = new Commission();
-        individual.setId(1l);
+        individual.setId(1L);
         individual.setCommission(0.03);
         individual.setClientType(0);
 
         Commission industrial = new Commission();
-        industrial.setId(2l);
+        industrial.setId(2L);
         industrial.setCommission(0.04);
         industrial.setClientType(1);
 
         Bank bank = new Bank();
-        bank.setId(1l);
+        bank.setId(1L);
         bank.setName("Test");
         bank.setCommissions(new HashSet<>());
         bank.getCommissions().add(individual);
@@ -50,19 +49,18 @@ public class BankServiceTest {
         testBanks = new ArrayList<>();
         testBanks.add(bank);
     }
+
     private Bank getBank(List<Bank> banks) {
         return testBanks.stream().findFirst().get();
     }
 
     @BeforeEach
-    public void init()
-    {
+    public void init() {
         bankService = new BankService(bankRepository);
     }
 
     @Test
-    void save_Should_Return_Bank()
-    {
+    void save_Should_Return_Bank() {
         when(bankRepository.save(any(Bank.class))).thenReturn(getBank(testBanks));
         Bank resultBank = bankService.save(getBank(testBanks));
 
@@ -73,8 +71,7 @@ public class BankServiceTest {
     }
 
     @Test
-    void readAll_Should_Return_Banks()
-    {
+    void readAll_Should_Return_Banks() {
         when(bankRepository.findAll()).thenReturn(testBanks);
         List<Bank> resultBanks = bankService.readAll();
 
@@ -83,8 +80,7 @@ public class BankServiceTest {
     }
 
     @Test
-    void findBankByName_Should_Return_Bank()
-    {
+    void findBankByName_Should_Return_Bank() {
         when(bankRepository.findByName(any(String.class))).thenReturn(getBank(testBanks));
 
         Bank resultBank = bankService.findBankByName(getBank(testBanks).getName());
@@ -96,8 +92,7 @@ public class BankServiceTest {
     }
 
     @Test
-    public void findBankByName_Should_Return_Null()
-    {
+    public void findBankByName_Should_Return_Null() {
         when(bankRepository.findByName("invalid")).thenReturn(null);
         Bank resultBank = bankService.findBankByName("invalid");
 
@@ -105,8 +100,7 @@ public class BankServiceTest {
     }
 
     @Test
-    public void removeBank()
-    {
+    public void removeBank() {
         doNothing().when(bankRepository)
                 .delete(getBank(testBanks));
 

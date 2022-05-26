@@ -1,7 +1,7 @@
-package by.ganevich.csv.exportCsv;
+package by.ganevich.csv.exportcsv;
 
-import by.ganevich.csv.csvMapper.BaseCsvMapper;
-import by.ganevich.csv.csvMapper.CsvBankCsvMapper;
+import by.ganevich.csv.csvmapper.BaseCsvMapper;
+import by.ganevich.csv.csvmapper.CsvBankCsvMapper;
 import by.ganevich.service.BankService;
 import by.ganevich.service.BaseService;
 import lombok.Getter;

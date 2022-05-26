@@ -21,12 +21,12 @@ public class Archiver {
 
         LocalDate date = LocalDate.now();
 
-        try(ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("src\\main\\resources\\csv\\export(" + date.toString() + ").zip")))
-        {
+        try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream("src\\main\\resources\\csv\\export("
+                + date.toString() + ").zip"))) {
             for (File file : files) {
                 putFileToZip(file, zout);
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -48,13 +48,12 @@ public class Archiver {
 
     public void unpack() {
 
-        try(ZipInputStream zin = new ZipInputStream(new FileInputStream("src\\main\\resources\\csv\\import.zip")))
-        {
+        try (ZipInputStream zin = new ZipInputStream(new FileInputStream("src\\main\\resources\\csv\\import.zip"))) {
             ZipEntry entry;
 
-            while((entry=zin.getNextEntry())!=null){
+            while ((entry = zin.getNextEntry()) != null) {
                 File file = new File(entry.getName());
-                FileOutputStream  os = new FileOutputStream(file);
+                FileOutputStream os = new FileOutputStream(file);
                 for (int c = zin.read(); c != -1; c = zin.read()) {
                     os.write(c);
                 }
@@ -63,7 +62,7 @@ public class Archiver {
                 os.close();
             }
 
-        } catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }

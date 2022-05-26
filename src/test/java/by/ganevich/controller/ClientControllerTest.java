@@ -48,14 +48,14 @@ public class ClientControllerTest {
                 .apply(springSecurity())
                 .build();
     }
+
     @MockBean
     private ClientService clientService;
 
     private List<Client> clients;
 
     @BeforeEach
-    public void prepareTestData()
-    {
+    public void prepareTestData() {
         clients = new ArrayList<>();
 
         Client client = new Client();
@@ -66,8 +66,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void readAll_Should_Return_Clients() throws Exception
-    {
+    public void readAll_Should_Return_Clients() throws Exception {
         when(clientService.readAll()).thenReturn(clients);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/clients").accept(MediaType.APPLICATION_JSON);
@@ -84,8 +83,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void readById_Should_Return_Client() throws Exception
-    {
+    public void readById_Should_Return_Client() throws Exception {
         when(clientService.findClientById(any(Long.class))).thenReturn(clients.stream().findFirst());
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -103,8 +101,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void readById_Should_Return_Not_Found() throws Exception
-    {
+    public void readById_Should_Return_Not_Found() throws Exception {
         when(clientService.findClientById(any(Long.class))).thenReturn(null);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -117,8 +114,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void create_Should_Return_Status_Ok() throws Exception
-    {
+    public void create_Should_Return_Status_Ok() throws Exception {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
         ClientDto clientDto = clientMapper.toDto(clients.stream().findFirst().get());
@@ -137,8 +133,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void create_Should_Return_Status_Bad_Request() throws Exception
-    {
+    public void create_Should_Return_Status_Bad_Request() throws Exception {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
         Client invalidClient = clients.stream().findFirst().get();
@@ -161,8 +156,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void update_Should_Return_Status_Ok() throws Exception
-    {
+    public void update_Should_Return_Status_Ok() throws Exception {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
         ClientDto clientDto = clientMapper.toDto(clients.stream().findFirst().get());
@@ -182,8 +176,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_CLIENT")
     @Test
-    public void update_Should_Return_Status_Bad_Request() throws Exception
-    {
+    public void update_Should_Return_Status_Bad_Request() throws Exception {
         when(clientService.save(any(Client.class))).thenReturn(clients.stream().findFirst().get());
 
         Client invalidClient = clients.stream().findFirst().get();
@@ -206,8 +199,7 @@ public class ClientControllerTest {
 
     @WithMockUser(authorities = "ROLE_OPERATOR")
     @Test
-    public void delete_Should_Return_Status_Ok() throws Exception
-    {
+    public void delete_Should_Return_Status_Ok() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/clients/2")
                 .accept(MediaType.APPLICATION_JSON);

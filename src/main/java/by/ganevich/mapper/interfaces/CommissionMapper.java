@@ -9,7 +9,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommissionMapper {
     CommissionDto toDto(Commission commission);
+
     Commission toEntity(CommissionDto commissionDto);
+
     List<Commission> toEntityList(List<CommissionDto> commissionsDto);
+
     List<CommissionDto> toDtoList(List<Commission> commissions);
 }

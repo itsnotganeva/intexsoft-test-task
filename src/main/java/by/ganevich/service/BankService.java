@@ -14,7 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class BankService implements BaseService<Bank>{
+public class BankService implements BaseService<Bank> {
 
     private final BankRepository bankRepository;
 
@@ -51,7 +51,7 @@ public class BankService implements BaseService<Bank>{
     public Optional<Bank> findBankById(Long id) {
         Optional<Bank> bank = bankRepository.findById(id);
         log.info("Bank " + bank.get().getId() + " successfully found");
-        return  bank;
+        return bank;
     }
 
     public void deleteBankById(Long id) {

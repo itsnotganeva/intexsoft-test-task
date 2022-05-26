@@ -1,7 +1,7 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.csv.archiver.Archiver;
-import by.ganevich.csv.exportCsv.CsvExporter;
+import by.ganevich.csv.exportcsv.CsvExporter;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
 import lombok.Getter;
@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @Slf4j
 @RequiredArgsConstructor
-public class ExportCsvCommand extends BaseCommand{
+public class ExportCsvCommand extends BaseCommand {
     private final String commandName = "exportCsv";
 
     private final Archiver archiver;

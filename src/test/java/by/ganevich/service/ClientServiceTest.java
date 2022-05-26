@@ -26,8 +26,7 @@ public class ClientServiceTest {
     private static List<Client> testClients;
 
     @BeforeEach
-    public void prepareTestData()
-    {
+    public void prepareTestData() {
         testClients = new ArrayList<>();
 
         Client client = new Client();
@@ -43,8 +42,7 @@ public class ClientServiceTest {
     }
 
     @BeforeEach
-    public void init()
-    {
+    public void init() {
         clientService = new ClientService(clientRepository);
     }
 
@@ -53,8 +51,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void findClientByName_Should_Return_Client()
-    {
+    public void findClientByName_Should_Return_Client() {
         when(clientRepository.findByName(any(String.class)))
                 .thenReturn(getClient(testClients));
 
@@ -77,8 +74,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void saveClient_Should_Return_Client()
-    {
+    public void saveClient_Should_Return_Client() {
         when(clientRepository.save(any(Client.class)))
                 .thenReturn(getClient(testClients));
 
@@ -91,8 +87,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void removeClient()
-    {
+    public void removeClient() {
         doNothing().when(clientRepository)
                 .delete(getClient(testClients));
 
@@ -104,8 +99,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getAll_Should_Return_Clients()
-    {
+    public void getAll_Should_Return_Clients() {
         when(clientRepository.findAll()).thenReturn(testClients);
 
         List<Client> clients = clientService.readAll();

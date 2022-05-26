@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CustomValidator<T> {
 
-    public boolean validateDto (T dto) {
+    public boolean validateDto(T dto) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
 
@@ -32,7 +32,7 @@ public class CustomValidator<T> {
         }
     }
 
-    public List<String> validateCommand (T command) {
+    public List<String> validateCommand(T command) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
 

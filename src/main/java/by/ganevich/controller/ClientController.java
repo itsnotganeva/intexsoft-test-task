@@ -76,8 +76,7 @@ public class ClientController {
         final Optional<Client> client = clientService.findClientById(id);
         if (client == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else {
+        } else {
             ClientDto clientDto = clientMapper.toDto(client.get());
 
             log.info("REST: Readinf of client with id" + id + " was successful");

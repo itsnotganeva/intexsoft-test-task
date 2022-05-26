@@ -41,7 +41,8 @@ public class TransactionController {
             @RequestParam(name = "dateBefore") @Parameter(description = "start date") String dateBefore,
             @RequestParam(name = "dateAfter") @Parameter(description = "final date") String dateAfter
     ) {
-        log.info("REST: Read transactions of client with id + " + id + " by date between " + dateBefore + " and + " + dateAfter + " is called");
+        log.info("REST: Read transactions of client with id + " + id + " by date between " + dateBefore
+                + " and + " + dateAfter + " is called");
         final List<Transaction> transactions = transactionService
                 .readAllByClientId(Date.valueOf(dateBefore), Date.valueOf(dateAfter), id);
 
@@ -69,11 +70,9 @@ public class TransactionController {
             log.info("REST: The input data of transaction is invalid");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        transactionService.sendMoney(
-                        Integer.valueOf(conductTransactionDto.getSenderAccountNumber()),
+        transactionService.sendMoney(Integer.valueOf(conductTransactionDto.getSenderAccountNumber()),
                         Integer.valueOf(conductTransactionDto.getReceiverAccountNumber()),
-                        Double.valueOf(conductTransactionDto.getAmountOfMoney())
-                );
+                        Double.valueOf(conductTransactionDto.getAmountOfMoney()));
         log.info("REST: Transaction was carried out successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

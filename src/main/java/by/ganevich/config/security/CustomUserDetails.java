@@ -17,7 +17,10 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
         CustomUserDetails c = new CustomUserDetails();
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = user
+                .getRoles()
+                .stream()
+                .map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList());
         c.login = user.getLogin();
         c.password = user.getPassword();
         c.grantedAuthorities = authorities;
