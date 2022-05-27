@@ -1,4 +1,4 @@
-package by.ganevich.csv.csvmapper;
+package by.ganevich.csv.mapping;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;

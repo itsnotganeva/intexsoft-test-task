@@ -1,7 +1,7 @@
-package by.ganevich.csv.exportcsv;
+package by.ganevich.csv.importing;
 
-import by.ganevich.csv.csvmapper.BaseCsvMapper;
-import by.ganevich.csv.csvmapper.CsvClientCsvMapper;
+import by.ganevich.csv.mapping.BaseCsvMapper;
+import by.ganevich.csv.mapping.CsvClientCsvMapper;
 import by.ganevich.service.BaseService;
 import by.ganevich.service.ClientService;
 import lombok.Getter;
@@ -11,12 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Getter
-public class ClientExporter extends CsvExporter {
+public class ClientImporter extends CsvImporter {
 
+    private final String fileName = "importClients.csv";
     private final ClientService clientService;
     private final CsvClientCsvMapper clientMapper;
-
-    private final String fileName = "exportClients.csv";
 
     @Override
     public BaseService getService() {
@@ -27,5 +26,4 @@ public class ClientExporter extends CsvExporter {
     public BaseCsvMapper getMapper() {
         return this.clientMapper;
     }
-
 }

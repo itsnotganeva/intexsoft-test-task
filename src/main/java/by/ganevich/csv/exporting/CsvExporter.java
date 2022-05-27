@@ -1,6 +1,6 @@
-package by.ganevich.csv.exportcsv;
+package by.ganevich.csv.exporting;
 
-import by.ganevich.csv.csvmapper.BaseCsvMapper;
+import by.ganevich.csv.mapping.BaseCsvMapper;
 import by.ganevich.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 

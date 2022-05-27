@@ -1,6 +1,5 @@
 package by.ganevich.service;
 
-import by.ganevich.entity.Bank;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.repository.BankAccountRepository;
@@ -25,12 +24,6 @@ public class BankAccountService implements BaseService<BankAccount> {
         BankAccount savedAccount = bankAccountRepository.save(bankAccount);
         log.info("Bank account " + bankAccount.getId() + " successfully created.");
         return savedAccount;
-    }
-
-    public BankAccount getAccountByClientAndBank(Client client, Bank bank) {
-        BankAccount bankAccount = bankAccountRepository.findBankAccountByOwnerAndBankProducer(client, bank);
-        log.info("Bank account " + bankAccount.getId() + " successfully found.");
-        return bankAccount;
     }
 
     public Set<BankAccount> getAllAccountsOfClient(Client client) {
