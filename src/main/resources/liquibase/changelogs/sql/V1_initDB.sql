@@ -59,10 +59,4 @@ create table commissionForClients
     foreign key (bankId) references banks (id)
 );
 
-create table exchangeRates
-(
-    id bigSerial PRIMARY KEY,
-    currency int not null UNIQUE,
-    rate real not null
-);
 

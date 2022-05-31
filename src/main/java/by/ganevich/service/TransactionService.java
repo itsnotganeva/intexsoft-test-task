@@ -1,13 +1,16 @@
 package by.ganevich.service;
 
+import by.ganevich.dto.ExchangeRateDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
+import by.ganevich.entity.enums.Currency;
 import by.ganevich.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.List;
@@ -21,26 +24,28 @@ public class TransactionService implements BaseService<Transaction> {
 
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
-    private final RateService rateService;
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
         log.info("TransactionService: Send money is called.");
 
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
-        BankAccount recipientAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
+        BankAccount receiverAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
+
+        ExchangeRateDto senderExchangeRate = getExchangeRate(senderAccount);
+        ExchangeRateDto receiverExchangeRate = getExchangeRate(receiverAccount);
 
         Double senderSum = senderAccount.getAmountOfMoney();
-        Double recipientSum = recipientAccount.getAmountOfMoney();
+        Double recipientSum = receiverAccount.getAmountOfMoney();
 
         if (sumOfMoney <= senderSum) {
             Double convertSum = sumOfMoney
-                            * rateService.findRateByCurrency(senderAccount.getCurrency().ordinal())
-                            / rateService.findRateByCurrency(recipientAccount.getCurrency().ordinal());
+                            * senderExchangeRate.getRateOut()
+                            / receiverExchangeRate.getRateIn();
 
             Double sumWithCommission;
 
-            if (senderAccount.getBankProducer().getName().equals(recipientAccount.getBankProducer().getName())) {
+            if (senderAccount.getBankProducer().getName().equals(receiverAccount.getBankProducer().getName())) {
                 sumWithCommission = sumOfMoney;
             } else {
                 sumWithCommission = sumOfMoney
@@ -49,24 +54,24 @@ public class TransactionService implements BaseService<Transaction> {
             }
 
             senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
-            recipientAccount.setAmountOfMoney(recipientSum + convertSum);
+            receiverAccount.setAmountOfMoney(recipientSum + convertSum);
 
             bankAccountService.save(senderAccount);
-            bankAccountService.save(recipientAccount);
+            bankAccountService.save(receiverAccount);
 
             Transaction transaction = new Transaction();
             long millis = System.currentTimeMillis();
             transaction.setDate(new Date(millis));
             transaction.setAmountOfMoney(sumOfMoney);
             transaction.setSenderAccount(senderAccount);
-            transaction.setReceiverAccount(recipientAccount);
+            transaction.setReceiverAccount(receiverAccount);
             transaction.setSender(senderAccount.getOwner());
-            transaction.setReceiver(recipientAccount.getOwner());
+            transaction.setReceiver(receiverAccount.getOwner());
             transactionRepository.save(transaction);
 
             log.info("Transaction from "
                     + senderAccount.getOwner()
-                    + " to " + recipientAccount.getOwner()
+                    + " to " + receiverAccount.getOwner()
                     + "was carried successfully.");
         }
     }
@@ -77,6 +82,14 @@ public class TransactionService implements BaseService<Transaction> {
                 .stream()
                 .filter(commission -> commission.getClientType().equals(bankAccount.getOwner().getType()))
                 .findFirst().get().getCommission();
+    }
+
+    private ExchangeRateDto getExchangeRate(BankAccount bankAccount) {
+        Currency currency = bankAccount.getCurrency();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ExchangeRateDto exchangeRate = restTemplate.getForObject("http://localhost:8083/rates/" + currency.name(), ExchangeRateDto.class);
+        return exchangeRate;
     }
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
