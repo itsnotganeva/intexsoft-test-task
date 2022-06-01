@@ -38,6 +38,7 @@ public class BankAccount {
     private Integer number;
 
     @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @Column(name = "amountOfMoney")
