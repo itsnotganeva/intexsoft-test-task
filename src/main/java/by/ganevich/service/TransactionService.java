@@ -6,8 +6,9 @@ import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.entity.enums.Currency;
 import by.ganevich.repository.TransactionRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -17,13 +18,16 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class TransactionService implements BaseService<Transaction> {
 
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
+
+    @Value("${currency-service.url}")
+    private String url;
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
@@ -88,7 +92,7 @@ public class TransactionService implements BaseService<Transaction> {
         Currency currency = bankAccount.getCurrency();
 
         RestTemplate restTemplate = new RestTemplate();
-        ExchangeRateDto exchangeRate = restTemplate.getForObject("http://localhost:8083/rates/" + currency.name(), ExchangeRateDto.class);
+        ExchangeRateDto exchangeRate = restTemplate.getForObject(url + currency.name(), ExchangeRateDto.class);
         return exchangeRate;
     }
 
