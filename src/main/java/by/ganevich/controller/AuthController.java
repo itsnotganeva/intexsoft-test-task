@@ -13,7 +13,9 @@ import by.ganevich.entity.enums.State;
 import by.ganevich.mail.EmailService;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@Tag(name = "Auth controller", description = "To manage authorisation of users")
 public class AuthController {
 
     private final ClientService clientService;
@@ -36,7 +39,14 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequestDto registrationRequest) throws MessagingException {
+    @Operation(
+            summary = "User registration",
+            description = "Allows to register a new user"
+    )
+    public ResponseEntity<?> registerUser(
+            @RequestBody @Parameter(description = "Data to register a new user")
+            RegistrationRequestDto registrationRequest
+    ) throws MessagingException {
 
         User user = new User();
         user.setPassword(registrationRequest.getPassword());
@@ -56,8 +66,13 @@ public class AuthController {
     }
 
     @PostMapping("/verify/{id}")
+    @Operation(
+            summary = "Verifying users",
+            description = "Verify user to being activated"
+    )
     public ResponseEntity<?> verifyUser(@PathVariable(name = "id") @Parameter(description = "id of user") Long id,
-                                        @RequestBody VerifyUserDto verifyUserDto) {
+                                        @RequestBody @Parameter(description = "Secret code from mail")
+                                        VerifyUserDto verifyUserDto) {
 
         Optional<User> user = userService.findById(id);
         if (verifyUserDto.getNumber().equals(user.get().getCode())) {
@@ -73,7 +88,12 @@ public class AuthController {
 
 
     @PostMapping("/auth")
-    public ResponseEntity<AuthResponseDto> auth(@RequestBody RegistrationRequestDto request) {
+    @Operation(
+            summary = "User authorisation",
+            description = "Allows to log in to user"
+    )
+    public ResponseEntity<AuthResponseDto> auth(@RequestBody @Parameter(description = "Data to log in")
+                                                    RegistrationRequestDto request) {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if (userEntity.getState().equals(State.NOT_ACTIVATED)) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

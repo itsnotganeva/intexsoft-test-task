@@ -14,14 +14,15 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 @Transactional
-public class BankService implements BaseService<Bank>{
+public class BankService implements BaseService<Bank> {
 
     private final BankRepository bankRepository;
 
-    public void save(Bank bank) {
+    public Bank save(Bank bank) {
         log.info("BankService: Save of bank is called");
-        bankRepository.save(bank);
+        Bank savedBank = bankRepository.save(bank);
         log.info("Bank " + bank.getId() + " successfully created.");
+        return savedBank;
     }
 
     public List<Bank> readAll() {
@@ -34,6 +35,9 @@ public class BankService implements BaseService<Bank>{
     public Bank findBankByName(String name) {
         log.info("BankService: Find bank by name is called");
         Bank bank = bankRepository.findByName(name);
+        if (bank == null) {
+            return null;
+        }
         log.info("Bank " + bank.getId() + " successfully found");
         return bank;
     }
@@ -47,7 +51,7 @@ public class BankService implements BaseService<Bank>{
     public Optional<Bank> findBankById(Long id) {
         Optional<Bank> bank = bankRepository.findById(id);
         log.info("Bank " + bank.get().getId() + " successfully found");
-        return  bank;
+        return bank;
     }
 
     public void deleteBankById(Long id) {

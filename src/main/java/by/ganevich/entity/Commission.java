@@ -15,13 +15,6 @@ public class Commission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(name = "bankId")
-    private Bank bank;
-
     @Column(name = "clientType")
     private Integer clientType;
 

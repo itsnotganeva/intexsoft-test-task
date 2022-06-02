@@ -58,7 +58,7 @@ public class BankAccountController {
     public ResponseEntity<List<BankAccountDto>> read(
             @PathVariable(name = "id") @Parameter(description = "id of client") Long id
     ) {
-        log.info("REST: Read bank accounts of client " +id + " is called");
+        log.info("REST: Read bank accounts of client " + id + " is called");
         final List<BankAccount> bankAccounts = bankAccountService.findBankAccountByClientId(id);
         List<BankAccountDto> bankAccountsDto
                 = bankAccountMapper.toDtoList(bankAccounts);

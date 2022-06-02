@@ -6,7 +6,6 @@ create table users
     roles varchar[] not null,
     securityCode varchar(6),
     userState varchar(255) not null
---     foreign key (roleId) references roles (id)
 );
 
 CREATE TABLE clients

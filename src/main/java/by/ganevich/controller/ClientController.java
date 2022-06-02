@@ -46,7 +46,7 @@ public class ClientController {
         Client client = clientMapper.toEntity(clientDto);
         clientService.save(client);
         log.info("REST: Creating of client was successful");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
@@ -74,12 +74,15 @@ public class ClientController {
     ) {
         log.info("REST: Read client with id" + id + " is called");
         final Optional<Client> client = clientService.findClientById(id);
-        ClientDto clientDto = clientMapper.toDto(client.get());
+        if (client == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            ClientDto clientDto = clientMapper.toDto(client.get());
 
-        log.info("REST: Readinf of client with id" + id + " was successful");
-        return clientDto != null
-                ? new ResponseEntity<>(clientDto, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);    }
+            log.info("REST: Readinf of client with id" + id + " was successful");
+            return new ResponseEntity<>(clientDto, HttpStatus.OK);
+        }
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @PutMapping(value = "/clients/{id}")

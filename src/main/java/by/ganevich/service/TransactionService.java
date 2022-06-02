@@ -22,7 +22,6 @@ public class TransactionService implements BaseService<Transaction> {
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
     private final RateService rateService;
-    private final CommissionService commissionService;
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
@@ -46,9 +45,7 @@ public class TransactionService implements BaseService<Transaction> {
             } else {
                 sumWithCommission = sumOfMoney
                         + sumOfMoney
-                        * commissionService
-                        .findCommissionByClientTypeAndBank(senderAccount.getOwner().getType().ordinal(),
-                                senderAccount.getBankProducer());
+                        * getCommission(senderAccount);
             }
 
             senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
@@ -67,8 +64,19 @@ public class TransactionService implements BaseService<Transaction> {
             transaction.setReceiver(recipientAccount.getOwner());
             transactionRepository.save(transaction);
 
-            log.info("Transaction from " + senderAccount.getOwner() + " to " + recipientAccount.getOwner() + "was carried successfully.");
+            log.info("Transaction from "
+                    + senderAccount.getOwner()
+                    + " to " + recipientAccount.getOwner()
+                    + "was carried successfully.");
         }
+    }
+
+    private Double getCommission(BankAccount bankAccount) {
+        return bankAccount.getBankProducer()
+                .getCommissions()
+                .stream()
+                .filter(commission -> commission.getClientType().equals(bankAccount.getOwner().getType()))
+                .findFirst().get().getCommission();
     }
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
@@ -78,7 +86,8 @@ public class TransactionService implements BaseService<Transaction> {
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndSender(dateBefore, dateAfter, client);
 
-        log.info("Transactions of sender " + client.getName() + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
+        log.info("Transactions of sender " + client.getName() + " by date between " + dateBefore
+                + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
@@ -89,16 +98,18 @@ public class TransactionService implements BaseService<Transaction> {
 
         Set<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndReceiver(dateBefore, dateAfter, client);
-        log.info("Transactions of receiver " + client.getName() + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
+        log.info("Transactions of receiver " + client.getName() + " by date between " + dateBefore
+                + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
 
-    public List<Transaction> readAllByClientId (Date dateBefore, Date dateAfter, Long id) {
+    public List<Transaction> readAllByClientId(Date dateBefore, Date dateAfter, Long id) {
         List<Transaction> transactions =
                 transactionRepository.findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
 
-        log.info("Transactions of client " + id + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
+        log.info("Transactions of client " + id + " by date between " + dateBefore
+                + " and " + dateAfter + "are successfully found.");
         return transactions;
     }
 
@@ -108,8 +119,9 @@ public class TransactionService implements BaseService<Transaction> {
         return transactions;
     }
 
-    public void save(Transaction transaction) {
-        transactionRepository.save(transaction);
+    public Transaction save(Transaction transaction) {
+        Transaction savedTransaction = transactionRepository.save(transaction);
         log.info("Transactions is saved");
+        return savedTransaction;
     }
 }

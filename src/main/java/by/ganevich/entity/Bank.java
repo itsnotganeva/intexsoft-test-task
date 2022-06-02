@@ -33,9 +33,9 @@ public class Bank {
     private Set<BankAccount> bankAccounts;
 
     @OneToMany(
-            mappedBy = "bank",
             cascade = CascadeType.ALL
     )
+    @JoinColumn(name = "bank_id", nullable = false)
     private Set<Commission> commissions;
 
     @Override
