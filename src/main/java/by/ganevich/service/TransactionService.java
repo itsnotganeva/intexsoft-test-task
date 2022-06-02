@@ -1,17 +1,15 @@
 package by.ganevich.service;
 
+import by.ganevich.client.WebClient;
 import by.ganevich.dto.ExchangeRateDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
-import by.ganevich.entity.enums.Currency;
 import by.ganevich.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.List;
@@ -26,8 +24,7 @@ public class TransactionService implements BaseService<Transaction> {
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
 
-    @Value("${currency-service.url}")
-    private String url;
+    private final WebClient webClient;
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
@@ -36,8 +33,8 @@ public class TransactionService implements BaseService<Transaction> {
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
         BankAccount receiverAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
 
-        ExchangeRateDto senderExchangeRate = getExchangeRate(senderAccount);
-        ExchangeRateDto receiverExchangeRate = getExchangeRate(receiverAccount);
+        ExchangeRateDto senderExchangeRate = webClient.getExchangeRate(senderAccount);
+        ExchangeRateDto receiverExchangeRate = webClient.getExchangeRate(receiverAccount);
 
         Double senderSum = senderAccount.getAmountOfMoney();
         Double recipientSum = receiverAccount.getAmountOfMoney();
@@ -86,14 +83,6 @@ public class TransactionService implements BaseService<Transaction> {
                 .stream()
                 .filter(commission -> commission.getClientType().equals(bankAccount.getOwner().getType()))
                 .findFirst().get().getCommission();
-    }
-
-    private ExchangeRateDto getExchangeRate(BankAccount bankAccount) {
-        Currency currency = bankAccount.getCurrency();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ExchangeRateDto exchangeRate = restTemplate.getForObject(url + currency.name(), ExchangeRateDto.class);
-        return exchangeRate;
     }
 
     public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
