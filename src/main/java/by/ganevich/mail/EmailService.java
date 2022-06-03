@@ -26,7 +26,7 @@ public class EmailService {
     private final String subject = "BankSystem security verification";
 
     @Value("${isEmailSenderActive}")
-    private String isEmailSenderActive;
+    private Boolean isEmailSenderActive;
 
     private static String getRandomNumberString() {
         Random rnd = new Random();
@@ -57,7 +57,7 @@ public class EmailService {
     }
 
     public void invokeEmailSender(User user, RegistrationRequestDto registrationRequest) throws MessagingException {
-        if (isEmailSenderActive.equals(true)) {
+        if (isEmailSenderActive) {
             user.setCode(sendEmail(registrationRequest));
         } else {
             user.setState(State.ACTIVATED);
