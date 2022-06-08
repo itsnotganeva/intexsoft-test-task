@@ -1,10 +1,12 @@
 package by.ganevich.service;
 
+import by.ganevich.client.WebClient;
+import by.ganevich.dto.ExchangeRateDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.repository.TransactionRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,33 +16,37 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class TransactionService implements BaseService<Transaction> {
 
     private final TransactionRepository transactionRepository;
     private final BankAccountService bankAccountService;
-    private final RateService rateService;
+
+    private final WebClient webClient;
 
     public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
 
         log.info("TransactionService: Send money is called.");
 
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
-        BankAccount recipientAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
+        BankAccount receiverAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
+
+        ExchangeRateDto senderExchangeRate = webClient.getExchangeRate(senderAccount);
+        ExchangeRateDto receiverExchangeRate = webClient.getExchangeRate(receiverAccount);
 
         Double senderSum = senderAccount.getAmountOfMoney();
-        Double recipientSum = recipientAccount.getAmountOfMoney();
+        Double recipientSum = receiverAccount.getAmountOfMoney();
 
         if (sumOfMoney <= senderSum) {
             Double convertSum = sumOfMoney
-                            * rateService.findRateByCurrency(senderAccount.getCurrency().ordinal())
-                            / rateService.findRateByCurrency(recipientAccount.getCurrency().ordinal());
+                            * senderExchangeRate.getRateOut()
+                            / receiverExchangeRate.getRateIn();
 
             Double sumWithCommission;
 
-            if (senderAccount.getBankProducer().getName().equals(recipientAccount.getBankProducer().getName())) {
+            if (senderAccount.getBankProducer().getName().equals(receiverAccount.getBankProducer().getName())) {
                 sumWithCommission = sumOfMoney;
             } else {
                 sumWithCommission = sumOfMoney
@@ -49,24 +55,24 @@ public class TransactionService implements BaseService<Transaction> {
             }
 
             senderAccount.setAmountOfMoney(senderSum - sumWithCommission);
-            recipientAccount.setAmountOfMoney(recipientSum + convertSum);
+            receiverAccount.setAmountOfMoney(recipientSum + convertSum);
 
             bankAccountService.save(senderAccount);
-            bankAccountService.save(recipientAccount);
+            bankAccountService.save(receiverAccount);
 
             Transaction transaction = new Transaction();
             long millis = System.currentTimeMillis();
             transaction.setDate(new Date(millis));
             transaction.setAmountOfMoney(sumOfMoney);
             transaction.setSenderAccount(senderAccount);
-            transaction.setReceiverAccount(recipientAccount);
+            transaction.setReceiverAccount(receiverAccount);
             transaction.setSender(senderAccount.getOwner());
-            transaction.setReceiver(recipientAccount.getOwner());
+            transaction.setReceiver(receiverAccount.getOwner());
             transactionRepository.save(transaction);
 
             log.info("Transaction from "
                     + senderAccount.getOwner()
-                    + " to " + recipientAccount.getOwner()
+                    + " to " + receiverAccount.getOwner()
                     + "was carried successfully.");
         }
     }

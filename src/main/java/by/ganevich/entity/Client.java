@@ -34,6 +34,7 @@ public class Client {
     private String name;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private ClientType type;
 
     @OneToMany(

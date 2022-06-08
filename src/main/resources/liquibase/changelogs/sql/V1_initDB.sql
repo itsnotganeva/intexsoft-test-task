@@ -5,14 +5,14 @@ create table users
     password varchar(500) not null,
     roles varchar[] not null,
     securityCode varchar(6),
-    userState varchar(255) not null
+    userState varchar(30) not null
 );
 
 CREATE TABLE clients
 (
     id bigserial PRIMARY KEY,
     name varchar(255) not null,
-    type int not null,
+    type varchar(20) not null,
     userId bigSerial not null,
     foreign key (userId) references users (id)
 );
@@ -27,7 +27,7 @@ CREATE TABLE bankAccounts
 (
     id bigserial PRIMARY KEY,
     number int not null unique,
-    currency varchar(255) not null,
+    currency varchar(10) not null,
     amountOfMoney real,
     bankId int not null,
     foreign key (bankId) references banks (id),
@@ -59,10 +59,4 @@ create table commissionForClients
     foreign key (bankId) references banks (id)
 );
 
-create table exchangeRates
-(
-    id bigSerial PRIMARY KEY,
-    currency int not null UNIQUE,
-    rate real not null
-);
 

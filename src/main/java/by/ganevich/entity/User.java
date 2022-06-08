@@ -40,6 +40,7 @@ public class User {
     private Client client;
 
     @Column(name = "userState")
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @Type(type = "list-array")

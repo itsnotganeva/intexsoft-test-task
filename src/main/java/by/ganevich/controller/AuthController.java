@@ -33,8 +33,8 @@ import java.util.Optional;
 public class AuthController {
 
     private final ClientService clientService;
-    private UserService userService;
-    private JwtProvider jwtProvider;
+    private final UserService userService;
+    private final JwtProvider jwtProvider;
     private final EmailService emailService;
 
 
@@ -60,7 +60,7 @@ public class AuthController {
         client.setUser(user);
         clientService.save(client);
 
-        user.setCode(emailService.sendEmail(registrationRequest));
+        emailService.invokeEmailSender(user, registrationRequest);
         userService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
