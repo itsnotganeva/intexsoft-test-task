@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
@@ -15,12 +14,6 @@ import java.sql.Date;
 public class TransactionDto {
 
     private Long id;
-
-    @Valid
-    private ClientDto sender;
-
-    @Valid
-    private ClientDto receiver;
 
     @Pattern(regexp = "\\(?\\d+\\.\\d+\\)?")
     @NotEmpty(message = "Amount of money must not be empty")

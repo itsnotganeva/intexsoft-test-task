@@ -34,6 +34,9 @@ public class CommandFactory {
     private final ImportCsvCommand importCsvCommand;
     private final ExportCsvCommand exportCsvCommand;
 
+    private final CreateReportOfClient createReportOfClient;
+    private final CreateReportOfAccount createReportOfAccount;
+
     private Map<String, ICommand> commands;
 
     @PostConstruct
@@ -54,6 +57,8 @@ public class CommandFactory {
         commands.put(exitCommand.getCommandName(), exitCommand);
         commands.put(importCsvCommand.getCommandName(), importCsvCommand);
         commands.put(exportCsvCommand.getCommandName(), exportCsvCommand);
+        commands.put(createReportOfClient.getCommandName(), createReportOfClient);
+        commands.put(createReportOfAccount.getCommandName(), createReportOfAccount);
         return commands;
     }
 

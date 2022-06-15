@@ -49,6 +49,4 @@ public class User {
             columnDefinition = "text[]"
     )
     private List<String> roles;
-
-
 }

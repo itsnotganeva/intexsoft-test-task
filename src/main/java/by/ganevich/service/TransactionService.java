@@ -3,7 +3,6 @@ package by.ganevich.service;
 import by.ganevich.client.WebClient;
 import by.ganevich.dto.ExchangeRateDto;
 import by.ganevich.entity.BankAccount;
-import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -66,8 +64,6 @@ public class TransactionService implements BaseService<Transaction> {
             transaction.setAmountOfMoney(sumOfMoney);
             transaction.setSenderAccount(senderAccount);
             transaction.setReceiverAccount(receiverAccount);
-            transaction.setSender(senderAccount.getOwner());
-            transaction.setReceiver(receiverAccount.getOwner());
             transactionRepository.save(transaction);
 
             log.info("Transaction from "
@@ -85,38 +81,34 @@ public class TransactionService implements BaseService<Transaction> {
                 .findFirst().get().getCommission();
     }
 
-    public Set<Transaction> readAllByDateAndSender(Date dateBefore, Date dateAfter, Client client) {
+    public List<Transaction> readAllByDateAndSenderAccount(Date dateBefore, Date dateAfter, BankAccount bankAccount) {
 
         log.info("TransactionService: Read all by date and sender is called.");
 
-        Set<Transaction> transactions =
-                transactionRepository.findAllByDateBetweenAndSender(dateBefore, dateAfter, client);
+        List<Transaction> transactions =
+                transactionRepository.findAllByDateBetweenAndSenderAccount(dateBefore, dateAfter, bankAccount);
 
-        log.info("Transactions of sender " + client.getName() + " by date between " + dateBefore
-                + " and " + dateAfter + "are successfully found.");
+        log.info("Sent transactions of account with number " + bankAccount.getNumber()
+                + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
 
-    public Set<Transaction> readAllByDateAndReceiver(Date dateBefore, Date dateAfter, Client client) {
+    public List<Transaction> readAllByDateAndReceiverAccount(Date dateBefore, Date dateAfter, BankAccount bankAccount) {
 
         log.info("TransactionService: Read all by date and receiver is called.");
 
-        Set<Transaction> transactions =
-                transactionRepository.findAllByDateBetweenAndReceiver(dateBefore, dateAfter, client);
-        log.info("Transactions of receiver " + client.getName() + " by date between " + dateBefore
-                + " and " + dateAfter + "are successfully found.");
+        List<Transaction> transactions =
+                transactionRepository.findAllByDateBetweenAndReceiverAccount(dateBefore, dateAfter, bankAccount);
+        log.info("Receive transactions of account with number " + bankAccount.getNumber()
+                + " by date between " + dateBefore + " and " + dateAfter + "are successfully found.");
 
         return transactions;
     }
 
-    public List<Transaction> readAllByClientId(Date dateBefore, Date dateAfter, Long id) {
-        List<Transaction> transactions =
-                transactionRepository.findAllByDateBetweenAndSenderIdOrReceiverId(dateBefore, dateAfter, id, id);
-
-        log.info("Transactions of client " + id + " by date between " + dateBefore
-                + " and " + dateAfter + "are successfully found.");
-        return transactions;
+    public List<Transaction> readAllByAccountAndDate(Date dateBefore, Date dateAfter, BankAccount bankAccount) {
+        return transactionRepository
+                .findAllByDateBetweenAndSenderAccountOrReceiverAccount(dateBefore, dateAfter, bankAccount, bankAccount);
     }
 
     public List<Transaction> readAll() {

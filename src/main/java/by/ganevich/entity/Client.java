@@ -14,15 +14,7 @@ import java.util.Set;
 @NamedEntityGraph(
         name = "clients-entity-graph",
         attributeNodes = {
-                @NamedAttributeNode(value = "bankAccounts", subgraph = "bankAccounts-sub-graph")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "banks-sub-graph",
-                        attributeNodes = {
-                                @NamedAttributeNode("bankProducer"),
-                        }
-                )
+                @NamedAttributeNode("bankAccounts")
         }
 )
 public class Client {
@@ -32,6 +24,9 @@ public class Client {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
+    private String surname;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
@@ -43,20 +38,6 @@ public class Client {
             fetch = FetchType.LAZY
     )
     private Set<BankAccount> bankAccounts;
-
-    @OneToMany(
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY,
-            mappedBy = "sender"
-    )
-    private Set<Transaction> sentTransactions;
-
-    @OneToMany(
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY,
-            mappedBy = "receiver"
-    )
-    private Set<Transaction> receivedTransactions;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")

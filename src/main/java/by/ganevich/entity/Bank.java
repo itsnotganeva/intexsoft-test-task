@@ -35,7 +35,7 @@ public class Bank {
     @OneToMany(
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "bank_id", nullable = false)
+    @JoinColumn(name = "bankid", nullable = false)
     private Set<Commission> commissions;
 
     @Override
@@ -46,5 +46,4 @@ public class Bank {
                 + '\'' + ", commissions=" + commissions
                 + '}';
     }
-
 }

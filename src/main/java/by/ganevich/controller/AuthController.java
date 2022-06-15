@@ -56,6 +56,7 @@ public class AuthController {
 
         Client client = new Client();
         client.setName(registrationRequest.getName());
+        client.setSurname(registrationRequest.getSurname());
         client.setType(ClientType.valueOf(registrationRequest.getType()));
         client.setUser(user);
         clientService.save(client);

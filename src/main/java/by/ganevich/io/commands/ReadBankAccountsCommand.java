@@ -35,7 +35,7 @@ public class ReadBankAccountsCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "readBankAccounts clientName=?";
+        String description = "readBankAccounts clientName=? surname=?";
         return description;
     }
 
@@ -61,7 +61,8 @@ public class ReadBankAccountsCommand extends BaseCommand {
     @Override
     public ICommand setDto(CommandDescriptor commandDescriptor) {
         ClientDto clientDto = clientMapper
-                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+                .toDto(clientService.findClientByNameAndSurname(commandDescriptor.getParameters().get("clientName"),
+                                commandDescriptor.getParameters().get("surname")).get());
         this.clientDto = clientDto;
         return this;
     }

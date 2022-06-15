@@ -10,8 +10,8 @@ public class CsvTransactionCsvMapper extends BaseCsvMapper<Transaction> {
     @Override
     public String getCsvString(Transaction transaction) {
         return transaction.getId().toString() + ","
-                + transaction.getSender().getId().toString() + ","
-                + transaction.getReceiver().getId().toString() + ","
+                + transaction.getSenderAccount().getNumber().toString() + ","
+                + transaction.getReceiverAccount().getNumber().toString() + ","
                 + transaction.getAmountOfMoney().toString() + ","
                 + transaction.getDate().toString() + ",";
     }

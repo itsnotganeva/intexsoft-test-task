@@ -39,7 +39,8 @@ public class AddClientToBankCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "addClientToBank clientName=? bankName=? accountNumber=? currency=? amountOfMoney=?";
+        String description = "addClientToBank clientName=? surname=? "
+                + "bankName=? accountNumber=? currency=? amountOfMoney=?";
         return description;
     }
 
@@ -72,7 +73,8 @@ public class AddClientToBankCommand extends BaseCommand {
         BankDto bankDto = bankMapper
                 .toDto(bankService.findBankByName(commandDescriptor.getParameters().get("bankName")));
         ClientDto clientDto = clientMapper
-                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+                .toDto(clientService.findClientByNameAndSurname(commandDescriptor
+                .getParameters().get("clientName"), commandDescriptor.getParameters().get("surname")).get());
 
         bankAccountDto.setOwner(clientDto);
         bankAccountDto.setBankProducer(bankDto);
