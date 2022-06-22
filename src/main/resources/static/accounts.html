@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script src="logIn.js"></script>
+    <link href="main.css" rel="stylesheet" />
+</head>
+<body ng-app="Authentication" ng-controller="BankAccountController">
+
+<table>
+    <tr>
+        <th>Number</th>
+        <th>Currency</th>
+        <th>Amount of money</th>
+        <th>Bank</th>
+        <th>Info</th>
+    </tr>
+    <tr ng-repeat="bankAccount in bankAccounts">
+        <td> {{ bankAccount.number }}</td>
+        <td> {{ bankAccount.currency }}</td>
+        <td>{{ bankAccount.amountOfMoney }}</td>
+        <td>{{ bankAccount.bankProducer.name }}</td>
+        <td>
+            <a href="" class="edit-button">Info</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

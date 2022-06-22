@@ -2,6 +2,7 @@ package by.ganevich.controller;
 
 
 import by.ganevich.config.security.jwt.JwtProvider;
+import by.ganevich.dto.AuthRequestDto;
 import by.ganevich.dto.AuthResponseDto;
 import by.ganevich.dto.RegistrationRequestDto;
 import by.ganevich.dto.VerifyUserDto;
@@ -94,7 +95,7 @@ public class AuthController {
             description = "Allows to log in to user"
     )
     public ResponseEntity<AuthResponseDto> auth(@RequestBody @Parameter(description = "Data to log in")
-                                                    RegistrationRequestDto request) {
+                                                AuthRequestDto request) {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if (userEntity.getState().equals(State.NOT_ACTIVATED)) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
