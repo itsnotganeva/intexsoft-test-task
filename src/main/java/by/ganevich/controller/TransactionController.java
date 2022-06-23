@@ -60,6 +60,28 @@ public class TransactionController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @GetMapping(value = "/transactions/{account-number}/all")
+    @Operation(
+            summary = "Reading transactions",
+            description = "Allows to read all transactions of client by date"
+    )
+    public ResponseEntity<List<TransactionDto>> readAllOfAccount(
+            @PathVariable(name = "account-number") @Parameter(description = "account number") Integer number
+    ) {
+        BankAccount bankAccount = bankAccountService.findBankAccountByNumber(number);
+
+        final List<Transaction> transactions = transactionService.readAllByAccount(bankAccount);
+        List<TransactionDto> transactionsDto
+                = transactionMapper.toDtoList(transactions);
+
+        log.info("REST: Reading of transactions was successful");
+        return transactionsDto != null && !transactions.isEmpty()
+                ? new ResponseEntity<>(transactionsDto, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_OPERATOR')")
     @PostMapping(value = "/transactions")
     @Operation(

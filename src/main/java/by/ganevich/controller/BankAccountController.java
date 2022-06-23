@@ -48,7 +48,7 @@ public class BankAccountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/clients/{id}/bank-accounts")
     @Operation(
             summary = "Reading bank accounts",

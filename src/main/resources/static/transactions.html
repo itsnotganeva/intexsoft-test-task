@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script src="transactions.js"></script>
+    <link href="accounts.css" rel="stylesheet" />
+</head>
+<body ng-app="Transactions" ng-controller="TransactionController">
+
+<table>
+    <tr>
+        <th>Amount of money</th>
+        <th>Date</th>
+    </tr>
+    <tr ng-repeat="transaction in transactions">
+        <td> {{ transaction.amountOfMoney }}</td>
+        <td> {{ transaction.date }}</td>
+    </tr>
+</table>
+
+</body>
+</html>

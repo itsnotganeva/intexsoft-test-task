@@ -12,16 +12,9 @@ app.controller("AuthController", function ($scope, $http, $location, $window) {
     };
 
     $scope.register = function() {
-
-        var method = "";
-        var url = "";
-
-        method = "POST";
-        url = '/register';
-
         $http({
-            method: method,
-            url: url,
+            method: 'POST',
+            url: '/register',
             data: angular.toJson($scope.registrationRequest),
             headers: {
                 'Content-Type': 'application/json'
@@ -42,27 +35,4 @@ app.controller("AuthController", function ($scope, $http, $location, $window) {
         console.log("Error: " + res.headers + " : " + res.data);
         alert("Error: " + status + ":" + data);
     }
-
-    // $scope.auth = function() {
-    //
-    //     var method = "";
-    //     var url = "";
-    //
-    //     method = "POST";
-    //     url = '/auth';
-    //
-    //     $http({
-    //         method: method,
-    //         url: url,
-    //         data: angular.toJson($scope.registrationRequest),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     }).then(_error);
-    // };
-    //
-    // $scope.redirectToAccounts = function () {
-    //     var href = 'accounts.html';
-    //     $window.location.href = href;
-    // }
 });

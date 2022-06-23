@@ -2,16 +2,14 @@ package by.ganevich.controller;
 
 
 import by.ganevich.config.security.jwt.JwtProvider;
-import by.ganevich.dto.AuthRequestDto;
-import by.ganevich.dto.AuthResponseDto;
-import by.ganevich.dto.RegistrationRequestDto;
-import by.ganevich.dto.VerifyUserDto;
+import by.ganevich.dto.*;
 import by.ganevich.entity.Client;
 import by.ganevich.entity.User;
 import by.ganevich.entity.enums.ClientType;
 import by.ganevich.entity.enums.Role;
 import by.ganevich.entity.enums.State;
 import by.ganevich.mail.EmailService;
+import by.ganevich.mapper.interfaces.ClientMapper;
 import by.ganevich.service.ClientService;
 import by.ganevich.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,10 +18,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.util.Optional;
@@ -37,6 +36,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final EmailService emailService;
+    private final ClientMapper clientMapper;
 
 
     @PostMapping("/register")
@@ -103,5 +103,19 @@ public class AuthController {
         String token = jwtProvider.generateToken(userEntity.getLogin());
         AuthResponseDto authResponseDto = new AuthResponseDto(token);
         return new ResponseEntity<>(authResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/current-client")
+    public ResponseEntity<ClientDto> getCurrentClient() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        User user = userService.findByLogin(username);
+        ClientDto client = clientMapper.toDto(clientService.findByUser(user).get());
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 }

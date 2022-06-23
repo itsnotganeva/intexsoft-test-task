@@ -1,6 +1,7 @@
 package by.ganevich.service;
 
 import by.ganevich.entity.Client;
+import by.ganevich.entity.User;
 import by.ganevich.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,5 +59,9 @@ public class ClientService implements BaseService<Client> {
 
     public Optional<Client> findClientByNameAndSurname(String name, String surname) {
         return clientRepository.findByNameAndAndSurname(name, surname);
+    }
+
+    public Optional<Client> findByUser(User user) {
+        return clientRepository.findByUser(user);
     }
 }

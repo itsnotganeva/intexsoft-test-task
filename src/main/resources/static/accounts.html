@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
-    <script src="logIn.js"></script>
-    <link href="main.css" rel="stylesheet" />
+    <script src="accounts.js"></script>
+    <link href="accounts.css" rel="stylesheet" />
 </head>
-<body ng-app="Authentication" ng-controller="BankAccountController">
+<body ng-app="Accounts" ng-controller="BankAccountController">
 
 <table>
     <tr>
@@ -24,7 +24,7 @@
         <td>{{ bankAccount.amountOfMoney }}</td>
         <td>{{ bankAccount.bankProducer.name }}</td>
         <td>
-            <a href="" class="edit-button">Info</a>
+            <a href="" class="edit-button"  ng-click="redirectToTransactions(bankAccount.number)">Info</a>
         </td>
     </tr>
 </table>
