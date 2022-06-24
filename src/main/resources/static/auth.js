@@ -30,12 +30,17 @@ app.controller("AuthController", function ($scope, $http, $location, $window) {
 
     function setClient(res) {
         $window.localStorage.setItem('client', res.data.id);
-        console.log(res.data.id);
-        $scope.redirectToAuth();
+        alert("Status: " + res.status);
+        $scope.redirectToAccounts();
     }
 
-    $scope.redirectToAuth = function () {
+    $scope.redirectToAccounts = function () {
         var href = 'accounts.html';
+        $window.location.href = href;
+    }
+
+    $scope.redirectToRegister = function () {
+        var href = 'register.html';
         $window.location.href = href;
     }
 });

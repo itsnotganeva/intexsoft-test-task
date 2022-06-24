@@ -33,11 +33,10 @@ public class ReportController {
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     @PostMapping(value = "/reports/{account-number}")
     @Operation(
-            summary = "Creating report of transactions",
+            summary = "Creating report of account transactions",
             description = "Allows to read all clients"
     )
     public ResponseEntity<?> createReportOfAccount(
-
             @RequestBody@Parameter(description = "Data to create report of account")
                     ReportOfAccountDto report
     ) {
@@ -51,7 +50,7 @@ public class ReportController {
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     @PostMapping(value = "/reports")
     @Operation(
-            summary = "Creating report of transactions",
+            summary = "Creating report of client transactions",
             description = "Allows to read all clients"
     )
     public ResponseEntity<?> createReportOfClient(

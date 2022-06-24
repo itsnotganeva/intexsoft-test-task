@@ -11,14 +11,12 @@ app.controller("TransactionController", function ($scope, $http, $window) {
             method: 'GET',
             url: '/transactions/' + $window.localStorage.getItem('accountNumber') + '/all',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + $window.localStorage.getItem('token')
             }
         }).then(
             function(res) {
                 $scope.transactions = res.data;
-            },
-            function (res) {
-                console.log("Error" + res.status + ":" + res.data);
             }
         );
     }

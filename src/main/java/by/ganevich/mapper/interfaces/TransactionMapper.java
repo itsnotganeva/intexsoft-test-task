@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = ClientMapper.class)
+@Mapper(componentModel = "spring", uses = BankAccountMapper.class)
 public interface TransactionMapper {
     TransactionDto toDto(Transaction transaction);
 

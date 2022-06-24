@@ -9,15 +9,21 @@
     <link href="accounts.css" rel="stylesheet" />
 </head>
 <body ng-app="Transactions" ng-controller="TransactionController">
-
+<h1>TRANSACTIONS OF ACCOUNT</h1>
 <table>
     <tr>
+        <th>Number of sender account</th>
         <th>Amount of money</th>
+        <th>Currency</th>
         <th>Date</th>
+        <th>Number of receiver account</th>
     </tr>
     <tr ng-repeat="transaction in transactions">
+        <td> {{ transaction.senderAccount.number }}</td>
         <td> {{ transaction.amountOfMoney }}</td>
+        <td> {{ transaction.senderAccount.currency }}</td>
         <td> {{ transaction.date }}</td>
+        <td> {{ transaction.receiverAccount.number }}</td>
     </tr>
 </table>
 

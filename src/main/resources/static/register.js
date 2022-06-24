@@ -19,20 +19,17 @@ app.controller("AuthController", function ($scope, $http, $location, $window) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(_error);
+        }).then(status);
     };
 
     $scope.redirectToAuth = function () {
-        var href = 'auth.html';
+        var href = 'index.html';
         $window.location.href = href;
     }
 
-    function _error(res) {
-        var data = res.data;
+    function status(res) {
         var status = res.status;
-        var header = res.header;
-        var config = res.config;
-        console.log("Error: " + res.headers + " : " + res.data);
-        alert("Error: " + status + ":" + data);
+        alert("Status: " + status);
+        $scope.redirectToAuth();
     }
 });

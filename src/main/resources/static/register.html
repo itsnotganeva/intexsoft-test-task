@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script src="register.js"></script>
+    <link href="register.css" rel="stylesheet" />
+</head>
+<body ng-app="Registration" ng-controller="AuthController">
+<h1>SIGN UP</h1>
+<form ng-submit="register()">
+    <label for="fname">First name:</label><br>
+    <input type="text" id="fname" name="fname" ng-model="registrationRequest.name"><br>
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lname" ng-model="registrationRequest.surname"><br>
+    <label for="type">Type:</label><br>
+    <input id="type" list="types" ng-model="registrationRequest.type"/>
+    <datalist id="types">
+        <option value="INDIVIDUAL">
+        <option value="INDUSTRIAL">
+    </datalist><br>
+    <label for="login">Login:</label><br>
+    <input type="text" id="login" name="login" ng-model="registrationRequest.login"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password" ng-model="registrationRequest.password"><br>
+    <input type="submit" value="Submit" />
+</form>
+</body>
+</html>
