@@ -4,6 +4,7 @@ import by.ganevich.dto.ConductTransactionDto;
 import by.ganevich.dto.TransactionDto;
 import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Transaction;
+import by.ganevich.kafka.ProducerService;
 import by.ganevich.mapper.interfaces.TransactionMapper;
 import by.ganevich.service.BankAccountService;
 import by.ganevich.service.TransactionService;
@@ -32,6 +33,7 @@ public class TransactionController {
     private final CustomValidator<ConductTransactionDto> transactionValidator;
     private final TransactionMapper transactionMapper;
     private final BankAccountService bankAccountService;
+    private final ProducerService producerService;
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping(value = "/transactions/{account-number}")
@@ -97,10 +99,12 @@ public class TransactionController {
             log.info("REST: The input data of transaction is invalid");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        transactionService.sendMoney(Integer.valueOf(conductTransactionDto.getSenderAccountNumber()),
+        Transaction transaction =
+                transactionService.sendMoney(Integer.valueOf(conductTransactionDto.getSenderAccountNumber()),
                         Integer.valueOf(conductTransactionDto.getReceiverAccountNumber()),
                         Double.valueOf(conductTransactionDto.getAmountOfMoney()));
         log.info("REST: Transaction was carried out successful");
+        producerService.produce(transactionMapper.toDto(transaction));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
