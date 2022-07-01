@@ -56,4 +56,7 @@ public class ClientService implements BaseService<Client> {
         log.info("Client wit id " + id + " successfully removed.");
     }
 
+    public Optional<Client> findClientByNameAndSurname(String name, String surname) {
+        return clientRepository.findByNameAndAndSurname(name, surname);
+    }
 }

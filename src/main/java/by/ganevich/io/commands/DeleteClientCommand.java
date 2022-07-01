@@ -30,7 +30,7 @@ public class DeleteClientCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "deleteClient clientName=?";
+        String description = "deleteClient clientName=? surname=?";
         return description;
     }
 
@@ -59,7 +59,8 @@ public class DeleteClientCommand extends BaseCommand {
     @Override
     public ICommand setDto(CommandDescriptor commandDescriptor) {
         ClientDto clientDto = clientMapper
-                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+                .toDto(clientService.findClientByNameAndSurname(commandDescriptor.getParameters().get("clientName"),
+                                commandDescriptor.getParameters().get("surname")).get());
         this.clientDto = clientDto;
         return this;
     }

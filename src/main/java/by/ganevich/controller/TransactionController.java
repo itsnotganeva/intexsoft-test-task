@@ -2,8 +2,10 @@ package by.ganevich.controller;
 
 import by.ganevich.dto.ConductTransactionDto;
 import by.ganevich.dto.TransactionDto;
+import by.ganevich.entity.BankAccount;
 import by.ganevich.entity.Transaction;
 import by.ganevich.mapper.interfaces.TransactionMapper;
+import by.ganevich.service.BankAccountService;
 import by.ganevich.service.TransactionService;
 import by.ganevich.validator.CustomValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,22 +31,25 @@ public class TransactionController {
 
     private final CustomValidator<ConductTransactionDto> transactionValidator;
     private final TransactionMapper transactionMapper;
+    private final BankAccountService bankAccountService;
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT', 'ROLE_ADMIN')")
-    @GetMapping(value = "/clients/{id}/transactions")
+    @GetMapping(value = "/transactions/{account-number}")
     @Operation(
             summary = "Reading transactions",
             description = "Allows to read all transactions of client by date"
     )
     public ResponseEntity<List<TransactionDto>> read(
-            @PathVariable(name = "id") @Parameter(description = "id of client") Long id,
+            @PathVariable(name = "account-number") @Parameter(description = "account number") Integer number,
             @RequestParam(name = "dateBefore") @Parameter(description = "start date") String dateBefore,
             @RequestParam(name = "dateAfter") @Parameter(description = "final date") String dateAfter
     ) {
-        log.info("REST: Read transactions of client with id + " + id + " by date between " + dateBefore
+        log.info("REST: Read transactions of account with number + " + number + " by date between " + dateBefore
                 + " and + " + dateAfter + " is called");
+        BankAccount bankAccount = bankAccountService.findBankAccountByNumber(number);
+
         final List<Transaction> transactions = transactionService
-                .readAllByClientId(Date.valueOf(dateBefore), Date.valueOf(dateAfter), id);
+                .readAllByAccountAndDate(Date.valueOf(dateBefore), Date.valueOf(dateAfter), bankAccount);
 
         List<TransactionDto> transactionsDto
                 = transactionMapper.toDtoList(transactions);

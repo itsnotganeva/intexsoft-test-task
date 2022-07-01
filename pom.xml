@@ -175,6 +175,12 @@
             <artifactId>hibernate-types-52</artifactId>
             <version>2.10.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.14</version>
+        </dependency>
     </dependencies>
 
     <build>

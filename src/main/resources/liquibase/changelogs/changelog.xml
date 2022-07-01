@@ -14,4 +14,8 @@
         <sqlFile encoding="utf8" path="/sql/V1_insertData.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="addSurname" author="Matvey Ganevich">
+        <sqlFile encoding="utf8" path="/sql/V2_surname.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog>

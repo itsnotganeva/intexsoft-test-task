@@ -30,7 +30,7 @@ public class UpdateClientCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "updateClient clientName=? newClientName=? newType=INDIVIDUAL/INDUSTRIAL";
+        String description = "updateClient clientName=? newClientName=? newSurname=? newType=INDIVIDUAL/INDUSTRIAL";
         return description;
     }
 
@@ -51,9 +51,11 @@ public class UpdateClientCommand extends BaseCommand {
     @Override
     public ICommand setDto(CommandDescriptor commandDescriptor) {
         ClientDto clientDto = clientMapper
-                .toDto(clientService.findClientByName(commandDescriptor.getParameters().get("clientName")));
+                .toDto(clientService.findClientByNameAndSurname(commandDescriptor.getParameters().get("clientName"),
+                        commandDescriptor.getParameters().get("surname")).get());
 
         clientDto.setName(commandDescriptor.getParameters().get("newClientName"));
+        clientDto.setSurname(commandDescriptor.getParameters().get("newSurname"));
         clientDto.setType(commandDescriptor.getParameters().get("newType"));
 
         this.clientDto = clientDto;

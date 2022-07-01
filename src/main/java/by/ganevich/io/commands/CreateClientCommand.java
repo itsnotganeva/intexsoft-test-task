@@ -29,7 +29,7 @@ public class CreateClientCommand extends BaseCommand {
 
     @Override
     public String getDescriptionValue() {
-        String description = "createClient clientName=? type=INDIVIDUAL/INDUSTRIAL";
+        String description = "createClient clientName=? surname=? type=INDIVIDUAL/INDUSTRIAL";
         return description;
     }
 
@@ -52,6 +52,7 @@ public class CreateClientCommand extends BaseCommand {
     public ICommand setDto(CommandDescriptor commandDescriptor) {
         ClientDto clientDto = new ClientDto();
         clientDto.setName(commandDescriptor.getParameters().get("clientName"));
+        clientDto.setSurname(commandDescriptor.getParameters().get("surname"));
         clientDto.setType(commandDescriptor.getParameters().get("type"));
 
         this.clientDto = clientDto;

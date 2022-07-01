@@ -14,6 +14,9 @@ public class RegistrationRequestDto {
     private String name;
 
     @NotEmpty
+    private String surname;
+
+    @NotEmpty
     private String type;
 
     @NotEmpty
