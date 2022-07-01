@@ -25,7 +25,6 @@ public class BankAccountController {
 
     private final BankAccountService bankAccountService;
     private final CustomValidator<BankAccountDto> bankAccountValidator;
-
     private final BankAccountMapper bankAccountMapper;
 
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_CLIENT')")

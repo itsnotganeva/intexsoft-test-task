@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script src="accounts.js"></script>
+    <link href="accounts.css" rel="stylesheet" />
+</head>
+<body ng-app="Accounts" ng-controller="BankAccountController">
+<h1>BANK ACCOUNTS</h1>
+<table>
+    <tr>
+        <th>Number</th>
+        <th>Currency</th>
+        <th>Amount of money</th>
+        <th>Bank</th>
+        <th>Info</th>
+    </tr>
+    <tr ng-repeat="bankAccount in bankAccounts">
+        <td> {{ bankAccount.number }}</td>
+        <td> {{ bankAccount.currency }}</td>
+        <td>{{ bankAccount.amountOfMoney }}</td>
+        <td>{{ bankAccount.bankProducer.name }}</td>
+        <td>
+            <a href="" class="edit-button"  ng-click="redirectToTransactions(bankAccount.number)">Info</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

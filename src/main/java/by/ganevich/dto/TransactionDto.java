@@ -19,6 +19,10 @@ public class TransactionDto {
     @NotEmpty(message = "Amount of money must not be empty")
     private String amountOfMoney;
 
+    private BankAccountDto senderAccount;
+
+    private BankAccountDto receiverAccount;
+
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
     @NotEmpty(message = "Date must not be empty")
     private Date date;

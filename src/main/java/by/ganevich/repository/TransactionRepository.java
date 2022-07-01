@@ -18,4 +18,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findAllByDateBetweenAndSenderAccountOrReceiverAccount(Date dateBefore, Date dateAfter,
                                                                             BankAccount senderNumber, BankAccount receiverNumber);
 
+    List<Transaction> findAllBySenderAccountOrReceiverAccount(BankAccount senderAccount, BankAccount receiverAccount);
+
 }

@@ -122,4 +122,8 @@ public class TransactionService implements BaseService<Transaction> {
         log.info("Transactions is saved");
         return savedTransaction;
     }
+
+    public List<Transaction> readAllByAccount(BankAccount bankAccount) {
+        return transactionRepository.findAllBySenderAccountOrReceiverAccount(bankAccount, bankAccount);
+    }
 }
