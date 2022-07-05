@@ -10,7 +10,28 @@ import java.sql.Date;
 @Getter
 @Setter
 @Table(name = "transactions")
-
+@NamedEntityGraph(
+        name = "transactions-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "senderAccount", subgraph = "bankAccounts-sub-graph"),
+                @NamedAttributeNode(value = "receiverAccount", subgraph = "bankAccounts-sub-graph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "bankAccounts-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("owner"),
+                                @NamedAttributeNode(value = "bankProducer", subgraph = "banks-sub-graph")
+                        }
+                ),
+                @NamedSubgraph(
+                        name = "banks-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("commissions")
+                        }
+                )
+        }
+)
 public class Transaction {
 
     @Id
@@ -19,7 +40,7 @@ public class Transaction {
 
     @ManyToOne(
             cascade = CascadeType.DETACH,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(name = "senderAccountId")
     private BankAccount senderAccount;

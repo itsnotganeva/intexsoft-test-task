@@ -27,7 +27,6 @@ import java.util.Set;
                         }
                 )
         }
-
 )
 public class BankAccount {
     @Id

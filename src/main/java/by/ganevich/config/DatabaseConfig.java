@@ -1,5 +1,6 @@
 package by.ganevich.config;
 
+import by.ganevich.config.yml.YamlPropertySourceFactory;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
@@ -22,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "by.ganevich.repository")
 @EnableTransactionManagement
-@PropertySource("classpath:application.yml")
+@PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:application.yml")
 public class DatabaseConfig {
 
     @Value("${db.username}")

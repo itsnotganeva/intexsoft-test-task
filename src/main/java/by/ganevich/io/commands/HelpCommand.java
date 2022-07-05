@@ -35,13 +35,16 @@ public class HelpCommand implements ICommand {
                 + "readBankAccounts: command to read all bank accounts of client \n\n"
                 + "exportCsv: export data from db to csv files \n"
                 + "importCsv: import data from csv files to db \n\n"
-                + "createReportOfClient: create an excel report of client's transactions \n"
-                + "createReportOfAccount: create an excel report of account's transactions \n\n"
+                + "createExcelReportOfClient: create an excel report of client's transactions \n"
+                + "createExcelReportOfAccount: create an excel report of account's transactions \n\n"
+                + "createPdfReportOfSender: create a PDF report of sender \n"
+                + "createPdfReportOfReceiver: create a PDF report of receiver \n"
+                + "createPdfReportOfSentAccount: create a PDF report of sent account \n"
+                + "createPdfReportOfReceiveAccount: create a PDF report of received account \n\n"
                 + "exit: command to exit from application";
 
         CommandResult commandResult = new CommandResult();
         commandResult.setResult(helpCommand);
         return commandResult;
     }
-
 }

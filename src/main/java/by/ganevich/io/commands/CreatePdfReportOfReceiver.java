@@ -1,11 +1,14 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.dto.ReportOfClientDto;
+import by.ganevich.dto.TransactionDto;
 import by.ganevich.entity.Client;
-import by.ganevich.excel.ExcelWorker;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.TransactionMapper;
+import by.ganevich.pdf.PdfCreator;
 import by.ganevich.service.ClientService;
+import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,33 +16,39 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @Getter
 @Slf4j
 @RequiredArgsConstructor
-public class CreateReportOfClient extends BaseCommand {
+public class CreatePdfReportOfReceiver extends BaseCommand {
 
-    private final String commandName = "createReportOfClient";
+    private final String commandName = "createPdfReportOfReceiver";
     private final ClientService clientService;
-    private final ExcelWorker excelWorker;
-
+    private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
+    private final PdfCreator pdfCreator;
     private ReportOfClientDto report;
 
     @Override
     public String getDescriptionValue() {
-        String description = "createReportOfClient dateBefore=? dateAfter=? clientName=? surname=?";
+        String description = "createPdfReportOfReceiver dateBefore=? dateAfter=? clientName=? surname=?";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
-        Client client = clientService.findClientByNameAndSurname(report.getClientName(), report.getSurname()).get();
-        excelWorker.createClientTransactionsFile(Date.valueOf(report.getDateBefore()),
-                Date.valueOf(report.getDateAfter()), client.getId());
+        Optional<Client> client = clientService.findClientByNameAndSurname(report.getClientName(), report.getSurname());
+        List<TransactionDto> transactionsDto = transactionMapper
+                .toDtoList(transactionService
+                        .readAllByReceiverClientAndDate(client.get(),
+                                Date.valueOf(report.getDateBefore()), Date.valueOf(report.getDateAfter())));
+        pdfCreator.createReportOfAccount(transactionsDto, "ReportOfReceiver.pdf");
         CommandResult commandResult = new CommandResult();
-        commandResult.setResult("Report of client was created");
+        commandResult.setResult("PDF report of receiver was created");
         return commandResult;
     }
 

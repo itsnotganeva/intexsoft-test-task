@@ -23,20 +23,20 @@ mail:
         starttls:
           enable: 'true'
   password: bcLyFagT9e88xiZ
+  port: '587'
   host: smtp.gmail.com
   protocol: smtp
-  port: '587'
   username: test.banksystem@gmail.com
 db:
   password: '600099'
   dialect: org.hibernate.dialect.PostgreSQLDialect
-  url: jdbc:postgresql://localhost:5432/bank-system
   username: postgres
   driver: org.postgresql.Driver
-packagesToScan: by.ganevich.entity
+  url: jdbc:postgresql://localhost:5432/bank-system
 jwt:
   secret: intexsoft
 isEmailSenderActive: 'false'
+packagesToScan: by.ganevich.entity
 currency-service:
   url: http://localhost:8083/rates/
 validTime: '15'

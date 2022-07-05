@@ -3,6 +3,7 @@ package by.ganevich.service;
 import by.ganevich.client.WebClient;
 import by.ganevich.dto.ExchangeRateDto;
 import by.ganevich.entity.BankAccount;
+import by.ganevich.entity.Client;
 import by.ganevich.entity.Transaction;
 import by.ganevich.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -124,5 +128,27 @@ public class TransactionService implements BaseService<Transaction> {
 
     public List<Transaction> readAllByAccount(BankAccount bankAccount) {
         return transactionRepository.findAllBySenderAccountOrReceiverAccount(bankAccount, bankAccount);
+    }
+
+    public List<Transaction> readAllBySenderClientAndDate(Client client, Date dateBefore, Date dateAfter) {
+        final List<BankAccount> bankAccounts = bankAccountService.findBankAccountByClientId(client.getId());
+        Stream combinedStream = new ArrayList<Transaction>().stream();
+        for (BankAccount bankAccount : bankAccounts) {
+            combinedStream = Stream.concat(combinedStream,
+                    transactionRepository.findAllByDateBetweenAndSenderAccount(dateBefore,
+                            dateAfter, bankAccount).stream());
+        }
+        return (List<Transaction>) combinedStream.collect(Collectors.toList());
+    }
+
+    public List<Transaction> readAllByReceiverClientAndDate(Client client, Date dateBefore, Date dateAfter) {
+        final List<BankAccount> bankAccounts = bankAccountService.findBankAccountByClientId(client.getId());
+        Stream combinedStream = new ArrayList<Transaction>().stream();
+        for (BankAccount bankAccount : bankAccounts) {
+            combinedStream = Stream.concat(combinedStream,
+                    transactionRepository.findAllByDateBetweenAndReceiverAccount(dateBefore,
+                            dateAfter, bankAccount).stream());
+        }
+        return (List<Transaction>) combinedStream.collect(Collectors.toList());
     }
 }

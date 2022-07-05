@@ -19,6 +19,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
     @EntityGraph(value = "bankAccounts-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
     Set<BankAccount> findBankAccountByOwner(Client owner);
 
+    @EntityGraph(value = "bankAccounts-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
     List<BankAccount> findBankAccountByOwnerId(Long id);
 
     BankAccount findBankAccountByNumber(Integer number);
