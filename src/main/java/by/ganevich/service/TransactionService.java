@@ -24,10 +24,8 @@ public class TransactionService implements BaseService<Transaction> {
 
     private final WebClient webClient;
 
-    public void sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
-
+    public Transaction sendMoney(Integer senderAccountNumber, Integer receiverAccountNumber, Double sumOfMoney) {
         log.info("TransactionService: Send money is called.");
-
         BankAccount senderAccount = bankAccountService.findBankAccountByNumber(senderAccountNumber);
         BankAccount receiverAccount = bankAccountService.findBankAccountByNumber(receiverAccountNumber);
 
@@ -36,6 +34,7 @@ public class TransactionService implements BaseService<Transaction> {
 
         Double senderSum = senderAccount.getAmountOfMoney();
         Double recipientSum = receiverAccount.getAmountOfMoney();
+        Transaction transaction = new Transaction();
 
         if (sumOfMoney <= senderSum) {
             Double convertSum = sumOfMoney
@@ -58,7 +57,6 @@ public class TransactionService implements BaseService<Transaction> {
             bankAccountService.save(senderAccount);
             bankAccountService.save(receiverAccount);
 
-            Transaction transaction = new Transaction();
             long millis = System.currentTimeMillis();
             transaction.setDate(new Date(millis));
             transaction.setAmountOfMoney(sumOfMoney);
@@ -71,6 +69,7 @@ public class TransactionService implements BaseService<Transaction> {
                     + " to " + receiverAccount.getOwner()
                     + "was carried successfully.");
         }
+        return transaction;
     }
 
     private Double getCommission(BankAccount bankAccount) {
