@@ -42,17 +42,17 @@ public class Transaction {
             cascade = CascadeType.DETACH,
             fetch = FetchType.EAGER
     )
-    @JoinColumn(name = "senderAccountId")
+    @JoinColumn(name = "sender_account_id")
     private BankAccount senderAccount;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "receiverAccountId")
+    @JoinColumn(name = "receiver_account_id")
     private BankAccount receiverAccount;
 
-    @Column(name = "amountOfMoney")
+    @Column(name = "amount_of_money")
     private Double amountOfMoney;
 
     @Column(name = "date")

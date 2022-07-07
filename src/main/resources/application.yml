@@ -7,14 +7,25 @@ management:
     health:
       show-details: always
 spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: none
+  datasource:
+    password: '600099'
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/bank-system
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
   liquibase:
     change-log: classpath:liquibase/changelog-master.xml
-  jpa:
-    show-sql: 'true'
 mail:
   properties:
     mail:
@@ -27,12 +38,6 @@ mail:
   host: smtp.gmail.com
   protocol: smtp
   username: test.banksystem@gmail.com
-db:
-  password: '600099'
-  dialect: org.hibernate.dialect.PostgreSQLDialect
-  username: postgres
-  driver: org.postgresql.Driver
-  url: jdbc:postgresql://localhost:5432/bank-system
 jwt:
   secret: intexsoft
 isEmailSenderActive: 'false'

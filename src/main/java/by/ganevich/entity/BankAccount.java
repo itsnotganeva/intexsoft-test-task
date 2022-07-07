@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "bankAccounts")
+@Table(name = "bank_accounts")
 @NamedEntityGraph(
         name = "bankAccounts-entity-graph",
         attributeNodes = {
@@ -40,21 +40,21 @@ public class BankAccount {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @Column(name = "amountOfMoney")
+    @Column(name = "amount_of_money")
     private Double amountOfMoney;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "clientId")
+    @JoinColumn(name = "client_id")
     private Client owner;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "bankId")
+    @JoinColumn(name = "bank_id")
     private Bank bankProducer;
 
     @OneToMany(

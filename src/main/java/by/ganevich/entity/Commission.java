@@ -8,14 +8,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "commissionForClients")
+@Table(name = "commission_for_clients")
 public class Commission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "clientType")
+    @Column(name = "client_type")
     private Integer clientType;
 
     @Column(name = "commission")

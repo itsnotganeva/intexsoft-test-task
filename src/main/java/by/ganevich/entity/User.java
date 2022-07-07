@@ -33,13 +33,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "securityCode")
+    @Column(name = "security_code")
     private String code;
 
     @OneToOne(mappedBy = "user")
     private Client client;
 
-    @Column(name = "userState")
+    @Column(name = "user_state")
     @Enumerated(EnumType.STRING)
     private State state;
 

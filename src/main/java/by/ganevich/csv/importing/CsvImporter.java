@@ -26,8 +26,7 @@ public abstract class CsvImporter<T> {
     }
 
     public void doImport(String fileName) throws IOException {
-        List<T> entities = getMapper()
-                .toEntity(fileName);
+        List<T> entities = getMapper().toEntity(fileName);
         for (T entity : entities) {
             getService().save(entity);
         }

@@ -40,7 +40,7 @@ public class Client {
     private Set<BankAccount> bankAccounts;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Override
