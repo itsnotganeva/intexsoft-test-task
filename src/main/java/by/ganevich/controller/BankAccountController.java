@@ -65,6 +65,4 @@ public class BankAccountController {
         log.info("REST: Reading of accounts was successful");
         return new ResponseEntity<>(bankAccountsDto, HttpStatus.OK);
     }
-
-
 }

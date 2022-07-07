@@ -14,7 +14,6 @@ public class ProducerService {
     private final KafkaTemplate<String, TransactionDto> kafkaTemplate;
 
     public void produce(TransactionDto transactionDto) {
-        log.info("PRODUCER IS CALLED");
         kafkaTemplate.send("messages", transactionDto);
     }
 }

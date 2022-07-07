@@ -1,11 +1,14 @@
 package by.ganevich.io.commands;
 
 import by.ganevich.dto.ReportOfAccountDto;
+import by.ganevich.dto.TransactionDto;
 import by.ganevich.entity.BankAccount;
-import by.ganevich.excel.ExcelWorker;
 import by.ganevich.io.CommandDescriptor;
 import by.ganevich.io.CommandResult;
+import by.ganevich.mapper.interfaces.TransactionMapper;
+import by.ganevich.pdf.PdfCreator;
 import by.ganevich.service.BankAccountService;
+import by.ganevich.service.TransactionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,37 +16,39 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 @Component
 @Getter
 @Slf4j
 @RequiredArgsConstructor
-public class CreateReportOfAccount extends BaseCommand {
-    private final String commandName = "createReportOfClient";
+public class CreatePdfReportOfReceiveAccount extends BaseCommand {
+
+    private final String commandName = "createPdfReportOfReceiveAccount";
+    private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
+    private final PdfCreator pdfCreator;
     private final BankAccountService bankAccountService;
-    private final ExcelWorker excelWorker;
     private ReportOfAccountDto report;
 
     @Override
     public String getDescriptionValue() {
-        String description = "createReportOfAccount dateBefore=? dateAfter=? accountNumber=?";
+        String description = "createPdfReportOfReceiveAccount dateBefore=? dateAfter=? accountNumber=?";
         return description;
     }
 
     @Override
     public CommandResult doExecute(Map<String, String> parameters) throws IOException {
-        BankAccount bankAccount = bankAccountService.findBankAccountByNumber(Integer.valueOf(report.getAccountNumber()));
-        excelWorker.createAccountTransactionsFile(Date.valueOf(report.getDateBefore()),
-                Date.valueOf(report.getDateAfter()), bankAccount);
+        BankAccount bankAccount = bankAccountService
+                .findBankAccountByNumber(Integer.valueOf(report.getAccountNumber()));
+        List<TransactionDto> receiveTransactions = transactionMapper
+                .toDtoList(transactionService.readAllByDateAndReceiverAccount(Date.valueOf(report.getDateBefore()),
+                        Date.valueOf(report.getDateAfter()), bankAccount));
+        pdfCreator.createReportOfAccount(receiveTransactions, "ReportOfReceivedAccount.pdf");
         CommandResult commandResult = new CommandResult();
-        commandResult.setResult("Report of account was created");
+        commandResult.setResult("PDF report of sent account was created");
         return commandResult;
-    }
-
-    @Override
-    public String getCommandName() {
-        return null;
     }
 
     @Override

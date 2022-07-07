@@ -34,8 +34,13 @@ public class CommandFactory {
     private final ImportCsvCommand importCsvCommand;
     private final ExportCsvCommand exportCsvCommand;
 
-    private final CreateReportOfClient createReportOfClient;
-    private final CreateReportOfAccount createReportOfAccount;
+    private final CreateExcelReportOfClient createExcelReportOfClient;
+    private final CreateExcelReportOfAccount createExcelReportOfAccount;
+
+    private final CreatePdfReportOfSender createPdfReportOfSender;
+    private final CreatePdfReportOfReceiver createPdfReportOfReceiver;
+    private final CreatePdfReportOfSentAccount createPdfReportOfSentAccount;
+    private final CreatePdfReportOfReceiveAccount createPdfReportOfReceiveAccount;
 
     private Map<String, ICommand> commands;
 
@@ -57,16 +62,17 @@ public class CommandFactory {
         commands.put(exitCommand.getCommandName(), exitCommand);
         commands.put(importCsvCommand.getCommandName(), importCsvCommand);
         commands.put(exportCsvCommand.getCommandName(), exportCsvCommand);
-        commands.put(createReportOfClient.getCommandName(), createReportOfClient);
-        commands.put(createReportOfAccount.getCommandName(), createReportOfAccount);
+        commands.put(createExcelReportOfClient.getCommandName(), createExcelReportOfClient);
+        commands.put(createExcelReportOfAccount.getCommandName(), createExcelReportOfAccount);
+        commands.put(createPdfReportOfSender.getCommandName(), createPdfReportOfSender);
+        commands.put(createPdfReportOfReceiver.getCommandName(), createPdfReportOfReceiver);
+        commands.put(createPdfReportOfSentAccount.getCommandName(), createPdfReportOfSentAccount);
+        commands.put(createPdfReportOfReceiveAccount.getCommandName(), createPdfReportOfReceiveAccount);
         return commands;
     }
 
     public ICommand getCommand(CommandDescriptor commandDescriptor) {
-
         ICommand command = commands.get(commandDescriptor.getCommandName());
-
         return command;
     }
-
 }

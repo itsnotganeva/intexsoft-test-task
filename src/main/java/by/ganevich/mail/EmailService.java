@@ -71,9 +71,7 @@ public class EmailService {
         variables.put("user", user);
         variables.put("number", number);
 
-
         context.setVariables(variables);
-
         String process = templateEngine.process("mail", context);
 
         MimeMessage mimeMessage = getJavaMailSender().createMimeMessage();

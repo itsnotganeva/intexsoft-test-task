@@ -1,6 +1,8 @@
 package by.ganevich.io;
 
+import by.ganevich.config.yml.YamlPropertySourceFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -9,6 +11,7 @@ import java.util.Scanner;
 
 @RequiredArgsConstructor
 @Component
+@PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:application.yml")
 public class ConsoleInterpreter {
 
     private final ConsoleLineParser consoleLineParser;
